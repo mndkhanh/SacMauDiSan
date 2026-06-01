@@ -1,0 +1,54 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Helper functions ───────────────────────────────────────────────────
+
+    /** Is the requester signed in? */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /** Does the requester own this document? */
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    /** Prevent uid / createdAt from being overwritten on updates */
+    function notChangingImmutableFields() {
+      return !('uid' in request.resource.data.diff(resource.data).affectedKeys())
+          && !('createdAt' in request.resource.data.diff(resource.data).affectedKeys());
+    }
+
+    // ─── /users/{uid} ──────────────────────────────────────────────────────
+    // Each user can only read and write their own profile.
+
+    match /users/{uid} {
+      allow read:   if isOwner(uid);
+      allow create: if isOwner(uid);
+      allow update: if isOwner(uid) && notChangingImmutableFields();
+      allow delete: if false; // never allow profile deletion via client
+    }
+
+    // ─── /posts/{postId} ───────────────────────────────────────────────────
+    // Anyone signed in can read posts.
+    // Only the author can create / update / delete their own post.
+
+    match /posts/{postId} {
+      allow read:   if isSignedIn();
+      allow create: if isSignedIn()
+                    && request.resource.data.authorId == request.auth.uid;
+      allow update: if isSignedIn()
+                    && resource.data.authorId == request.auth.uid
+                    && notChangingImmutableFields();
+      allow delete: if isSignedIn()
+                    && resource.data.authorId == request.auth.uid;
+    }
+
+    // ─── Deny everything else ───────────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
