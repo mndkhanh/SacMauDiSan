@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Game nối cặp Cần kiệm liêm chính - Tư tưởng Hồ Chí Minh"
+    />
+    <title>Cần kiệm liêm chính | Matching Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero" id="home">
+        <div class="hero__visual">
+          <img src="./assets/key-visual.png" alt="Key visual Sắc màu di sản" />
+          <div class="hero__shine"></div>
+        </div>
+        <div class="hero__content">
+          <p class="eyebrow">FPT University Education Game</p>
+          <h1 id="game-title">Cần kiệm liêm chính</h1>
+          <p id="game-subtitle" class="hero__subtitle">
+            Game nối cặp kiến thức Tư tưởng Hồ Chí Minh
+          </p>
+          <div class="hero__actions">
+            <a
+              class="button button--primary"
+              id="startJourneyLink"
+              href="#register-section"
+              >Bắt đầu hành trình</a
+            >
+            <button
+              class="button button--ghost"
+              id="openRulesBtn"
+              type="button"
+            >
+              Xem luật chơi
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <section
+        class="register-section"
+        id="register-section"
+        aria-labelledby="registerTitle"
+      >
+        <div class="register-card">
+          <div class="register-card__icon">💼</div>
+          <p class="section-kicker">Thông tin người chơi</p>
+          <h2 id="registerTitle">Đăng ký tham gia</h2>
+          <p class="register-card__subtitle">
+            Nhập thông tin để bắt đầu hành trình và lưu lại số vòng đã hoàn
+            thành.
+          </p>
+
+          <form class="register-form" id="registerForm">
+            <label class="form-field" for="fullNameInput">
+              <span>👤 Họ và tên</span>
+              <input
+                id="fullNameInput"
+                name="fullName"
+                type="text"
+                placeholder="Nguyễn Văn A"
+                autocomplete="name"
+                required
+              />
+            </label>
+
+            <label class="form-field" for="studentIdInput">
+              <span>🎓 MSSV</span>
+              <input
+                id="studentIdInput"
+                name="studentId"
+                type="text"
+                placeholder="SE12345"
+                autocomplete="off"
+                required
+              />
+            </label>
+
+            <label class="form-field" for="classCodeInput">
+              <span>🏫 Mã lớp</span>
+              <input
+                id="classCodeInput"
+                name="classCode"
+                type="text"
+                placeholder="MLN131_01"
+                autocomplete="off"
+                required
+              />
+            </label>
+
+            <button
+              class="button button--gradient register-submit"
+              type="submit"
+            >
+              🚀 Bắt đầu hành trình
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <nav class="app-nav" id="appNav" hidden aria-label="Điều hướng game">
+        <div class="player-pill" id="currentPlayerPill">Chưa có người chơi</div>
+        <div class="app-nav__actions">
+          <button class="nav-tab is-active" type="button" data-view="game">
+            Chơi game
+          </button>
+          <button class="nav-tab" type="button" data-view="participants">
+            Thông tin người đăng ký
+          </button>
+          <button
+            class="nav-tab nav-tab--ghost"
+            id="changePlayerBtn"
+            type="button"
+          >
+            Đổi người chơi
+          </button>
+        </div>
+      </nav>
+
+      <main class="main-layout app-view is-active" id="gameView" hidden>
+        <section class="intro-card" aria-labelledby="intro-title">
+          <div>
+            <p class="section-kicker">Nhiệm vụ</p>
+            <h2 id="intro-title">Nối đúng 4 cặp để hoàn thành từng vòng</h2>
+            <p id="game-description">
+              Người chơi cần ghép đúng toàn bộ các cặp liên quan đến nhau. Nếu
+              sai, hệ thống sẽ yêu cầu nối lại.
+            </p>
+          </div>
+          <div class="score-card">
+            <span>Tiến độ trong phiên hiện tại</span>
+            <strong id="progressText">0/0 vòng</strong>
+            <div class="progress-bar" aria-hidden="true">
+              <i id="progressBar"></i>
+            </div>
+            <small id="savedProgressText">Hồ sơ đã lưu: 0 vòng</small>
+          </div>
+        </section>
+
+        <section class="rule-panel" id="rulePanel" aria-label="Luật chơi">
+          <div class="rule-panel__header">
+            <h3>Luật chơi</h3>
+            <button
+              id="closeRulesBtn"
+              type="button"
+              aria-label="Đóng luật chơi"
+            >
+              ×
+            </button>
+          </div>
+          <ol id="rulesList"></ol>
+        </section>
+
+        <section class="round-switcher" aria-label="Danh sách vòng chơi">
+          <div class="round-switcher__header">
+            <div>
+              <p class="section-kicker">Chọn vòng</p>
+              <h2>Chủ đề kiến thức</h2>
+            </div>
+            <p class="refresh-note">
+              Dấu tick chỉ hiện trong phiên chơi hiện tại; refresh trang sẽ ẩn
+              tick nhưng hệ thống vẫn lưu số vòng đã hoàn thành.
+            </p>
+          </div>
+          <div id="roundTabs" class="round-tabs"></div>
+        </section>
+
+        <section class="game-card" aria-live="polite">
+          <div class="game-card__top">
+            <div>
+              <p class="section-kicker" id="roundSource">Nguồn: Session 26</p>
+              <h2 id="roundTitle">Đang tải vòng chơi...</h2>
+              <p id="roundInstruction" class="round-instruction">
+                Vui lòng chờ trong giây lát.
+              </p>
+            </div>
+            <div class="round-meta">
+              <span id="roundNumber">Vòng 1</span>
+              <strong id="pairCounter">0/4 cặp</strong>
+            </div>
+          </div>
+
+          <div class="game-board" id="gameBoard">
+            <svg
+              class="connection-layer"
+              id="connectionLayer"
+              aria-hidden="true"
+            ></svg>
+            <div class="column">
+              <div class="column__title">Vế A</div>
+              <div id="leftColumn" class="card-list"></div>
+            </div>
+            <div class="column column--right">
+              <div class="column__title">Vế B</div>
+              <div id="rightColumn" class="card-list"></div>
+            </div>
+          </div>
+
+          <div class="feedback" id="feedbackBox" hidden></div>
+
+          <div class="game-actions">
+            <button
+              class="button button--secondary"
+              id="resetBtn"
+              type="button"
+            >
+              Làm lại vòng này
+            </button>
+            <button class="button button--primary" id="submitBtn" type="button">
+              Kiểm tra kết quả
+            </button>
+            <button
+              class="button button--ghost"
+              id="nextBtn"
+              type="button"
+              hidden
+            >
+              Qua vòng tiếp theo
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <section
+        class="participants-view app-view"
+        id="participantsView"
+        hidden
+        aria-labelledby="participantsTitle"
+      >
+        <div class="participants-card">
+          <div class="participants-card__header">
+            <div>
+              <p class="section-kicker">Danh sách</p>
+              <h2 id="participantsTitle">Thông tin người đăng ký</h2>
+              <p>
+                Tab này hiển thị người đã đăng ký và số vòng đã hoàn thành được
+                lưu bởi backend.
+              </p>
+            </div>
+            <button
+              class="button button--secondary"
+              id="refreshParticipantsBtn"
+              type="button"
+            >
+              ↻ Refresh dữ liệu
+            </button>
+          </div>
+
+          <div class="current-player-card" id="currentPlayerCard"></div>
+
+          <div class="table-wrap">
+            <table class="participants-table">
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Họ và tên</th>
+                  <th>MSSV</th>
+                  <th>Mã lớp</th>
+                  <th>Vòng đã hoàn thành</th>
+                  <th>Cập nhật lần cuối</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="participantsTableBody">
+                <tr>
+                  <td colspan="7">Chưa có dữ liệu.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+      <dialog class="finish-modal" id="finishModal">
+        <div class="finish-modal__content">
+          <p class="section-kicker">Hoàn thành</p>
+          <h2>Chúc mừng, bạn đã ghép đúng 100%!</h2>
+          <p>
+            Bạn đã hoàn thành toàn bộ trò chơi “Cần kiệm liêm chính”. Có thể
+            chơi lại để ôn tập nhanh trước buổi học hoặc sự kiện.
+          </p>
+          <div class="finish-modal__actions">
+            <button
+              class="button button--secondary"
+              id="playAgainBtn"
+              type="button"
+            >
+              Chơi lại từ đầu
+            </button>
+            <button
+              class="button button--primary"
+              id="closeFinishBtn"
+              type="button"
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      </dialog>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

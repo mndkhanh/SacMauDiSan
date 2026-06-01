@@ -1,0 +1,345 @@
+{
+  "title": "Cần kiệm liêm chính",
+  "subtitle": "Game nối cặp kiến thức Tư tưởng Hồ Chí Minh về đạo đức, văn hóa và con người",
+  "description": "Người chơi cần nối đúng 4 cặp trong mỗi vòng. Chỉ khi ghép đúng 100% mới được tính hoàn thành. Nếu có cặp sai, người chơi phải nối lại đến khi đúng toàn bộ.",
+  "source_note": "Nội dung được biên soạn từ các file Session 24–28 trong tệp ZIP người dùng cung cấp.",
+  "rules": [
+    "Mỗi vòng có 4 thẻ bên trái và 4 thẻ bên phải.",
+    "Bấm một thẻ bên trái, sau đó bấm thẻ bên phải để nối cặp.",
+    "Một thẻ bên phải chỉ được nối với một thẻ bên trái.",
+    "Nhấn Kiểm tra khi đã nối đủ 4 cặp.",
+    "Ghép đúng 100% mới hoàn thành vòng chơi; nếu sai, hãy nối lại."
+  ],
+  "rounds": [
+    {
+      "id": "round-dao-duc-1",
+      "order": 1,
+      "category": "Chuẩn mực đạo đức cách mạng",
+      "instruction": "Nối chuẩn mực đạo đức với ý nghĩa tương ứng.",
+      "source": "Session 26 - Slide 6–9",
+      "pairs": [
+        {
+          "id": "r1p1",
+          "left": "Trung với nước, hiếu với dân",
+          "right": "Phẩm chất đạo đức bao trùm quan trọng nhất, chi phối các phẩm chất khác.",
+          "explain": "Đây là phẩm chất đạo đức trung tâm trong hệ chuẩn mực đạo đức cách mạng."
+        },
+        {
+          "id": "r1p2",
+          "left": "Cần, kiệm, liêm, chính, chí công vô tư",
+          "right": "Nội dung cốt lõi của đạo đức cách mạng, gắn với hoạt động hằng ngày của mỗi người.",
+          "explain": "Các phẩm chất này được xem là nền tảng trong rèn luyện đạo đức."
+        },
+        {
+          "id": "r1p3",
+          "left": "Thương yêu con người, sống có tình nghĩa",
+          "right": "Phẩm chất đạo đức cao đẹp, thể hiện bằng hành động cụ thể và thiết thực.",
+          "explain": "Tình thương yêu con người phải gắn với việc làm cụ thể trong đời sống."
+        },
+        {
+          "id": "r1p4",
+          "left": "Tinh thần quốc tế trong sáng",
+          "right": "Tôn trọng, hiểu biết, thương yêu và đoàn kết với các dân tộc, nhân dân tiến bộ trên thế giới.",
+          "explain": "Đây là phẩm chất mở rộng từ lợi ích dân tộc đến tinh thần đoàn kết quốc tế."
+        }
+      ]
+    },
+    {
+      "id": "round-can-kiem-liem-chinh",
+      "order": 2,
+      "category": "Cần - Kiệm - Liêm - Chính",
+      "instruction": "Nối từng phẩm chất với cách hiểu đúng.",
+      "source": "Session 26 - Slide 7; diễn giải theo nội dung chuẩn mực đạo đức Hồ Chí Minh",
+      "pairs": [
+        {
+          "id": "r2p1",
+          "left": "Cần",
+          "right": "Siêng năng, chăm chỉ, lao động có kế hoạch, có năng suất và có hiệu quả.",
+          "explain": "Cần nhấn mạnh thái độ lao động tích cực và có trách nhiệm."
+        },
+        {
+          "id": "r2p2",
+          "left": "Kiệm",
+          "right": "Tiết kiệm thời gian, công sức, tiền của; không xa hoa, lãng phí.",
+          "explain": "Kiệm không phải là hà tiện mà là sử dụng nguồn lực hợp lý."
+        },
+        {
+          "id": "r2p3",
+          "left": "Liêm",
+          "right": "Trong sạch, không tham lam địa vị, tiền của, danh tiếng không chính đáng.",
+          "explain": "Liêm gắn với sự trong sạch trong suy nghĩ và hành động."
+        },
+        {
+          "id": "r2p4",
+          "left": "Chính",
+          "right": "Thẳng thắn, đứng đắn; việc đúng thì làm, việc sai thì tránh.",
+          "explain": "Chính thể hiện sự ngay thẳng và đúng mực trong cách sống."
+        }
+      ]
+    },
+    {
+      "id": "round-dao-duc-la-goc",
+      "order": 3,
+      "category": "Đạo đức là gốc",
+      "instruction": "Nối nhận định về đạo đức với vai trò phù hợp.",
+      "source": "Session 26 - Slide 3–4",
+      "pairs": [
+        {
+          "id": "r3p1",
+          "left": "Đạo đức là gốc",
+          "right": "Nền tảng, sức mạnh và tiêu chuẩn hàng đầu của người cách mạng.",
+          "explain": "Đạo đức được đặt ở vị trí nền tảng trong phẩm chất người cách mạng."
+        },
+        {
+          "id": "r3p2",
+          "left": "Đạo đức quyết định thành bại",
+          "right": "Nhân tố ảnh hưởng đến kết quả công việc và phẩm chất của mỗi con người.",
+          "explain": "Đạo đức tác động trực tiếp đến chất lượng hành động."
+        },
+        {
+          "id": "r3p3",
+          "left": "Đạo đức là thước đo",
+          "right": "Biểu hiện lòng cao thượng của con người.",
+          "explain": "Đạo đức phản ánh tầm vóc nhân cách của một người."
+        },
+        {
+          "id": "r3p4",
+          "left": "Đức và tài thống nhất",
+          "right": "Đức là gốc của tài; tài thể hiện cụ thể qua hiệu quả hành động.",
+          "explain": "Tài năng cần được định hướng bởi phẩm chất đạo đức."
+        }
+      ]
+    },
+    {
+      "id": "round-nguyen-tac-dao-duc",
+      "order": 4,
+      "category": "Nguyên tắc xây dựng đạo đức",
+      "instruction": "Nối nguyên tắc với nội dung tương ứng.",
+      "source": "Session 26 - Slide 11–13",
+      "pairs": [
+        {
+          "id": "r4p1",
+          "left": "Nói đi đôi với làm",
+          "right": "Đạo đức phải gắn liền với hành động và hiệu quả thực tế.",
+          "explain": "Lời nói về đạo đức cần đi kèm thực hành đạo đức."
+        },
+        {
+          "id": "r4p2",
+          "left": "Nêu gương về đạo đức",
+          "right": "Một tấm gương sống có giá trị hơn nhiều lời tuyên truyền.",
+          "explain": "Nêu gương là cách giáo dục đạo đức bằng hành động."
+        },
+        {
+          "id": "r4p3",
+          "left": "Xây đi đôi với chống",
+          "right": "Xây dựng đạo đức mới đồng thời chống thói quen lạc hậu và chủ nghĩa cá nhân.",
+          "explain": "Muốn xây dựng điều tốt phải loại bỏ những biểu hiện tiêu cực."
+        },
+        {
+          "id": "r4p4",
+          "left": "Tu dưỡng đạo đức suốt đời",
+          "right": "Kiên trì rèn luyện đạo đức hằng ngày qua hoạt động thực tiễn.",
+          "explain": "Rèn luyện đạo đức là quá trình lâu dài, liên tục."
+        }
+      ]
+    },
+    {
+      "id": "round-van-hoa-quan-he",
+      "order": 5,
+      "category": "Văn hóa và các lĩnh vực khác",
+      "instruction": "Nối mối quan hệ với nội dung phù hợp.",
+      "source": "Session 25 - Slide 6–9",
+      "pairs": [
+        {
+          "id": "r5p1",
+          "left": "Văn hóa với chính trị",
+          "right": "Chính trị giải phóng mở đường cho văn hóa phát triển.",
+          "explain": "Văn hóa phát triển khi chính trị và xã hội được giải phóng."
+        },
+        {
+          "id": "r5p2",
+          "left": "Văn hóa với kinh tế",
+          "right": "Cần xây dựng kinh tế, cơ sở hạ tầng để có điều kiện phát triển văn hóa.",
+          "explain": "Kinh tế tạo nền tảng vật chất cho văn hóa."
+        },
+        {
+          "id": "r5p3",
+          "left": "Văn hóa với xã hội",
+          "right": "Giải phóng xã hội tạo điều kiện cho văn hóa phát triển.",
+          "explain": "Môi trường xã hội tiến bộ giúp văn hóa phát triển."
+        },
+        {
+          "id": "r5p4",
+          "left": "Giữ gìn bản sắc dân tộc",
+          "right": "Bảo vệ cốt cách văn hóa dân tộc và biết tiếp thu văn hóa nhân loại.",
+          "explain": "Bản sắc dân tộc cần được giữ gìn trong quá trình giao lưu văn hóa."
+        }
+      ]
+    },
+    {
+      "id": "round-vai-tro-van-hoa",
+      "order": 6,
+      "category": "Vai trò của văn hóa",
+      "instruction": "Nối vai trò của văn hóa với ý nghĩa tương ứng.",
+      "source": "Session 25 - Slide 10–15; Session 28 - Slide 3",
+      "pairs": [
+        {
+          "id": "r6p1",
+          "left": "Văn hóa là mục tiêu, động lực",
+          "right": "Thúc đẩy sự nghiệp cách mạng và phát triển kinh tế - xã hội.",
+          "explain": "Văn hóa vừa là đích hướng tới, vừa là sức mạnh thúc đẩy phát triển."
+        },
+        {
+          "id": "r6p2",
+          "left": "Văn hóa là một mặt trận",
+          "right": "Lĩnh vực đấu tranh cách mạng trên phương diện văn hóa - tư tưởng.",
+          "explain": "Hoạt động văn hóa có tính độc lập và có sự đấu tranh tư tưởng."
+        },
+        {
+          "id": "r6p3",
+          "left": "Văn hóa phục vụ quần chúng",
+          "right": "Phản ánh tư tưởng, khát vọng và đời sống thực tại của nhân dân.",
+          "explain": "Văn hóa phải trở về với cuộc sống của quần chúng."
+        },
+        {
+          "id": "r6p4",
+          "left": "Nền văn hóa mới Việt Nam",
+          "right": "Toàn diện, giữ cốt cách dân tộc, bảo đảm tính khoa học, tiến bộ và nhân văn.",
+          "explain": "Đây là định hướng xây dựng nền văn hóa mới theo tư tưởng Hồ Chí Minh."
+        }
+      ]
+    },
+    {
+      "id": "round-con-nguoi",
+      "order": 7,
+      "category": "Tư tưởng Hồ Chí Minh về con người",
+      "instruction": "Nối nội dung với quan niệm phù hợp.",
+      "source": "Session 27 - Slide 3–11",
+      "pairs": [
+        {
+          "id": "r7p1",
+          "left": "Con người là một chỉnh thể",
+          "right": "Thống nhất về trí lực, tâm lực, thể lực và các quan hệ xã hội.",
+          "explain": "Hồ Chí Minh nhìn nhận con người trong tính toàn diện."
+        },
+        {
+          "id": "r7p2",
+          "left": "Con người là mục tiêu của cách mạng",
+          "right": "Cách mạng hướng đến giải phóng dân tộc, xã hội, giai cấp và con người.",
+          "explain": "Mục tiêu cuối cùng là vì con người."
+        },
+        {
+          "id": "r7p3",
+          "left": "Con người là động lực của cách mạng",
+          "right": "Nhân dân là lực lượng, trí tuệ, quyền hành, lòng tốt và niềm tin của cách mạng.",
+          "explain": "Nhân dân giữ vai trò sáng tạo lịch sử."
+        },
+        {
+          "id": "r7p4",
+          "left": "Xây dựng con người toàn diện",
+          "right": "Quan tâm bồi dưỡng con người vừa “hồng” vừa “chuyên”.",
+          "explain": "Con người cần được phát triển cả phẩm chất và năng lực."
+        }
+      ]
+    },
+    {
+      "id": "round-hien-nay",
+      "order": 8,
+      "category": "Xây dựng văn hóa, đạo đức, con người hiện nay",
+      "instruction": "Nối định hướng xây dựng hiện nay với nội dung chính.",
+      "source": "Session 28 - Slide 3–7",
+      "pairs": [
+        {
+          "id": "r8p1",
+          "left": "Văn hóa là nền tảng tinh thần",
+          "right": "Vừa là mục tiêu vừa là động lực thúc đẩy phát triển kinh tế - xã hội.",
+          "explain": "Văn hóa tạo sức mạnh nội sinh cho phát triển."
+        },
+        {
+          "id": "r8p2",
+          "left": "Phát triển nền văn hóa toàn diện",
+          "right": "Thống nhất trong đa dạng, thấm nhuần tinh thần dân tộc, nhân văn, dân chủ, khoa học.",
+          "explain": "Định hướng này nhấn mạnh sự toàn diện và bản sắc."
+        },
+        {
+          "id": "r8p3",
+          "left": "Con người Việt Nam thời kỳ hội nhập",
+          "right": "Có tinh thần yêu nước, tự cường dân tộc và ý chí vươn lên.",
+          "explain": "Đây là hệ giá trị con người trong thời kỳ mới."
+        },
+        {
+          "id": "r8p4",
+          "left": "Lối sống lành mạnh, văn minh",
+          "right": "Cần kiệm, trung thực, nhân nghĩa, tôn trọng kỷ cương phép nước và quy ước cộng đồng.",
+          "explain": "Lối sống văn minh gắn với kỷ cương và giá trị đạo đức."
+        }
+      ]
+    },
+    {
+      "id": "round-doan-ket-quoc-te",
+      "order": 9,
+      "category": "Đoàn kết quốc tế",
+      "instruction": "Nối bài học đoàn kết quốc tế với nội dung tương ứng.",
+      "source": "Session 24 - Slide 3–7",
+      "pairs": [
+        {
+          "id": "r9p1",
+          "left": "Cách mạng Việt Nam",
+          "right": "Là một bộ phận không thể tách rời của cách mạng thế giới.",
+          "explain": "Tư tưởng đoàn kết quốc tế đặt cách mạng Việt Nam trong dòng chảy chung của thời đại."
+        },
+        {
+          "id": "r9p2",
+          "left": "Mục tiêu đoàn kết hiện nay",
+          "right": "Dân giàu, nước mạnh, dân chủ, công bằng, văn minh.",
+          "explain": "Đoàn kết phải hướng đến mục tiêu phát triển đất nước."
+        },
+        {
+          "id": "r9p3",
+          "left": "Mở cửa, hội nhập quốc tế",
+          "right": "Là bạn của tất cả các nước, phấn đấu vì hòa bình, độc lập và phát triển.",
+          "explain": "Đây là định hướng đối ngoại rộng mở và hòa bình."
+        },
+        {
+          "id": "r9p4",
+          "left": "Độc lập tự chủ, tự lực tự cường",
+          "right": "Kết hợp sức mạnh dân tộc với sức mạnh thời đại trong công nghiệp hóa, hiện đại hóa.",
+          "explain": "Sức mạnh trong nước cần được kết hợp với sức mạnh quốc tế."
+        }
+      ]
+    },
+    {
+      "id": "round-moc-thoi-ky",
+      "order": 10,
+      "category": "Mốc thời kỳ và sự kiện",
+      "instruction": "Nối mốc/thời kỳ với nội dung đúng.",
+      "source": "Session 24 - Slide 3; Session 25 - Slide 15",
+      "pairs": [
+        {
+          "id": "r10p1",
+          "left": "Năm 2014",
+          "right": "Việt Nam tham gia lực lượng gìn giữ hòa bình Liên hợp quốc.",
+          "explain": "Đây là ví dụ về hoạt động đoàn kết, hợp tác quốc tế trong giai đoạn hiện nay."
+        },
+        {
+          "id": "r10p2",
+          "left": "Trước Cách mạng Tháng Tám 1945",
+          "right": "Xây dựng nền văn hóa dân tộc với năm nội dung.",
+          "explain": "Đây là định hướng văn hóa trước giai đoạn cách mạng tháng Tám."
+        },
+        {
+          "id": "r10p3",
+          "left": "Kháng chiến chống thực dân Pháp",
+          "right": "Xây dựng nền văn hóa có tính chất dân tộc, khoa học, đại chúng.",
+          "explain": "Đặc trưng nền văn hóa trong kháng chiến là dân tộc, khoa học, đại chúng."
+        },
+        {
+          "id": "r10p4",
+          "left": "Thời kỳ xây dựng chủ nghĩa xã hội",
+          "right": "Xây dựng nền văn hóa có nội dung xã hội chủ nghĩa và tính chất dân tộc.",
+          "explain": "Đây là mục tiêu văn hóa trong thời kỳ xây dựng chủ nghĩa xã hội."
+        }
+      ]
+    }
+  ]
+}
