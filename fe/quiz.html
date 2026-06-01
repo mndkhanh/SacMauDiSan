@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Quiz Dân chủ - Di sản Hồ Chí Minh">
+  <title>Quiz Dân Chủ | Di Sản Hồ Chí Minh</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,600;1,700&family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="./styles.css">
+
+  <!-- Auth guard -->
+  <script>
+    (function () {
+      var AUTH_KEY = 'sacmaudisan_participant';
+      var GAME_KEY = 'currentParticipant';
+      try {
+        var p = JSON.parse(sessionStorage.getItem(AUTH_KEY)) ||
+                JSON.parse(sessionStorage.getItem(GAME_KEY));
+        if (!p || !p.id) window.location.replace('/auth');
+        else {
+          sessionStorage.setItem(AUTH_KEY, JSON.stringify(p));
+          sessionStorage.setItem(GAME_KEY, JSON.stringify(p));
+        }
+      } catch (e) { window.location.replace('/auth'); }
+    })();
+  </script>
+
+  <style>
+    /* ── Navbar ── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: #fcf9f0;
+      border-bottom: 2px solid #fecc00;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .navbar__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1200px; margin-inline: auto;
+      padding: 1rem 24px;
+    }
+    .navbar__brand {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem; font-weight: 700;
+      color: var(--red-700); letter-spacing: -0.01em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .navbar__links { display: flex; gap: 2.5rem; align-items: center; }
+    @media (max-width: 768px) { .navbar__links { display: none; } }
+    .navbar__links a {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .navbar__links a:hover { color: var(--red-700); }
+    .navbar__links a.active {
+      color: var(--red-700);
+      border-bottom: 2px solid var(--red-700);
+      padding-bottom: 2px;
+    }
+    .navbar__actions { display: flex; gap: 0.75rem; align-items: center; }
+    .navbar__user {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.8rem; font-weight: 600; color: var(--muted);
+    }
+    .navbar__logout {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em;
+      color: var(--red-700); border: 1px solid var(--red-700);
+      padding: 0.3rem 0.75rem; cursor: pointer;
+      background: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .navbar__logout:hover { background: var(--red-700); color: #fff; }
+
+    /* ── Custom Quiz Elements ── */
+    .quiz-container {
+      margin-top: 24px;
+    }
+    .quiz-progress-section {
+      background: var(--white);
+      padding: 20px 24px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(122, 0, 0, 0.12);
+      box-shadow: 0 8px 24px rgba(122, 0, 0, 0.04);
+      margin-bottom: 20px;
+    }
+    .quiz-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .quiz-progress-title {
+      font-weight: 800;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--red-700);
+    }
+    .quiz-progress-step {
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .question-slide {
+      display: none;
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+    .question-slide.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .question-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--red-900);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    
+    /* ── Option buttons ── */
+    .options-list {
+      display: grid;
+      gap: 14px;
+    }
+    .option-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      border: 2px solid transparent;
+      border-radius: var(--radius-lg);
+      background: var(--white);
+      box-shadow: 0 4px 14px rgba(122, 0, 0, 0.04);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+    .option-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(122, 0, 0, 0.08);
+      border-color: rgba(226, 173, 40, 0.4);
+    }
+    .option-card.selected {
+      border-color: var(--gold-600);
+      background: #fff9df;
+    }
+    .option-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--red-100);
+      color: var(--red-900);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    .option-card.selected .option-letter {
+      background: var(--gold-600);
+      color: var(--white);
+    }
+    .option-text {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* ── Fill in the blank inputs ── */
+    .fill-blank-container {
+      background: var(--white);
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 4px 14px rgba(122, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .fill-blank-input {
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 14px 20px;
+      border: 2px solid rgba(122, 0, 0, 0.16);
+      border-radius: var(--radius-md);
+      color: var(--ink);
+      background: #fffdfa;
+      transition: border-color 0.2s;
+      width: 100%;
+      outline: none;
+    }
+    .fill-blank-input:focus {
+      border-color: var(--red-700);
+      box-shadow: 0 0 0 4px rgba(180, 8, 8, 0.08);
+    }
+
+    /* ── Matching custom elements ── */
+    .quiz .game-board {
+      background: var(--white);
+      margin-top: 10px;
+    }
+
+    /* ── Results Screen ── */
+    .results-card {
+      display: none;
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(122, 0, 0, 0.16);
+      box-shadow: var(--shadow);
+      padding: 40px;
+      text-align: center;
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    .results-card.active {
+      display: block;
+    }
+    .results-badge {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 48px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+    .results-badge.passed {
+      background: var(--success);
+    }
+    .results-badge.failed {
+      background: var(--danger);
+    }
+    .results-score-big {
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--red-900);
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+    .results-score-text {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .results-status-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+    .results-status-desc {
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+    .results-breakdown {
+      text-align: left;
+      max-width: 650px;
+      margin: 0 auto 36px;
+      background: #fbfaf6;
+      border: 1px solid rgba(122, 0, 0, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+    }
+    .results-breakdown-title {
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--red-700);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid rgba(122, 0, 0, 0.08);
+      padding-bottom: 8px;
+    }
+    .results-breakdown-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(0,0,0,0.06);
+    }
+    .results-breakdown-item:last-child {
+      border-bottom: none;
+    }
+    .results-breakdown-q {
+      font-weight: 600;
+      color: var(--ink);
+      font-size: 0.95rem;
+    }
+    .results-breakdown-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .results-breakdown-status.correct {
+      background: #e9fbf3;
+      color: var(--success);
+    }
+    .results-breakdown-status.incorrect {
+      background: #fff0f0;
+      color: var(--danger);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a class="navbar__brand" href="/">Di Sản Hồ Chí Minh</a>
+      <nav class="navbar__links">
+        <a href="/">Hành Trình</a>
+        <a href="/lobby" class="active">Phòng Chờ Trò Chơi</a>
+        <a href="#">Thư Viện</a>
+        <a href="#">Vinh Danh</a>
+      </nav>
+      <div class="navbar__actions">
+        <div class="navbar__user">
+          <span class="material-symbols-outlined" style="font-size:1.2rem;">account_circle</span>
+          <span id="navPlayerName">—</span>
+        </div>
+        <button class="navbar__logout" id="logoutBtn">Đăng xuất</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-shell">
+    <!-- Intro header -->
+    <header class="intro-card" style="margin-bottom: 24px;">
+      <div>
+        <p class="section-kicker">Cấp độ 01 — Trò chơi học tập</p>
+        <h2 id="quiz-title">Quiz Dân Chủ</h2>
+        <p id="quiz-desc" style="margin: 8px 0 0 0;">
+          Đang tải dữ liệu trò chơi...
+        </p>
+      </div>
+      <div class="score-card">
+        <span>Người chơi hiện tại</span>
+        <strong id="playerNameText">—</strong>
+        <small id="playerMssvText">MSSV: —</small>
+      </div>
+    </header>
+
+    <!-- Quiz interactive panel -->
+    <main class="quiz-container" id="quizPanel">
+      
+      <!-- Progress Bar -->
+      <div class="quiz-progress-section">
+        <div class="quiz-progress-header">
+          <span class="quiz-progress-title">Tiến độ làm bài</span>
+          <span class="quiz-progress-step" id="quizStepText">Câu hỏi 1/10</span>
+        </div>
+        <div class="progress-bar">
+          <i id="quizProgressBar" style="width: 10%;"></i>
+        </div>
+      </div>
+
+      <!-- Main Game Card for rendering slides -->
+      <section class="game-card">
+        
+        <!-- Question slide container -->
+        <div id="slidesContainer">
+          <!-- Dynamic slides will be injected here -->
+        </div>
+
+        <!-- Feedback for checking answers on fill or match before next step (optional) -->
+        <div class="feedback" id="quizFeedbackBox" hidden></div>
+
+        <!-- Navigation Buttons -->
+        <div class="game-actions" style="margin-top: 24px; justify-content: space-between;">
+          <button class="button button--ghost" id="quizBackBtn" type="button" disabled>
+            <span class="material-symbols-outlined">arrow_back</span>
+            Quay lại
+          </button>
+          
+          <div style="display: flex; gap: 12px;">
+            <button class="button button--primary" id="quizNextBtn" type="button">
+              Tiếp theo
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+            
+            <button class="button button--primary" id="quizSubmitBtn" type="button" style="display: none;">
+              🚀 Nộp bài & xem điểm
+            </button>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- Results Panel (Hidden initially) -->
+    <section class="results-card" id="resultsPanel">
+      <div class="results-badge" id="resultsBadgeIcon">
+        <span class="material-symbols-outlined" style="font-size: 48px;">emoji_events</span>
+      </div>
+      <h2 class="results-status-title" id="resultsStatusTitle">Hoàn thành thử thách!</h2>
+      <div class="results-score-big" id="resultsScoreVal">80/100</div>
+      <p class="results-score-text" id="resultsCorrectCountText">Trả lời đúng 8 trên 10 câu hỏi</p>
+      
+      <p class="results-status-desc" id="resultsStatusDesc">
+        Chúc mừng bạn đã xuất sắc vượt qua bài Quiz Dân Chủ! Kết quả của bạn đã được ghi nhận vào hệ thống Sắc Màu Di Sản.
+      </p>
+
+      <!-- Question breakdown -->
+      <div class="results-breakdown">
+        <div class="results-breakdown-title">Chi tiết kết quả các câu hỏi</div>
+        <div id="breakdownContainer">
+          <!-- Dynamic question breakdown items -->
+        </div>
+      </div>
+
+      <div class="finish-modal__actions" style="justify-content: center;">
+        <button class="button button--secondary" id="retryQuizBtn" type="button">
+          🔄 Thử lại bài Quiz
+        </button>
+        <a class="button button--primary" href="/lobby">
+          🏠 Trở về Phòng Chờ
+          <span class="material-symbols-outlined">chevron_right</span>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <!-- Toast system -->
+  <div class="toast" id="quizToast" role="status" aria-live="polite"></div>
+
+  <!-- Main script -->
+  <script src="./quiz.js"></script>
+</body>
+</html>

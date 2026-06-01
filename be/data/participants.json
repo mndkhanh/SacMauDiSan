@@ -1,3 +1,14 @@
 {
-  "participants": []
+  "participants": [
+    {
+      "id": "0628ae1d-8833-4398-a96a-2fc5bfb53914",
+      "fullName": "Mai Nguyễn Duy Khánh",
+      "studentId": "SE196605",
+      "classCode": "ASDFASD",
+      "completedRoundIds": [],
+      "createdAt": "2026-06-01T16:32:29.859Z",
+      "updatedAt": "2026-06-01T16:52:03.846Z",
+      "lastCompletedAt": null
+    }
+  ]
 }

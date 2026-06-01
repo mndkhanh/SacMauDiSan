@@ -1,0 +1,130 @@
+{
+  "title": "Quiz Dân Chủ",
+  "subtitle": "Thử thách kiến thức về tư tưởng dân chủ và quyền làm chủ của nhân dân trong sự nghiệp cách mạng",
+  "description": "Người chơi trả lời 10 câu hỏi bao gồm 7 câu trắc nghiệm, 2 câu điền từ vào chỗ trống và 1 câu nối cặp ý nghĩa. Trả lời đúng để tích lũy điểm số.",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple-choice",
+      "question": "Theo tư tưởng Hồ Chí Minh, bản chất của \"Dân chủ\" có nghĩa là gì?",
+      "options": [
+        "Dân là chủ và dân làm chủ",
+        "Dân làm theo sự phân công của nhà nước",
+        "Chính quyền thuộc về giai cấp thống trị",
+        "Dân chỉ có quyền bầu cử đại biểu"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "q2",
+      "type": "multiple-choice",
+      "question": "Hoàn thành câu nói của Chủ tịch Hồ Chí Minh: \"Nước ta là nước dân chủ. Bao nhiêu lợi ích đều vì dân. Bao nhiêu... đều của dân.\"",
+      "options": [
+        "nghĩa vụ",
+        "tài sản",
+        "quyền hạn",
+        "công lao"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "q3",
+      "type": "multiple-choice",
+      "question": "Bản chất dân chủ trong nhà nước Việt Nam mới được Hồ Chí Minh xác định là gì?",
+      "options": [
+        "Dân chủ tư sản",
+        "Dân chủ phong kiến",
+        "Tất cả quyền lực thuộc về nhân dân",
+        "Dân chủ chủ nô"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "q4",
+      "type": "multiple-choice",
+      "question": "Theo Hồ Chí Minh, nguồn lực và động lực mạnh mẽ nhất của sự nghiệp cách mạng nằm ở đâu?",
+      "options": [
+        "Sự giúp đỡ của bạn bè quốc tế",
+        "Sức mạnh và quyền làm chủ của nhân dân",
+        "Sự viện trợ của các nước lớn",
+        "Tiềm lực kinh tế sẵn có"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "q5",
+      "type": "multiple-choice",
+      "question": "Chủ tịch Hồ Chí Minh khẳng định: \"Dân chủ là cái chìa khóa vạn năng để...\"",
+      "options": [
+        "giải quyết mọi khó khăn",
+        "phát triển kinh tế nhanh chóng",
+        "xây dựng quân đội mạnh",
+        "mở rộng quan hệ quốc tế"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "q6",
+      "type": "multiple-choice",
+      "question": "Trong việc thực thi dân chủ, Hồ Chí Minh nhắc nhở cán bộ phải tránh căn bệnh nguy hại nào nhất?",
+      "options": [
+        "Bệnh quan liêu, mệnh lệnh, xa dân",
+        "Bệnh nói ít làm nhiều",
+        "Bệnh tiết kiệm thời gian",
+        "Bệnh tự học suốt đời"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "q7",
+      "type": "multiple-choice",
+      "question": "Hồ Chí Minh quan niệm thế nào về mối quan hệ giữa dân chủ và kỷ luật?",
+      "options": [
+        "Dân chủ không cần kỷ luật và pháp luật",
+        "Kỷ luật áp đặt không cần sự đồng thuận dân chủ",
+        "Dân chủ và kỷ luật đi đôi với nhau, dân chủ trong kỷ luật và kỷ luật trên cơ sở dân chủ",
+        "Dân chủ và kỷ luật luôn luôn mâu thuẫn lẫn nhau"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "q8",
+      "type": "fill-in-blank",
+      "question": "Theo Hồ Chí Minh: \"Nước ta là nước dân chủ, địa vị cao nhất là [blank], vì dân là chủ.\"",
+      "answers": ["dân", "nhân dân"]
+    },
+    {
+      "id": "q9",
+      "type": "fill-in-blank",
+      "question": "Hồ Chí Minh chỉ rõ cán bộ, đảng viên phải là \"người [blank] thật trung thành của nhân dân\".",
+      "answers": ["đầy tớ", "phục vụ"]
+    },
+    {
+      "id": "q10",
+      "type": "matching",
+      "instruction": "Nối câu trích dẫn của Chủ tịch Hồ Chí Minh với ý nghĩa cốt lõi của câu nói đó:",
+      "pairs": [
+        {
+          "id": "m1",
+          "left": "Bao nhiêu lợi ích đều vì dân, bao nhiêu quyền hạn đều của dân.",
+          "right": "Bản chất quyền lực nhà nước thuộc về nhân dân"
+        },
+        {
+          "id": "m2",
+          "left": "Dân chủ là cái chìa khóa vạn năng để giải quyết mọi khó khăn.",
+          "right": "Vai trò quyết định và sức mạnh sáng tạo của quần chúng"
+        },
+        {
+          "id": "m3",
+          "left": "Phải làm cho dân biết, dân bàn, dân làm, dân kiểm tra.",
+          "right": "Phương châm thực hiện quyền làm chủ của nhân dân"
+        },
+        {
+          "id": "m4",
+          "left": "Việc gì có lợi cho dân, ta phải hết sức làm. Việc gì có hại cho dân, ta phải hết sức tránh.",
+          "right": "Trách nhiệm phục vụ nhân dân tận tụy của người cán bộ"
+        }
+      ]
+    }
+  ]
+}

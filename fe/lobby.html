@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Phòng Chờ Trò Chơi — Sắc Màu Di Sản. Chọn thử thách và bắt đầu hành trình khám phá di sản Hồ Chí Minh.">
+  <title>Phòng Chờ Trò Chơi | Di Sản Hồ Chí Minh</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,600;1,700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <!-- Auth guard -->
+  <script>
+    (function () {
+      var AUTH_KEY = 'sacmaudisan_participant';
+      var GAME_KEY = 'currentParticipant';
+      try {
+        var p = JSON.parse(sessionStorage.getItem(AUTH_KEY)) ||
+                JSON.parse(sessionStorage.getItem(GAME_KEY));
+        if (!p || !p.id) window.location.replace('/auth');
+        else {
+          sessionStorage.setItem(AUTH_KEY, JSON.stringify(p));
+          sessionStorage.setItem(GAME_KEY, JSON.stringify(p));
+        }
+      } catch (e) { window.location.replace('/auth'); }
+    })();
+  </script>
+
+  <style>
+    /* ── Tokens ── */
+    :root {
+      --primary:              #b40006;
+      --primary-container:    #da251d;
+      --on-primary:           #ffffff;
+      --secondary:            #735c00;
+      --secondary-fixed:      #ffe089;
+      --secondary-fixed-dim:  #f0c100;
+      --secondary-container:  #fecc00;
+      --on-secondary-container: #6e5700;
+      --on-secondary:         #ffffff;
+      --surface:              #fcf9f0;
+      --surface-bright:       #fcf9f0;
+      --surface-dim:          #dddad1;
+      --surface-variant:      #e5e2da;
+      --surface-container:    #f1eee5;
+      --surface-container-low:#f6f3ea;
+      --surface-container-high:#ebe8df;
+      --surface-container-highest:#e5e2da;
+      --on-surface:           #1c1c17;
+      --on-surface-variant:   #5d403b;
+      --outline:              #916f6a;
+      --outline-variant:      #e6bdb7;
+      --inverse-surface:      #31312b;
+      --inverse-on-surface:   #f4f1e8;
+      --background:           #fcf9f0;
+
+      --font-headline: 'Playfair Display', Georgia, serif;
+      --font-body:     'Be Vietnam Pro', system-ui, sans-serif;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--background);
+      color: var(--on-surface);
+      min-height: 100svh;
+      display: flex; flex-direction: column;
+      background-image: url("https://www.transparenttextures.com/patterns/p6-dark.png");
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font-family: inherit; border: none; background: none; }
+
+    /* ── Utils ── */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block; vertical-align: middle;
+    }
+    .silk-texture {
+      background-image: url("https://www.transparenttextures.com/patterns/silk.png");
+      background-repeat: repeat;
+    }
+    .container { max-width: 1200px; margin-inline: auto; padding-inline: 48px; }
+    @media (max-width: 768px) { .container { padding-inline: 16px; } }
+
+    /* ── Navbar ── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--surface-bright);
+      border-bottom: 2px solid var(--secondary-container);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .navbar__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1200px; margin-inline: auto;
+      padding: 1rem 48px;
+    }
+    @media (max-width: 768px) { .navbar__inner { padding: 1rem 16px; } }
+    .navbar__brand {
+      font-family: var(--font-headline);
+      font-size: 1.25rem; font-weight: 700;
+      color: var(--primary); letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+    .navbar__links { display: flex; gap: 2.5rem; align-items: center; }
+    @media (max-width: 640px) { .navbar__links { display: none; } }
+    .navbar__links a {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--on-surface-variant);
+      transition: color 0.2s;
+    }
+    .navbar__links a:hover { color: var(--primary); }
+    .navbar__links a.active {
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 2px;
+    }
+    .navbar__actions { display: flex; gap: 0.75rem; align-items: center; }
+    .navbar__user {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.8rem; font-weight: 600; color: var(--on-surface-variant);
+    }
+    .navbar__logout {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em;
+      color: var(--primary); border: 1px solid var(--primary);
+      padding: 0.3rem 0.75rem; cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .navbar__logout:hover { background: var(--primary); color: var(--on-primary); }
+
+    /* ── Hero ── */
+    .lobby-hero { text-align: center; padding: 4rem 0 3rem; }
+    .lobby-hero__eyebrow {
+      display: inline-block;
+      border-top: 1px solid var(--primary); border-bottom: 1px solid var(--primary);
+      padding: 0.35rem 0;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--primary);
+      margin-bottom: 1.25rem;
+    }
+    .lobby-hero__title {
+      font-family: var(--font-headline);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700; font-style: italic;
+      color: var(--primary); line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .lobby-hero__sub {
+      font-size: 1.05rem; color: var(--on-surface-variant);
+      max-width: 38rem; margin-inline: auto; line-height: 1.65;
+    }
+
+    /* ── Player pill ── */
+    .player-pill {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--secondary-fixed); color: var(--on-secondary-container);
+      padding: 0.35rem 1rem; font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.04em; margin-bottom: 2rem;
+    }
+
+    /* ── Grid ── */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 5rem;
+    }
+    @media (max-width: 768px) { .games-grid { grid-template-columns: 1fr; } }
+
+    /* ── Game Cards ── */
+    .game-card {
+      position: relative; overflow: hidden;
+      padding: 2rem;
+      border: 1px solid var(--secondary-fixed);
+      background: var(--surface-container);
+      transition: transform 0.3s, border-color 0.3s;
+      display: flex; flex-direction: column;
+    }
+    .game-card:not(.game-card--locked):hover {
+      transform: translateY(-4px);
+      border-color: var(--primary-container);
+    }
+    .game-card--active {
+      border-color: var(--primary-container);
+      background: var(--surface-bright);
+      box-shadow: 0 2px 16px rgba(180,0,6,0.08);
+    }
+    .game-card--locked {
+      filter: grayscale(1); opacity: 0.7;
+      background: rgba(221,218,209,0.3);
+      border-color: var(--outline-variant);
+      cursor: not-allowed;
+    }
+    .game-card__silk {
+      position: absolute; inset: 0;
+      pointer-events: none; opacity: 0.07;
+    }
+
+    /* Card top row */
+    .game-card__top {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; margin-bottom: 1.25rem;
+    }
+    .game-card__level {
+      display: inline-block;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.2rem 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+    .game-card__level--1 { background: var(--secondary-fixed); color: var(--on-secondary-container); }
+    .game-card__level--2 { background: var(--primary-container); color: var(--on-primary); }
+    .game-card__level--3,
+    .game-card__level--4 { background: var(--surface-variant); color: var(--on-surface-variant); }
+
+    .game-card__name {
+      font-family: var(--font-headline);
+      font-size: 1.6rem; font-weight: 700; line-height: 1.2;
+      color: var(--on-surface);
+    }
+
+    .badge {
+      display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.3rem 0.75rem;
+      white-space: nowrap; flex-shrink: 0; align-self: flex-start;
+    }
+    .badge .material-symbols-outlined { font-size: 0.85rem; }
+    .badge--done    { background: var(--primary);    color: var(--on-primary); }
+    .badge--active  { background: var(--secondary-container); color: var(--on-secondary-container); }
+    .badge--locked  { background: none; color: var(--on-surface-variant); }
+
+    /* ── Pulse animation for active badge ── */
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.55} }
+    .badge--active { animation: pulse 2s ease-in-out infinite; }
+
+    .game-card__desc {
+      font-size: 0.9375rem; color: var(--on-surface-variant);
+      line-height: 1.65; flex: 1; margin-bottom: 1.5rem;
+    }
+
+    /* Card footer */
+    .game-card__footer {
+      border-top: 1px solid var(--secondary-container);
+      padding-top: 1.25rem;
+    }
+    .game-card__footer--locked { border-color: var(--outline-variant); }
+
+    /* Done footer */
+    .footer-done {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-done__time {
+      display: flex; align-items: center; gap: 0.4rem;
+      color: var(--primary); font-weight: 600;
+    }
+    .btn-outline {
+      border: 1px solid var(--primary); color: var(--primary);
+      padding: 0.45rem 1.25rem;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      font-family: var(--font-body);
+    }
+    .btn-outline:hover { background: var(--primary); color: var(--on-primary); }
+    a.btn-outline { display: inline-block; }
+
+    /* Progress footer */
+    .footer-progress { display: flex; flex-direction: column; gap: 0.75rem; }
+    .footer-progress__labels {
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .footer-progress__label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--primary);
+    }
+    .footer-progress__pct {
+      font-family: var(--font-headline); font-size: 1.4rem;
+      font-weight: 700; color: var(--primary); line-height: 1;
+    }
+    .progress-bar {
+      height: 6px; background: var(--surface-variant);
+      position: relative; overflow: hidden;
+    }
+    .progress-bar__fill {
+      position: absolute; inset-block: 0; left: 0;
+      background: var(--primary-container);
+      transition: width 0.6s ease;
+    }
+    .btn-primary {
+      width: 100%; padding: 0.85rem;
+      background: var(--primary-container); color: var(--on-primary);
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      transition: filter 0.2s;
+      font-family: var(--font-body);
+    }
+    .btn-primary:hover { filter: brightness(1.1); }
+    a.btn-primary { display: flex; }
+
+    /* Lock footer */
+    .footer-lock {
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .footer-lock__text {
+      font-size: 0.7rem; font-weight: 600; font-style: italic;
+      color: var(--primary);
+    }
+
+    /* ── Divider star ── */
+    .divider-star {
+      display: flex; align-items: center; gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .divider-star::before, .divider-star::after {
+      content: ""; flex: 1; height: 1px; background: var(--primary);
+    }
+
+    /* ── Quote ── */
+    .quote-section {
+      text-align: center; padding: 4rem 0 3rem;
+      position: relative;
+    }
+    .quote-section__bg-icon {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; opacity: 0.03;
+      font-size: 12rem; color: var(--on-surface);
+    }
+    .quote-section__text {
+      font-family: var(--font-headline);
+      font-size: clamp(1.25rem, 2.5vw, 1.85rem);
+      font-weight: 700; font-style: italic;
+      color: var(--primary); line-height: 1.55;
+      max-width: 44rem; margin-inline: auto;
+      margin-bottom: 1.5rem;
+    }
+    .quote-section__attr {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--on-surface);
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--inverse-surface);
+      color: var(--secondary-fixed);
+      padding: 2rem 0;
+      margin-top: auto;
+      border-top: 1px solid var(--secondary);
+    }
+    footer .container { text-align: center; font-size: 0.8rem; opacity: 0.7; }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(16px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .fade-in { opacity: 0; }
+    .fade-in.visible { animation: fadeUp 0.6s ease forwards; }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Navbar ── -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a class="navbar__brand" href="/">Di Sản Hồ Chí Minh</a>
+      <nav class="navbar__links">
+        <a href="/">Hành Trình</a>
+        <a href="/lobby" class="active">Phòng Chờ Trò Chơi</a>
+        <a href="#">Thư Viện</a>
+        <a href="#">Vinh Danh</a>
+      </nav>
+      <div class="navbar__actions">
+        <div class="navbar__user">
+          <span class="material-symbols-outlined" style="font-size:1.2rem;">account_circle</span>
+          <span id="navPlayerName">—</span>
+        </div>
+        <button class="navbar__logout" id="logoutBtn">Đăng xuất</button>
+      </div>
+    </div>
+  </header>
+
+  <main style="flex:1;">
+    <div class="container">
+
+      <!-- ── Hero ── -->
+      <section class="lobby-hero fade-in">
+        <div class="lobby-hero__eyebrow">Trải nghiệm giáo dục</div>
+        <h1 class="lobby-hero__title">Phòng Chờ Trò Chơi</h1>
+        <div id="playerPill" class="player-pill" style="display:none;">
+          <span class="material-symbols-outlined" style="font-size:0.9rem;">person</span>
+          <span id="pillName"></span>
+          &nbsp;·&nbsp;
+          <span id="pillMSSV"></span>
+        </div>
+        <p class="lobby-hero__sub">
+          Khám phá những thử thách trí tuệ và đạo đức, kế thừa tinh hoa văn hóa và tư tưởng của Chủ tịch Hồ Chí Minh qua từng vòng đấu.
+        </p>
+      </section>
+
+      <!-- ── Games Grid ── -->
+      <div id="gamesGrid" class="games-grid fade-in">
+        <!-- Dynamic game cards injected here -->
+      </div>
+
+      <!-- ── Quote ── -->
+      <section class="quote-section fade-in">
+        <div class="quote-section__bg-icon">
+          <span class="material-symbols-outlined">auto_stories</span>
+        </div>
+        <div class="divider-star">
+          <span class="material-symbols-outlined" style="color:var(--secondary-fixed-dim);font-variation-settings:'FILL' 1;">star</span>
+        </div>
+        <blockquote>
+          <p class="quote-section__text">
+            "Học không bao giờ cùng. Học càng nhiều càng thấy mình biết ít."
+          </p>
+          <footer class="quote-section__attr">— Chủ tịch Hồ Chí Minh</footer>
+        </blockquote>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="container">
+      © 2026 Sắc Màu Di Sản — FPT University
+    </div>
+  </footer>
+
+  <script>
+    const AUTH_KEY = 'sacmaudisan_participant';
+    const GAME_KEY = 'currentParticipant';
+
+    // ── Load player info ──
+    function getParticipant() {
+      try {
+        return JSON.parse(sessionStorage.getItem(AUTH_KEY)) ||
+               JSON.parse(sessionStorage.getItem(GAME_KEY));
+      } catch { return null; }
+    }
+
+    const p = getParticipant();
+    if (p) {
+      document.getElementById('navPlayerName').textContent = p.fullName || p.studentId;
+      document.getElementById('pillName').textContent = p.fullName;
+      document.getElementById('pillMSSV').textContent  = p.studentId;
+      document.getElementById('playerPill').style.display = 'inline-flex';
+    }
+
+    // ── Logout ──
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.removeItem(AUTH_KEY);
+      sessionStorage.removeItem(GAME_KEY);
+      window.location.href = '/auth';
+    });
+
+    // ── Scroll fade-in ──
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          e.target.style.animationDelay = (i * 0.08) + 's';
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.06 });
+
+    // ── Dynamic cards rendering ──
+    async function updateLobby() {
+      const p = getParticipant();
+      if (!p) return;
+
+      let freshParticipant = p;
+      try {
+        const res = await fetch('/api/participants');
+        const data = await res.json();
+        if (data.participants) {
+          const found = data.participants.find(x => x.id === p.id);
+          if (found) {
+            freshParticipant = found;
+            sessionStorage.setItem(AUTH_KEY, JSON.stringify(freshParticipant));
+            sessionStorage.setItem(GAME_KEY, JSON.stringify(freshParticipant));
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch fresh participant data:", err);
+      }
+
+      const completed = freshParticipant.completedRoundIds || [];
+      const game1Completed = completed.includes('quiz-dan-chu');
+      
+      const matchingRoundIds = [
+        'round-dao-duc-1', 'round-can-kiem-liem-chinh', 'round-dao-duc-la-goc',
+        'round-nguyen-tac-dao-duc', 'round-van-hoa-quan-he', 'round-vai-tro-van-hoa',
+        'round-con-nguoi', 'round-hien-nay', 'round-doan-ket-quoc-te', 'round-moc-thoi-ky'
+      ];
+      const completedMatchingCount = matchingRoundIds.filter(id => completed.includes(id)).length;
+      const matchingProgressPct = Math.round((completedMatchingCount / matchingRoundIds.length) * 100);
+      const game2Completed = completedMatchingCount === matchingRoundIds.length;
+
+      const grid = document.getElementById('gamesGrid');
+      grid.innerHTML = `
+        <!-- Card 1: Quiz Dân chủ -->
+        <div class="game-card ${game1Completed ? '' : 'game-card--active'}">
+          <div class="silk-texture game-card__silk"></div>
+          <div class="game-card__top">
+            <div>
+              <span class="game-card__level game-card__level--1">CẤP ĐỘ 01</span>
+              <h2 class="game-card__name">Quiz Dân chủ</h2>
+            </div>
+            ${game1Completed ? `
+              <div class="badge badge--done">
+                <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">check_circle</span>
+                Hoàn thành
+              </div>
+            ` : `
+              <div class="badge badge--active">
+                <span class="material-symbols-outlined" style="font-size:0.85rem;">hourglass_empty</span>
+                Đang diễn ra
+              </div>
+            `}
+          </div>
+          <p class="game-card__desc">Thử thách kiến thức về tư tưởng dân chủ và quyền làm chủ của nhân dân trong sự nghiệp cách mạng. Bao gồm câu hỏi trắc nghiệm, điền từ và nối cặp.</p>
+          <div class="game-card__footer">
+            ${game1Completed ? `
+              <div class="footer-done">
+                <div class="footer-done__time">
+                  <span class="material-symbols-outlined" style="color: var(--success); font-size:1.1rem; font-variation-settings:'FILL' 1;">check_circle</span>
+                  <span style="color: var(--success); font-weight:700;">Đạt yêu cầu (80%+)</span>
+                </div>
+                <a class="btn-outline" href="/quiz">Xem lại &rarr;</a>
+              </div>
+            ` : `
+              <a class="btn-primary" href="/quiz">
+                Bắt đầu thử thách
+                <span class="material-symbols-outlined" style="font-size:1rem;">play_arrow</span>
+              </a>
+            `}
+          </div>
+        </div>
+
+        <!-- Card 2: Cần kiệm liêm chính -->
+        <div class="game-card ${!game1Completed ? 'game-card--locked' : (game2Completed ? '' : 'game-card--active')}">
+          <div class="silk-texture game-card__silk" style="opacity:0.12;"></div>
+          <div class="game-card__top">
+            <div>
+              <span class="game-card__level game-card__level--2">CẤP ĐỘ 02</span>
+              <h2 class="game-card__name">Cần Kiệm Liêm Chính</h2>
+            </div>
+            ${!game1Completed ? `
+              <div class="badge badge--locked">
+                <span class="material-symbols-outlined">lock</span>
+              </div>
+            ` : (game2Completed ? `
+              <div class="badge badge--done">
+                <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">check_circle</span>
+                Hoàn thành
+              </div>
+            ` : `
+              <div class="badge badge--active">
+                <span class="material-symbols-outlined" style="font-size:0.85rem;">hourglass_empty</span>
+                Đang diễn ra
+              </div>
+            `)}
+          </div>
+          <p class="game-card__desc">Game nối cặp kiến thức Tư tưởng Hồ Chí Minh về đạo đức, văn hóa và con người. Vượt qua 10 vòng chơi ghép cặp đầy thử thách.</p>
+          <div class="game-card__footer">
+            ${!game1Completed ? `
+              <div class="footer-lock">
+                <span class="material-symbols-outlined" style="color:var(--primary);">info</span>
+                <span class="footer-lock__text">Mở khóa khi vượt qua cấp độ 01</span>
+              </div>
+            ` : (game2Completed ? `
+              <div class="footer-done">
+                <div class="footer-done__time">
+                  <span class="material-symbols-outlined" style="color: var(--success); font-size:1.1rem; font-variation-settings:'FILL' 1;">check_circle</span>
+                  <span style="color: var(--success); font-weight:700;">Hoàn thành 100%</span>
+                </div>
+                <a class="btn-outline" href="/game">Xem lại &rarr;</a>
+              </div>
+            ` : `
+              <div class="footer-progress">
+                <div class="footer-progress__labels">
+                  <span class="footer-progress__label">Tiến độ: ${completedMatchingCount}/10 vòng</span>
+                  <span class="footer-progress__pct">${matchingProgressPct}%</span>
+                </div>
+                <div class="progress-bar" style="margin-bottom:12px;">
+                  <div class="progress-bar__fill" style="width:${matchingProgressPct}%;"></div>
+                </div>
+                <a class="btn-primary" href="/game">
+                  Tiếp tục hành trình
+                  <span class="material-symbols-outlined" style="font-size:1rem;">play_arrow</span>
+                </a>
+              </div>
+            `)}
+          </div>
+        </div>
+
+        <!-- Card 3 — Locked -->
+        <div class="game-card game-card--locked">
+          <div class="game-card__top">
+            <div>
+              <span class="game-card__level game-card__level--3">CẤP ĐỘ 03</span>
+              <h2 class="game-card__name">Ô Chữ Tu Thân</h2>
+            </div>
+            <div class="badge badge--locked">
+              <span class="material-symbols-outlined">lock</span>
+            </div>
+          </div>
+          <p class="game-card__desc">Bài tập rèn luyện nhân cách, đức tính cần kiệm liêm chính, chí công vô tư. Mỗi hàng ngang là một câu đố hóc búa về tư tưởng Hồ Chí Minh.</p>
+          <div class="game-card__footer game-card__footer--locked">
+            <div class="footer-lock">
+              <span class="material-symbols-outlined" style="color:var(--primary);">info</span>
+              <span class="footer-lock__text">Mở khóa khi hoàn thành cấp độ 02</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 — Locked -->
+        <div class="game-card game-card--locked">
+          <div class="game-card__top">
+            <div>
+              <span class="game-card__level game-card__level--4">CẤP ĐỘ 04</span>
+              <h2 class="game-card__name">Thử Thách Trị Quốc</h2>
+            </div>
+            <div class="badge badge--locked">
+              <span class="material-symbols-outlined">lock</span>
+            </div>
+          </div>
+          <p class="game-card__desc">Chuỗi câu đố liên hoàn hóc búa nhất: nhìn hình đoán tên, đoán keyword từ đoạn thơ, đoán số liệu lịch sử về Bác Hồ.</p>
+          <div class="game-card__footer game-card__footer--locked">
+            <div class="footer-lock">
+              <span class="material-symbols-outlined" style="color:var(--primary);">lock_clock</span>
+              <span class="footer-lock__text">Yêu cầu hoàn thành Ô Chữ Tu Thân</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Trigger transition observers
+      document.querySelectorAll('#gamesGrid .game-card').forEach(el => {
+        el.classList.add('visible');
+      });
+      
+      // Hover lift effect
+      document.querySelectorAll('.game-card:not(.game-card--locked)').forEach(card => {
+        card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-4px)');
+        card.addEventListener('mouseleave', () => card.style.transform = '');
+      });
+    }
+
+    updateLobby();
+    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

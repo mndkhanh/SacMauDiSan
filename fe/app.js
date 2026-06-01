@@ -20,7 +20,7 @@ const els = {
   registerForm: document.getElementById('registerForm'),
   fullNameInput: document.getElementById('fullNameInput'),
   studentIdInput: document.getElementById('studentIdInput'),
-  classCodeInput: document.getElementById('classCodeInput'),
+  classCodeInput: null,
   appNav: document.getElementById('appNav'),
   currentPlayerPill: document.getElementById('currentPlayerPill'),
   changePlayerBtn: document.getElementById('changePlayerBtn'),
@@ -365,8 +365,7 @@ async function handleRegister(event) {
   event.preventDefault();
   const payload = {
     fullName: els.fullNameInput.value,
-    studentId: els.studentIdInput.value,
-    classCode: els.classCodeInput.value
+    studentId: els.studentIdInput.value
   };
 
   const submitButton = els.registerForm.querySelector('button[type="submit"]');
@@ -474,7 +473,7 @@ function renderParticipants() {
       <div>
         <span>Người chơi hiện tại</span>
         <strong>${escapeHTML(participant.fullName)}</strong>
-        <p>MSSV: ${escapeHTML(participant.studentId)} • Lớp: ${escapeHTML(participant.classCode)}</p>
+        <p>MSSV: ${escapeHTML(participant.studentId)}</p>
       </div>
       <div class="current-player-card__stat">
         <strong>${participant.completedRoundCount || 0}/${total}</strong>
@@ -486,7 +485,7 @@ function renderParticipants() {
   }
 
   if (!state.participants.length) {
-    els.participantsTableBody.innerHTML = '<tr><td colspan="7">Chưa có người đăng ký.</td></tr>';
+    els.participantsTableBody.innerHTML = '<tr><td colspan="6">Chưa có người đăng ký.</td></tr>';
     return;
   }
 
@@ -497,7 +496,6 @@ function renderParticipants() {
         <td>${index + 1}</td>
         <td>${escapeHTML(participant.fullName)}</td>
         <td>${escapeHTML(participant.studentId)}</td>
-        <td>${escapeHTML(participant.classCode)}</td>
         <td><strong>${participant.completedRoundCount || 0}/${participant.totalRounds || total}</strong></td>
         <td>${formatDateTime(participant.updatedAt)}</td>
         <td class="participant-actions">

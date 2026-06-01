@@ -1,316 +1,933 @@
-<!doctype html>
-<html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Game nối cặp Cần kiệm liêm chính - Tư tưởng Hồ Chí Minh"
-    />
-    <title>Cần kiệm liêm chính | Matching Game</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <div class="page-shell">
-      <header class="hero" id="home">
-        <div class="hero__visual">
-          <img src="./assets/key-visual.png" alt="Key visual Sắc màu di sản" />
-          <div class="hero__shine"></div>
-        </div>
-        <div class="hero__content">
-          <p class="eyebrow">FPT University Education Game</p>
-          <h1 id="game-title">Cần kiệm liêm chính</h1>
-          <p id="game-subtitle" class="hero__subtitle">
-            Game nối cặp kiến thức Tư tưởng Hồ Chí Minh
-          </p>
-          <div class="hero__actions">
-            <a
-              class="button button--primary"
-              id="startJourneyLink"
-              href="#register-section"
-              >Bắt đầu hành trình</a
-            >
-            <button
-              class="button button--ghost"
-              id="openRulesBtn"
-              type="button"
-            >
-              Xem luật chơi
-            </button>
-          </div>
-        </div>
-      </header>
+<!DOCTYPE html>
+<html class="light" lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sắc Màu Di Sản — Khám phá tư tưởng, đạo đức và phong cách Hồ Chí Minh qua các trò chơi giáo dục tương tác.">
+  <title>Di Sản Hồ Chí Minh - Trang Chủ</title>
 
-      <section
-        class="register-section"
-        id="register-section"
-        aria-labelledby="registerTitle"
-      >
-        <div class="register-card">
-          <div class="register-card__icon">💼</div>
-          <p class="section-kicker">Thông tin người chơi</p>
-          <h2 id="registerTitle">Đăng ký tham gia</h2>
-          <p class="register-card__subtitle">
-            Nhập thông tin để bắt đầu hành trình và lưu lại số vòng đã hoàn
-            thành.
-          </p>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 
-          <form class="register-form" id="registerForm">
-            <label class="form-field" for="fullNameInput">
-              <span>👤 Họ và tên</span>
-              <input
-                id="fullNameInput"
-                name="fullName"
-                type="text"
-                placeholder="Nguyễn Văn A"
-                autocomplete="name"
-                required
-              />
-            </label>
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --primary:              #b40006;
+      --primary-container:    #da251d;
+      --on-primary:           #ffffff;
+      --secondary:            #735c00;
+      --secondary-container:  #fecc00;
+      --secondary-fixed:      #ffe089;
+      --secondary-fixed-dim:  #f0c100;
+      --on-secondary:         #ffffff;
+      --on-secondary-container: #6e5700;
+      --tertiary:             #a22d21;
+      --tertiary-container:   #c44537;
+      --on-tertiary:          #ffffff;
+      --surface:              #fcf9f0;
+      --surface-dim:          #dddad1;
+      --surface-bright:       #fcf9f0;
+      --surface-container-lowest: #ffffff;
+      --surface-container-low:    #f6f3ea;
+      --surface-container:        #f1eee5;
+      --surface-container-high:   #ebe8df;
+      --surface-container-highest:#e5e2da;
+      --on-surface:           #1c1c17;
+      --on-surface-variant:   #5d403b;
+      --outline:              #916f6a;
+      --outline-variant:      #e6bdb7;
+      --background:           #fcf9f0;
+      --on-background:        #1c1c17;
+      --inverse-surface:      #31312b;
+      --inverse-on-surface:   #f4f1e8;
+      --inverse-primary:      #ffb4a9;
+      --error:                #ba1a1a;
 
-            <label class="form-field" for="studentIdInput">
-              <span>🎓 MSSV</span>
-              <input
-                id="studentIdInput"
-                name="studentId"
-                type="text"
-                placeholder="SE12345"
-                autocomplete="off"
-                required
-              />
-            </label>
+      --font-headline: 'Playfair Display', Georgia, serif;
+      --font-body:     'Be Vietnam Pro', system-ui, sans-serif;
 
-            <label class="form-field" for="classCodeInput">
-              <span>🏫 Mã lớp</span>
-              <input
-                id="classCodeInput"
-                name="classCode"
-                type="text"
-                placeholder="MLN131_01"
-                autocomplete="off"
-                required
-              />
-            </label>
+      --radius-sm: 0.25rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+    }
 
-            <button
-              class="button button--gradient register-submit"
-              type="submit"
-            >
-              🚀 Bắt đầu hành trình
-            </button>
-          </form>
-        </div>
-      </section>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background-color: var(--background);
+      color: var(--on-surface);
+      background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+      line-height: 1.6;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font-family: inherit; border: none; background: none; }
 
-      <nav class="app-nav" id="appNav" hidden aria-label="Điều hướng game">
-        <div class="player-pill" id="currentPlayerPill">Chưa có người chơi</div>
-        <div class="app-nav__actions">
-          <button class="nav-tab is-active" type="button" data-view="game">
-            Chơi game
-          </button>
-          <button class="nav-tab" type="button" data-view="participants">
-            Thông tin người đăng ký
-          </button>
-          <button
-            class="nav-tab nav-tab--ghost"
-            id="changePlayerBtn"
-            type="button"
-          >
-            Đổi người chơi
-          </button>
-        </div>
-      </nav>
+    /* ── Utilities ── */
+    .silk-texture {
+      background-image: radial-gradient(#ffffff22 1px, transparent 1px);
+      background-size: 4px 4px;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .container { max-width: 1200px; margin-inline: auto; padding-inline: 48px; }
+    @media (max-width: 768px) { .container { padding-inline: 16px; } }
 
-      <main class="main-layout app-view is-active" id="gameView" hidden>
-        <section class="intro-card" aria-labelledby="intro-title">
-          <div>
-            <p class="section-kicker">Nhiệm vụ</p>
-            <h2 id="intro-title">Nối đúng 4 cặp để hoàn thành từng vòng</h2>
-            <p id="game-description">
-              Người chơi cần ghép đúng toàn bộ các cặp liên quan đến nhau. Nếu
-              sai, hệ thống sẽ yêu cầu nối lại.
-            </p>
-          </div>
-          <div class="score-card">
-            <span>Tiến độ trong phiên hiện tại</span>
-            <strong id="progressText">0/0 vòng</strong>
-            <div class="progress-bar" aria-hidden="true">
-              <i id="progressBar"></i>
-            </div>
-            <small id="savedProgressText">Hồ sơ đã lưu: 0 vòng</small>
-          </div>
-        </section>
+    /* ── Animations ── */
+    @keyframes subtle-zoom {
+      from { transform: scale(1.02); }
+      to   { transform: scale(1.08); }
+    }
+    .zoom-animation { animation: subtle-zoom 20s infinite alternate ease-in-out; }
 
-        <section class="rule-panel" id="rulePanel" aria-label="Luật chơi">
-          <div class="rule-panel__header">
-            <h3>Luật chơi</h3>
-            <button
-              id="closeRulesBtn"
-              type="button"
-              aria-label="Đóng luật chơi"
-            >
-              ×
-            </button>
-          </div>
-          <ol id="rulesList"></ol>
-        </section>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { opacity: 0; }
+    .fade-in.visible { animation: fadeInUp 0.7s ease forwards; }
 
-        <section class="round-switcher" aria-label="Danh sách vòng chơi">
-          <div class="round-switcher__header">
-            <div>
-              <p class="section-kicker">Chọn vòng</p>
-              <h2>Chủ đề kiến thức</h2>
-            </div>
-            <p class="refresh-note">
-              Dấu tick chỉ hiện trong phiên chơi hiện tại; refresh trang sẽ ẩn
-              tick nhưng hệ thống vẫn lưu số vòng đã hoàn thành.
-            </p>
-          </div>
-          <div id="roundTabs" class="round-tabs"></div>
-        </section>
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
 
-        <section class="game-card" aria-live="polite">
-          <div class="game-card__top">
-            <div>
-              <p class="section-kicker" id="roundSource">Nguồn: Session 26</p>
-              <h2 id="roundTitle">Đang tải vòng chơi...</h2>
-              <p id="roundInstruction" class="round-instruction">
-                Vui lòng chờ trong giây lát.
-              </p>
-            </div>
-            <div class="round-meta">
-              <span id="roundNumber">Vòng 1</span>
-              <strong id="pairCounter">0/4 cặp</strong>
-            </div>
-          </div>
+    /* ── Divider ── */
+    .custom-divider {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; margin: 3rem 0;
+    }
+    .custom-divider::before, .custom-divider::after {
+      content: ""; flex: 1; height: 1px; background-color: var(--primary);
+    }
+    .custom-divider .star-icon { margin: 0 1rem; color: var(--secondary); }
 
-          <div class="game-board" id="gameBoard">
-            <svg
-              class="connection-layer"
-              id="connectionLayer"
-              aria-hidden="true"
-            ></svg>
-            <div class="column">
-              <div class="column__title">Vế A</div>
-              <div id="leftColumn" class="card-list"></div>
-            </div>
-            <div class="column column--right">
-              <div class="column__title">Vế B</div>
-              <div id="rightColumn" class="card-list"></div>
-            </div>
-          </div>
+    /* ══════════════════════════════════════════
+       NAVBAR
+    ══════════════════════════════════════════ */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(252,249,240,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--secondary-fixed);
+    }
+    .navbar__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1200px; margin-inline: auto;
+      padding: 1rem 48px;
+    }
+    @media (max-width: 768px) { .navbar__inner { padding: 1rem 16px; } }
+    .navbar__brand {
+      font-family: var(--font-headline);
+      font-size: 1.25rem; font-weight: 700;
+      color: var(--primary); letter-spacing: -0.01em;
+    }
+    .navbar__links { display: flex; gap: 2rem; align-items: center; }
+    @media (max-width: 640px) { .navbar__links { display: none; } }
+    .navbar__links a {
+      font-size: 0.875rem; font-weight: 600; letter-spacing: 0.04em;
+      color: var(--on-surface-variant);
+      transition: color 0.2s;
+    }
+    .navbar__links a:hover, .navbar__links a.active { color: var(--primary); }
+    .navbar__links a.active { border-bottom: 2px solid var(--primary); padding-bottom: 2px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
+      padding: 0.6rem 1.5rem;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+    .btn--primary {
+      background: var(--primary); color: var(--on-primary);
+      border: 1px solid var(--primary);
+    }
+    .btn--primary:hover { background: var(--tertiary); border-color: var(--tertiary); }
+    .btn--outline {
+      background: transparent; color: var(--secondary);
+      border: 1px solid var(--secondary);
+    }
+    .btn--outline:hover { background: var(--secondary-fixed); }
+    .btn:active { transform: scale(0.96); }
 
-          <div class="feedback" id="feedbackBox" hidden></div>
+    /* ══════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════ */
+    .hero {
+      position: relative; height: 85vh; min-height: 500px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero__bg {
+      position: absolute; inset: 0;
+    }
+    .hero__bg img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, var(--surface) 0%, rgba(252,249,240,0.35) 50%, transparent 100%);
+    }
+    .hero__content {
+      position: relative; z-index: 2;
+      text-align: center; max-width: 56rem;
+      padding-inline: 1rem;
+    }
+    .hero__badge {
+      display: inline-block;
+      background: var(--primary); color: var(--on-primary);
+      padding: 0.25rem 1rem;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+    .hero__title {
+      font-family: var(--font-headline);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700; line-height: 1.15;
+      color: var(--primary); margin-bottom: 1.5rem;
+    }
+    .hero__subtitle {
+      font-size: 1.125rem; line-height: 1.65;
+      color: var(--on-surface-variant);
+      max-width: 38rem; margin-inline: auto;
+      margin-bottom: 2.5rem; font-style: italic;
+    }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
 
-          <div class="game-actions">
-            <button
-              class="button button--secondary"
-              id="resetBtn"
-              type="button"
-            >
-              Làm lại vòng này
-            </button>
-            <button class="button button--primary" id="submitBtn" type="button">
-              Kiểm tra kết quả
-            </button>
-            <button
-              class="button button--ghost"
-              id="nextBtn"
-              type="button"
-              hidden
-            >
-              Qua vòng tiếp theo
-            </button>
-          </div>
-        </section>
-      </main>
+    /* ══════════════════════════════════════════
+       INTRO TEXT
+    ══════════════════════════════════════════ */
+    .intro-section {
+      padding: 5rem 0; text-align: center;
+    }
+    .intro-section p {
+      font-family: var(--font-headline);
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+      font-weight: 600; line-height: 1.4;
+      max-width: 48rem; margin-inline: auto;
+    }
 
-      <section
-        class="participants-view app-view"
-        id="participantsView"
-        hidden
-        aria-labelledby="participantsTitle"
-      >
-        <div class="participants-card">
-          <div class="participants-card__header">
-            <div>
-              <p class="section-kicker">Danh sách</p>
-              <h2 id="participantsTitle">Thông tin người đăng ký</h2>
-              <p>
-                Tab này hiển thị người đã đăng ký và số vòng đã hoàn thành được
-                lưu bởi backend.
-              </p>
-            </div>
-            <button
-              class="button button--secondary"
-              id="refreshParticipantsBtn"
-              type="button"
-            >
-              ↻ Refresh dữ liệu
-            </button>
-          </div>
+    /* ══════════════════════════════════════════
+       BIOGRAPHY (BENTO)
+    ══════════════════════════════════════════ */
+    .section-heading {
+      font-family: var(--font-headline);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700; color: var(--primary);
+      border-left: 4px solid var(--secondary-container);
+      padding-left: 1rem;
+    }
+    .section-sub { font-size: 0.9rem; color: var(--on-surface-variant); margin-top: 0.4rem; }
 
-          <div class="current-player-card" id="currentPlayerCard"></div>
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto auto;
+      gap: 1.5rem;
+    }
+    @media (max-width: 900px) { .bento-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .bento-grid { grid-template-columns: 1fr; } }
 
-          <div class="table-wrap">
-            <table class="participants-table">
-              <thead>
-                <tr>
-                  <th>STT</th>
-                  <th>Họ và tên</th>
-                  <th>MSSV</th>
-                  <th>Mã lớp</th>
-                  <th>Vòng đã hoàn thành</th>
-                  <th>Cập nhật lần cuối</th>
-                  <th>Thao tác</th>
-                </tr>
-              </thead>
-              <tbody id="participantsTableBody">
-                <tr>
-                  <td colspan="7">Chưa có dữ liệu.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+    .bento-card {
+      border: 1px solid var(--secondary-fixed);
+      padding: 2rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .bento-card:hover { border-color: var(--primary); }
+    .bento-card--span2 { grid-column: span 2; grid-row: span 2; }
+    .bento-card--accent {
+      background: var(--primary); color: var(--on-primary);
+    }
+    .bento-card--light { background: var(--surface-container-high); }
+    .bento-card--wide { grid-column: span 2; }
+    @media (max-width: 900px) {
+      .bento-card--span2 { grid-column: span 2; grid-row: span 1; }
+      .bento-card--wide  { grid-column: span 2; }
+    }
+    @media (max-width: 600px) {
+      .bento-card--span2, .bento-card--wide { grid-column: span 1; }
+    }
+    .bento-card__era { color: var(--primary); font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; }
+    .bento-card--accent .bento-card__era { color: var(--secondary-fixed); }
+    .bento-card__title { font-family: var(--font-headline); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .bento-card__body  { font-size: 0.9375rem; color: var(--on-surface-variant); line-height: 1.65; }
+    .bento-card--accent .bento-card__body { color: rgba(255,255,255,0.88); }
+    .bento-card__img   { width: 100%; height: 12rem; object-fit: cover; margin-top: 1.5rem; filter: grayscale(1); transition: filter 0.5s; }
+    .bento-card:hover .bento-card__img { filter: grayscale(0); }
+    .bento-card__icon  { font-size: 2.5rem; margin-bottom: 1rem; }
+    .bento-card--wide .bento-inner { display: flex; gap: 1.5rem; align-items: center; }
+    .bento-card--wide .bento-inner img { width: 33%; height: 100%; object-fit: cover; flex-shrink: 0; }
 
-      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    /* ══════════════════════════════════════════
+       NOTABLE WORKS
+    ══════════════════════════════════════════ */
+    .works-section { padding: 5rem 0; background: rgba(229,226,218,0.3); }
+    .works-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2.5rem; }
+    @media (max-width: 768px) { .works-grid { grid-template-columns: 1fr; } }
+    .work-card { cursor: pointer; }
+    .work-card__book {
+      position: relative; padding: 2rem;
+      border: 1px solid var(--secondary-fixed);
+      transition: transform 0.4s; overflow: hidden;
+    }
+    .work-card:hover .work-card__book { transform: translateY(-6px); }
+    .work-card__book--plain  { background: var(--surface-container-lowest); }
+    .work-card__book--paper  { background: var(--surface); }
+    .work-card__book--accent { background: var(--primary); border-color: var(--primary); }
+    .work-card__inner {
+      border: 1px solid rgba(180,0,6,0.2);
+      padding: 2rem 1.5rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; min-height: 16rem;
+    }
+    .work-card__book--accent .work-card__inner { border-color: rgba(255,255,255,0.35); }
+    .work-card__name { font-family: var(--font-headline); font-size: 1.1rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+    .work-card__book--accent .work-card__name { color: var(--on-primary); }
+    .work-card__sub  { font-size: 0.9rem; color: var(--on-surface-variant); font-style: italic; }
+    .work-card__book--accent .work-card__sub  { color: rgba(255,255,255,0.78); }
+    .work-card__star { font-size: 2rem; color: var(--secondary-fixed-dim); margin: 0.75rem 0; }
+    .work-card__icon { font-size: 3rem; color: var(--primary); margin-bottom: 1rem; }
+    .work-card__meta { margin-top: 1.25rem; text-align: center; }
+    .work-card__type { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--secondary); text-transform: uppercase; margin-bottom: 0.4rem; }
+    .work-card__year { font-family: var(--font-headline); font-size: 1.1rem; font-weight: 600; }
 
-      <dialog class="finish-modal" id="finishModal">
-        <div class="finish-modal__content">
-          <p class="section-kicker">Hoàn thành</p>
-          <h2>Chúc mừng, bạn đã ghép đúng 100%!</h2>
-          <p>
-            Bạn đã hoàn thành toàn bộ trò chơi “Cần kiệm liêm chính”. Có thể
-            chơi lại để ôn tập nhanh trước buổi học hoặc sự kiện.
-          </p>
-          <div class="finish-modal__actions">
-            <button
-              class="button button--secondary"
-              id="playAgainBtn"
-              type="button"
-            >
-              Chơi lại từ đầu
-            </button>
-            <button
-              class="button button--primary"
-              id="closeFinishBtn"
-              type="button"
-            >
-              Đóng
-            </button>
-          </div>
-        </div>
-      </dialog>
+    /* ══════════════════════════════════════════
+       HISTORICAL SITES
+    ══════════════════════════════════════════ */
+    .sites-section { padding: 5rem 0; overflow: hidden; }
+    .sites-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
+    @media (max-width: 900px) { .sites-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 500px) { .sites-grid { grid-template-columns: 1fr; } }
+    .site-card {
+      position: relative; height: 450px; overflow: hidden;
+      border: 1px solid var(--secondary-fixed); cursor: pointer;
+    }
+    .site-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s; }
+    .site-card:hover img { transform: scale(1.1); }
+    .site-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(180,0,6,0.9) 0%, transparent 55%);
+      opacity: 0.6; transition: opacity 0.3s;
+    }
+    .site-card:hover .site-card__overlay { opacity: 0.9; }
+    .site-card__info { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem; color: var(--on-primary); }
+    .site-card__region { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.8; margin-bottom: 0.25rem; }
+    .site-card__name   { font-family: var(--font-headline); font-size: 1.1rem; font-weight: 700; }
+
+    /* ══════════════════════════════════════════
+       QUOTE SECTION
+    ══════════════════════════════════════════ */
+    .quote-section {
+      background: var(--primary); color: var(--on-primary);
+      padding: 6rem 0; position: relative; overflow: hidden;
+    }
+    .quote-section.silk-texture { }
+    .quote-section__deco {
+      position: absolute; font-family: Georgia, serif;
+      font-size: 8rem; color: var(--secondary-fixed-dim);
+      opacity: 0.18; line-height: 1; pointer-events: none;
+    }
+    .quote-section__deco--left  { top: -1rem; left: 2rem; }
+    .quote-section__deco--right { bottom: -1rem; right: 2rem; }
+    .quote-section__inner { text-align: center; position: relative; }
+    .quote-section__text {
+      font-family: var(--font-headline);
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      font-weight: 700; line-height: 1.55;
+      max-width: 52rem; margin-inline: auto; margin-bottom: 2rem;
+    }
+    .quote-section__attr { font-size: 1rem; font-style: italic; font-weight: 700; color: var(--secondary-fixed); letter-spacing: 0.05em; }
+
+    /* ══════════════════════════════════════════
+       AUTH MODAL
+    ══════════════════════════════════════════ */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(28,28,23,0.7);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .modal-backdrop.open {
+      opacity: 1; pointer-events: auto;
+    }
+    .modal {
+      background: var(--surface);
+      background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+      max-width: 28rem; width: 100%;
+      padding: 2.5rem;
+      position: relative;
+      transform: scale(0.95) translateY(20px);
+      transition: transform 0.3s;
+    }
+    .modal-backdrop.open .modal {
+      transform: scale(1) translateY(0);
+      animation: modalIn 0.35s ease forwards;
+    }
+    .modal__close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: none; border: none; cursor: pointer;
+      color: var(--on-surface-variant); font-size: 1.5rem; line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal__close:hover { color: var(--primary); }
+    .modal__badge {
+      display: inline-block;
+      background: var(--primary); color: var(--on-primary);
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+      padding: 0.2rem 0.75rem; margin-bottom: 1.25rem;
+    }
+    .modal__title {
+      font-family: var(--font-headline);
+      font-size: 1.75rem; font-weight: 700; color: var(--primary);
+      margin-bottom: 0.5rem; line-height: 1.2;
+    }
+    .modal__sub { font-size: 0.9rem; color: var(--on-surface-variant); margin-bottom: 2rem; line-height: 1.55; }
+
+    .form-field { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.25rem; }
+    .form-field label { font-size: 0.8rem; font-weight: 600; color: var(--on-surface); letter-spacing: 0.02em; }
+    .form-field input {
+      width: 100%; padding: 0.7rem 0.9rem;
+      border: 1px solid var(--outline-variant);
+      background: var(--surface-container-lowest);
+      color: var(--on-surface); font-family: var(--font-body); font-size: 0.9rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-field input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(180,0,6,0.12); }
+
+    .modal__submit {
+      width: 100%;
+      background: var(--primary); color: var(--on-primary);
+      padding: 0.85rem;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+      border: 1px solid var(--primary);
+      transition: background 0.25s; cursor: pointer;
+      font-family: var(--font-body);
+    }
+    .modal__submit:hover { background: var(--tertiary); border-color: var(--tertiary); }
+    .modal__submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .modal__error {
+      background: #ffdad6; color: var(--error);
+      padding: 0.65rem 0.9rem; font-size: 0.85rem;
+      margin-bottom: 1rem; display: none;
+    }
+    .modal__error.visible { display: block; }
+
+    /* ══════════════════════════════════════════
+       PLAYER BAR (shown after login)
+    ══════════════════════════════════════════ */
+    .player-bar {
+      background: var(--primary); color: var(--on-primary);
+      padding: 0.6rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; font-size: 0.85rem;
+    }
+    .player-bar__name { font-weight: 700; }
+    .player-bar__actions { display: flex; gap: 0.75rem; align-items: center; }
+    .player-bar__link {
+      background: var(--secondary-container); color: var(--on-secondary-container);
+      padding: 0.3rem 1rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+      transition: opacity 0.2s;
+    }
+    .player-bar__link:hover { opacity: 0.85; }
+    .player-bar__logout {
+      background: none; color: rgba(255,255,255,0.75);
+      border: 1px solid rgba(255,255,255,0.35); padding: 0.3rem 0.75rem;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .player-bar__logout:hover { background: rgba(255,255,255,0.15); }
+    #playerBar { display: none; }
+
+    /* ══════════════════════════════════════════
+       TOAST
+    ══════════════════════════════════════════ */
+    .toast {
+      position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%);
+      background: var(--inverse-surface); color: var(--inverse-on-surface);
+      padding: 0.75rem 1.5rem; font-size: 0.875rem;
+      z-index: 300; white-space: nowrap;
+      opacity: 0; transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+
+    /* ══════════════════════════════════════════
+       SCROLL TO TOP BTN
+    ══════════════════════════════════════════ */
+    .scroll-top {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--secondary); color: var(--on-secondary);
+      width: 3rem; height: 3rem; border-radius: 9999px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 99; cursor: pointer;
+      opacity: 0; transition: opacity 0.3s, transform 0.2s;
+      border: none;
+    }
+    .scroll-top.show { opacity: 1; }
+    .scroll-top:hover { transform: scale(1.1); }
+
+    /* ══════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════ */
+    .footer {
+      background: var(--surface-container-highest);
+      border-top: 1px solid var(--secondary-fixed);
+      padding: 3rem 0 0;
+    }
+    .footer__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    @media (max-width: 640px) { .footer__grid { grid-template-columns: 1fr; } }
+    .footer__brand { font-family: var(--font-headline); font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; }
+    .footer__desc  { font-size: 0.9rem; color: var(--on-surface-variant); line-height: 1.65; max-width: 26rem; }
+    .footer__bottom { margin-top: 2rem; border-top: 1px solid rgba(115,92,0,0.2); padding: 1.25rem 0; text-align: center; font-size: 0.8rem; color: var(--on-surface-variant); }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Player Bar (shown after login) ── -->
+  <div id="playerBar" class="player-bar">
+    <span>Xin chào, <span class="player-bar__name" id="playerName"></span> — <span id="playerMSSV"></span></span>
+    <div class="player-bar__actions">
+      <a class="player-bar__link" href="/lobby">► Vào phòng chờ</a>
+      <button class="player-bar__logout" id="logoutBtn">Đăng xuất</button>
     </div>
+  </div>
 
-    <script src="./app.js"></script>
-  </body>
+  <!-- ── Navbar ── -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <div class="navbar__brand">DI SẢN HỒ CHÍ MINH</div>
+      <nav class="navbar__links">
+        <a href="#" class="active">TRANG CHỦ</a>
+        <a href="#biography">TIỂU SỬ</a>
+        <a href="#works">TÁC PHẨM</a>
+        <a href="#relics">DI TÍCH</a>
+      </nav>
+      <div style="display:flex;gap:0.75rem;align-items:center;">
+        <a class="btn btn--primary" id="loginBtn" href="/auth">ĐĂNG NHẬP</a>
+        <a class="btn btn--outline" id="playBtn" href="/lobby" style="display:none;">CHƠI GAME</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══ HERO ══ -->
+    <section class="hero fade-in">
+      <div class="hero__bg">
+        <img src="./assets/hero.jpg" alt="Sắc Màu Di Sản — Hồ Chí Minh" class="zoom-animation">
+        <div class="hero__overlay"></div>
+      </div>
+      <div class="hero__content">
+        <span class="hero__badge">KỶ NIỆM VÀ DI SẢN</span>
+        <h1 class="hero__title">Sắc Màu Di Sản:<br>Hồ Chí Minh</h1>
+        <p class="hero__subtitle">
+          "Không có gì quý hơn độc lập tự do." — Một hành trình bất tận tìm hiểu về tư tưởng, đạo đức và phong cách của Người.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" id="heroRegisterBtn" href="/auth" style="padding:0.85rem 2.5rem;">KHÁM PHÁ NGAY</a>
+          <a class="btn btn--outline" href="#biography" style="padding:0.85rem 2.5rem;">TÌM HIỂU THÊM</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ INTRO ══ -->
+    <section class="intro-section fade-in">
+      <div class="container">
+        <div class="custom-divider">
+          <span class="material-symbols-outlined star-icon" style="font-variation-settings:'FILL' 1;">star</span>
+        </div>
+        <p>
+          Hồ Chí Minh không chỉ là một nhà cách mạng vĩ đại, mà còn là biểu tượng của tinh thần văn hóa, sự giản dị và lòng yêu nước nồng nàn.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══ BIOGRAPHY ══ -->
+    <section class="fade-in" id="biography" style="padding:5rem 0;">
+      <div class="container">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;gap:1rem;">
+          <div>
+            <h2 class="section-heading">Tiểu sử Cuộc đời</h2>
+            <p class="section-sub">Các mốc son chói lọi trong cuộc đời hoạt động cách mạng</p>
+          </div>
+        </div>
+        <div class="bento-grid">
+          <!-- Card 1 — large -->
+          <div class="bento-card bento-card--span2">
+            <div>
+              <div class="bento-card__era">1890 — 1911</div>
+              <h3 class="bento-card__title">Thời Niên Thiếu &amp; Ý Chí Cứu Nước</h3>
+              <p class="bento-card__body">
+                Sinh ra tại làng Sen, Nghệ An, trong một gia đình nhà nho nghèo yêu nước, Nguyễn Sinh Cung đã sớm hình thành tư tưởng đánh đuổi thực dân.
+              </p>
+            </div>
+            <img class="bento-card__img" src="./assets/village.jpg" alt="Làng quê Nghệ An thời xưa">
+          </div>
+
+          <!-- Card 2 — accent -->
+          <div class="bento-card bento-card--accent silk-texture">
+            <span class="material-symbols-outlined bento-card__icon">sailing</span>
+            <div>
+              <div class="bento-card__era" style="color:var(--secondary-fixed);">1911</div>
+              <p class="bento-card__body">Bắt đầu hành trình tìm đường cứu nước từ Bến cảng Nhà Rồng trên con tàu Amiral Latouche-Tréville.</p>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bento-card bento-card--light">
+            <span class="material-symbols-outlined" style="font-size:2.5rem;color:var(--secondary);margin-bottom:1rem;">language</span>
+            <div>
+              <div class="bento-card__era">1911 — 1941</div>
+              <p class="bento-card__body">Bôn ba qua 30 quốc gia, tiếp cận chủ nghĩa Mác-Lênin và con đường cách mạng vô sản.</p>
+            </div>
+          </div>
+
+          <!-- Card 4 — wide -->
+          <div class="bento-card bento-card--wide" style="padding:0;overflow:hidden;">
+            <div class="bento-inner" style="height:100%;">
+              <img src="./assets/mountains.jpg" alt="Núi rừng Cao Bằng" style="width:33%;height:100%;object-fit:cover;flex-shrink:0;">
+              <div style="padding:2rem;">
+                <div class="bento-card__era">1941 — 1945</div>
+                <h3 class="bento-card__title">Về Nước Trực Tiếp Lãnh Đạo</h3>
+                <p class="bento-card__body">Thành lập Mặt trận Việt Minh và lãnh đạo Cách mạng tháng Tám thành công.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ NOTABLE WORKS ══ -->
+    <section class="works-section fade-in" id="works">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:4rem;">
+          <h2 class="section-heading" style="border:none;padding:0;display:inline-block;font-size:2rem;">Tác Phẩm Tiêu Biểu</h2>
+          <div style="width:6rem;height:3px;background:var(--secondary);margin:1rem auto 0;"></div>
+        </div>
+        <div class="works-grid">
+
+          <div class="work-card">
+            <div class="work-card__book work-card__book--plain">
+              <div class="work-card__inner">
+                <h4 class="work-card__name">Bản Án Chế Độ Thực Dân Pháp</h4>
+                <p class="work-card__sub">(Le Procès de la colonisation française)</p>
+                <div style="margin-top:auto;padding-top:1.5rem;width:3rem;border-top:1px solid var(--primary);"></div>
+              </div>
+            </div>
+            <div class="work-card__meta">
+              <p class="work-card__type">Tiểu luận Chính trị</p>
+              <h3 class="work-card__year">Paris, 1925</h3>
+            </div>
+          </div>
+
+          <div class="work-card">
+            <div class="work-card__book work-card__book--paper">
+              <div class="work-card__inner" style="border-color:rgba(180,0,6,0.35);">
+                <span class="material-symbols-outlined work-card__icon">menu_book</span>
+                <h4 class="work-card__name" style="color:var(--on-surface);">Nhật Ký Trong Tù</h4>
+                <p class="work-card__sub">"Thân thể ở trong lao, tinh thần ở ngoài lao"</p>
+              </div>
+            </div>
+            <div class="work-card__meta">
+              <p class="work-card__type">Tác phẩm Văn học</p>
+              <h3 class="work-card__year">Trung Quốc, 1942–1943</h3>
+            </div>
+          </div>
+
+          <div class="work-card">
+            <div class="work-card__book work-card__book--accent silk-texture">
+              <div class="work-card__inner">
+                <h4 class="work-card__name">Tuyên Ngôn Độc Lập</h4>
+                <div class="work-card__star">★</div>
+                <p class="work-card__sub">Văn kiện lịch sử trọng đại khai sinh ra nước Việt Nam Dân chủ Cộng hòa.</p>
+              </div>
+            </div>
+            <div class="work-card__meta">
+              <p class="work-card__type">Văn kiện Lịch sử</p>
+              <h3 class="work-card__year">Hà Nội, 1945</h3>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ HISTORICAL SITES ══ -->
+    <section class="sites-section fade-in" id="relics">
+      <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3rem;flex-wrap:wrap;gap:1rem;">
+          <h2 class="section-heading">Di Tích Lịch Sử</h2>
+        </div>
+        <div class="sites-grid">
+          <div class="site-card">
+            <img src="./assets/mausoleum.jpg" alt="Lăng Chủ Tịch Hồ Chí Minh">
+            <div class="site-card__overlay"></div>
+            <div class="site-card__info">
+              <p class="site-card__region">Hà Nội</p>
+              <h3 class="site-card__name">Lăng Chủ Tịch</h3>
+            </div>
+          </div>
+          <div class="site-card">
+            <img src="./assets/stilthouse.jpg" alt="Nhà Sàn Bác Hồ">
+            <div class="site-card__overlay"></div>
+            <div class="site-card__info">
+              <p class="site-card__region">Hà Nội</p>
+              <h3 class="site-card__name">Nhà Sàn Bác Hồ</h3>
+            </div>
+          </div>
+          <div class="site-card">
+            <img src="./assets/senvillage.jpg" alt="Làng Sen Quê Nội">
+            <div class="site-card__overlay"></div>
+            <div class="site-card__info">
+              <p class="site-card__region">Nghệ An</p>
+              <h3 class="site-card__name">Làng Sen Quê Nội</h3>
+            </div>
+          </div>
+          <div class="site-card">
+            <img src="./assets/nharong.jpg" alt="Bến Cảng Nhà Rồng">
+            <div class="site-card__overlay"></div>
+            <div class="site-card__info">
+              <p class="site-card__region">TP. Hồ Chí Minh</p>
+              <h3 class="site-card__name">Bến Cảng Nhà Rồng</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ QUOTE ══ -->
+    <section class="quote-section silk-texture fade-in">
+      <span class="quote-section__deco quote-section__deco--left">"</span>
+      <span class="quote-section__deco quote-section__deco--right">"</span>
+      <div class="container quote-section__inner">
+        <h2 class="quote-section__text">
+          Tôi chỉ có một sự ham muốn, ham muốn tột bậc, là làm sao cho nước ta được hoàn toàn độc lập, dân ta được hoàn toàn tự do, đồng bào ai cũng có cơm ăn áo mặc, ai cũng được học hành.
+        </h2>
+        <p class="quote-section__attr">— Hồ Chí Minh</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand">DI SẢN HỒ CHÍ MINH</div>
+          <p class="footer__desc">
+            "Bảo tồn và phát huy các giá trị tư tưởng, đạo đức, phong cách Hồ Chí Minh" — Một dự án tri ân những đóng góp vĩ đại của Người cho dân tộc Việt Nam.
+          </p>
+        </div>
+        <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;">
+          <a class="btn btn--primary" id="footerRegisterBtn" href="/auth" style="margin-top:1rem;">THAM GIA NGAY</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        © 2026 Sắc Màu Di Sản — FPT University &nbsp;·&nbsp; Dự án giáo dục phi lợi nhuận
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══ AUTH MODAL ══ -->
+  <div class="modal-backdrop" id="authModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button class="modal__close" id="modalClose" aria-label="Đóng">×</button>
+      <span class="modal__badge">ĐĂNG KÝ THAM GIA</span>
+      <h2 class="modal__title" id="modalTitle">Bắt đầu<br>hành trình</h2>
+      <p class="modal__sub">Nhập thông tin của bạn để tham gia Sắc Màu Di Sản và bắt đầu khám phá di sản Hồ Chí Minh.</p>
+
+      <div class="modal__error" id="authError" role="alert"></div>
+
+      <form id="authForm" novalidate>
+        <div class="form-field">
+          <label for="inputName">👤 Họ và tên</label>
+          <input id="inputName" name="fullName" type="text" placeholder="Nguyễn Văn A" autocomplete="name" required>
+        </div>
+        <div class="form-field">
+          <label for="inputMSSV">🎓 Mã số sinh viên (MSSV)</label>
+          <input id="inputMSSV" name="studentId" type="text" placeholder="SE123456" autocomplete="off" required>
+        </div>
+        <button class="modal__submit" type="submit" id="authSubmit">
+          KHÁM PHÁ DI SẢN →
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══ TOAST ══ -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ══ SCROLL TOP ══ -->
+  <button class="scroll-top" id="scrollTop" aria-label="Lên đầu trang">
+    <span class="material-symbols-outlined">expand_less</span>
+  </button>
+
+  <script>
+    // ── State ──
+    const STORAGE_KEY = 'sacmaudisan_participant';
+
+    function getParticipant() {
+      try { return JSON.parse(sessionStorage.getItem(STORAGE_KEY)); }
+      catch { return null; }
+    }
+    function saveParticipant(p) {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+    }
+    function clearParticipant() {
+      sessionStorage.removeItem(STORAGE_KEY);
+    }
+
+    // ── UI refs ──
+    const authModal        = document.getElementById('authModal');
+    const authForm         = document.getElementById('authForm');
+    const authError        = document.getElementById('authError');
+    const authSubmit       = document.getElementById('authSubmit');
+    const modalClose       = document.getElementById('modalClose');
+    const loginBtn         = document.getElementById('loginBtn');
+    const playBtn          = document.getElementById('playBtn');
+    const heroRegisterBtn  = document.getElementById('heroRegisterBtn');
+    const footerRegisterBtn= document.getElementById('footerRegisterBtn');
+    const playerBar        = document.getElementById('playerBar');
+    const playerName       = document.getElementById('playerName');
+    const playerMSSV       = document.getElementById('playerMSSV');
+    const logoutBtn        = document.getElementById('logoutBtn');
+    const toast            = document.getElementById('toast');
+    const scrollTopBtn     = document.getElementById('scrollTop');
+
+    let toastTimer = null;
+
+    // ── Toast ──
+    function showToast(msg, duration = 3000) {
+      clearTimeout(toastTimer);
+      toast.textContent = msg;
+      toast.classList.add('show');
+      toastTimer = setTimeout(() => toast.classList.remove('show'), duration);
+    }
+
+    // ── Modal ──
+    function openModal() {
+      authModal.classList.add('open');
+      document.getElementById('inputName').focus();
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      authModal.classList.remove('open');
+      document.body.style.overflow = '';
+      authError.classList.remove('visible');
+      authForm.reset();
+    }
+
+    authModal.addEventListener('click', e => { if (e.target === authModal) closeModal(); });
+    modalClose.addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── Auth state sync ──
+    function applyAuthState() {
+      const p = getParticipant();
+      if (p) {
+        loginBtn.style.display = 'none';
+        playBtn.style.display  = 'inline-flex';
+        playerBar.style.display = 'flex';
+        playerName.textContent = p.fullName;
+        playerMSSV.textContent = p.studentId;
+        // Change hero button to go straight to game
+        heroRegisterBtn.textContent = 'VÀO CHƠI GAME →';
+        heroRegisterBtn.onclick = () => { window.location.href = '/game'; };
+        footerRegisterBtn.textContent = 'VÀO CHƠI GAME →';
+        footerRegisterBtn.onclick = () => { window.location.href = '/game'; };
+      } else {
+        loginBtn.style.display = 'inline-flex';
+        playBtn.style.display  = 'none';
+        playerBar.style.display = 'none';
+        heroRegisterBtn.textContent = 'KHÁM PHÁ NGAY';
+        heroRegisterBtn.onclick = openModal;
+        footerRegisterBtn.textContent = 'THAM GIA NGAY';
+        footerRegisterBtn.onclick = openModal;
+      }
+    }
+
+    // ── Trigger open ──
+    loginBtn.addEventListener('click', openModal);
+    heroRegisterBtn.addEventListener('click', openModal);
+    footerRegisterBtn.addEventListener('click', openModal);
+
+    // ── Logout ──
+    logoutBtn.addEventListener('click', () => {
+      clearParticipant();
+      applyAuthState();
+      showToast('Đã đăng xuất.');
+    });
+
+    // ── Register form submit ──
+    authForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const fullName  = document.getElementById('inputName').value.trim();
+      const studentId = document.getElementById('inputMSSV').value.trim();
+
+      if (!fullName || !studentId) {
+        authError.textContent = 'Vui lòng nhập đủ họ tên và MSSV.';
+        authError.classList.add('visible');
+        return;
+      }
+
+      authSubmit.disabled = true;
+      authSubmit.textContent = 'Đang lưu...';
+      authError.classList.remove('visible');
+
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullName, studentId })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Đăng ký thất bại.');
+
+        saveParticipant(data.participant);
+        closeModal();
+        applyAuthState();
+        showToast(`Chào mừng ${data.participant.fullName}! Chúc bạn chơi vui.`);
+      } catch (err) {
+        authError.textContent = err.message;
+        authError.classList.add('visible');
+      } finally {
+        authSubmit.disabled = false;
+        authSubmit.textContent = 'KHÁM PHÁ DI SẢN →';
+      }
+    });
+
+    // ── Scroll-triggered fade in ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ── Scroll top button ──
+    window.addEventListener('scroll', () => {
+      scrollTopBtn.classList.toggle('show', window.scrollY > 500);
+    });
+    scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // ── Init ──
+    applyAuthState();
+  </script>
+</body>
 </html>

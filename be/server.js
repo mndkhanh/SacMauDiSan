@@ -5,9 +5,13 @@ const crypto = require('crypto');
 
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
-const PUBLIC_DIR = path.join(ROOT, 'public');
+// Serve the sibling fe/ folder in dev; fall back to local public/ for production deploys
+const PUBLIC_DIR = fs.existsSync(path.join(ROOT, 'public'))
+  ? path.join(ROOT, 'public')
+  : path.join(ROOT, '..', 'fe');
 const DATA_PATH = path.join(ROOT, 'data', 'game-data.json');
 const PARTICIPANTS_PATH = path.join(ROOT, 'data', 'participants.json');
+const QUIZ_DATA_PATH = path.join(ROOT, 'data', 'game1-quiz.json');
 
 const attempts = [];
 
@@ -19,6 +23,10 @@ function ensureJsonFile(filePath, fallbackValue) {
 
 function readGameData() {
   return JSON.parse(fs.readFileSync(DATA_PATH, 'utf8'));
+}
+
+function readQuizData() {
+  return JSON.parse(fs.readFileSync(QUIZ_DATA_PATH, 'utf8'));
 }
 
 function readParticipants() {
@@ -149,7 +157,6 @@ function participantPublicPayload(participant, totalRounds) {
     id: participant.id,
     fullName: participant.fullName,
     studentId: participant.studentId,
-    classCode: participant.classCode,
     completedRoundIds,
     completedRoundCount: completedRoundIds.length,
     totalRounds,
@@ -178,6 +185,84 @@ function publicGamePayload() {
         text: pair.right
       })))
     }))
+  };
+}
+
+function publicQuizPayload() {
+  const data = readQuizData();
+  return {
+    title: data.title,
+    subtitle: data.subtitle,
+    description: data.description,
+    questions: data.questions.map(q => {
+      if (q.type === 'multiple-choice') {
+        return {
+          id: q.id,
+          type: q.type,
+          question: q.question,
+          options: q.options
+        };
+      } else if (q.type === 'fill-in-blank') {
+        return {
+          id: q.id,
+          type: q.type,
+          question: q.question
+        };
+      } else if (q.type === 'matching') {
+        return {
+          id: q.id,
+          type: q.type,
+          instruction: q.instruction,
+          leftCards: q.pairs.map(p => ({ id: p.id, text: p.left })),
+          rightCards: shuffle(q.pairs.map(p => ({ id: p.id, text: p.right })))
+        };
+      }
+    })
+  };
+}
+
+function checkQuiz(quizData, userAnswers) {
+  const results = {};
+  let correctCount = 0;
+  const totalCount = quizData.questions.length;
+
+  for (const q of quizData.questions) {
+    const userAnswer = userAnswers[q.id];
+    let isCorrect = false;
+
+    if (q.type === 'multiple-choice') {
+      isCorrect = (userAnswer !== undefined && Number(userAnswer) === q.answer);
+    } else if (q.type === 'fill-in-blank') {
+      if (typeof userAnswer === 'string') {
+        const cleaned = userAnswer.trim().toLowerCase();
+        isCorrect = q.answers.some(ans => ans.trim().toLowerCase() === cleaned);
+      }
+    } else if (q.type === 'matching') {
+      if (userAnswer && typeof userAnswer === 'object') {
+        let matchingCorrect = true;
+        for (const pair of q.pairs) {
+          if (userAnswer[pair.id] !== pair.id) {
+            matchingCorrect = false;
+            break;
+          }
+        }
+        isCorrect = matchingCorrect;
+      }
+    }
+
+    if (isCorrect) {
+      correctCount++;
+    }
+    results[q.id] = isCorrect;
+  }
+
+  const score = Math.round((correctCount / totalCount) * 100);
+
+  return {
+    score,
+    correctCount,
+    totalCount,
+    results
   };
 }
 
@@ -211,10 +296,9 @@ function checkRound(round, answers) {
 function registerParticipant(body) {
   const fullName = cleanText(body.fullName, 120);
   const studentId = normalizeStudentId(body.studentId);
-  const classCode = cleanText(body.classCode, 60).toUpperCase();
 
-  if (!fullName || !studentId || !classCode) {
-    return { error: 'Vui lòng nhập đủ họ tên, MSSV và mã lớp.' };
+  if (!fullName || !studentId) {
+    return { error: 'Vui lòng nhập đủ họ tên và MSSV.' };
   }
 
   const now = new Date().toISOString();
@@ -223,7 +307,6 @@ function registerParticipant(body) {
 
   if (participant) {
     participant.fullName = fullName;
-    participant.classCode = classCode;
     participant.updatedAt = now;
     participant.completedRoundIds = Array.isArray(participant.completedRoundIds) ? participant.completedRoundIds : [];
   } else {
@@ -231,7 +314,6 @@ function registerParticipant(body) {
       id: crypto.randomUUID(),
       fullName,
       studentId,
-      classCode,
       completedRoundIds: [],
       createdAt: now,
       updatedAt: now,
@@ -296,6 +378,11 @@ async function handleApi(req, res) {
 
   if (req.method === 'GET' && url.pathname === '/api/game') {
     sendJson(res, 200, publicGamePayload());
+    return;
+  }
+
+  if (req.method === 'GET' && url.pathname === '/api/game/quiz') {
+    sendJson(res, 200, publicQuizPayload());
     return;
   }
 
@@ -384,6 +471,42 @@ async function handleApi(req, res) {
     return;
   }
 
+  if (req.method === 'POST' && url.pathname === '/api/submit/quiz') {
+    try {
+      const body = await parseBody(req);
+      const quizData = readQuizData();
+      const result = checkQuiz(quizData, body.answers || {});
+      
+      let participant = null;
+      const passed = result.score >= 80;
+      if (passed && body.participantId) {
+        participant = markParticipantRoundCompleted(body.participantId, 'quiz-dan-chu');
+      }
+
+      const attempt = {
+        id: crypto.randomUUID(),
+        participantId: body.participantId || null,
+        roundId: 'quiz-dan-chu',
+        completed: passed,
+        score: result.correctCount,
+        total: result.totalCount,
+        createdAt: new Date().toISOString()
+      };
+      attempts.unshift(attempt);
+      if (attempts.length > 200) attempts.pop();
+
+      sendJson(res, 200, {
+        ...result,
+        passed,
+        attemptId: attempt.id,
+        participant: participant ? participantPublicPayload(participant, readGameData().rounds.length) : null
+      });
+    } catch (error) {
+      sendJson(res, 400, { error: 'Dữ liệu gửi lên không hợp lệ.', detail: error.message });
+    }
+    return;
+  }
+
   if (req.method === 'GET' && url.pathname === '/api/attempts') {
     sendJson(res, 200, { attempts });
     return;
@@ -395,6 +518,47 @@ async function handleApi(req, res) {
 const server = http.createServer((req, res) => {
   if (req.url.startsWith('/api/')) {
     handleApi(req, res);
+    return;
+  }
+  // Serve game.html for the /game route
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  if (url.pathname === '/game') {
+    const gamePath = path.join(PUBLIC_DIR, 'game.html');
+    fs.readFile(gamePath, (err, data) => {
+      if (err) { res.writeHead(404); res.end('Game not found'); return; }
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(data);
+    });
+    return;
+  }
+  // Serve auth.html for the /auth route
+  if (url.pathname === '/auth') {
+    const authPath = path.join(PUBLIC_DIR, 'auth.html');
+    fs.readFile(authPath, (err, data) => {
+      if (err) { res.writeHead(404); res.end('Auth page not found'); return; }
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(data);
+    });
+    return;
+  }
+  // Serve lobby.html for the /lobby route
+  if (url.pathname === '/lobby') {
+    const lobbyPath = path.join(PUBLIC_DIR, 'lobby.html');
+    fs.readFile(lobbyPath, (err, data) => {
+      if (err) { res.writeHead(404); res.end('Lobby not found'); return; }
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(data);
+    });
+    return;
+  }
+  // Serve quiz.html for the /quiz route
+  if (url.pathname === '/quiz') {
+    const quizPath = path.join(PUBLIC_DIR, 'quiz.html');
+    fs.readFile(quizPath, (err, data) => {
+      if (err) { res.writeHead(404); res.end('Quiz not found'); return; }
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(data);
+    });
     return;
   }
   serveStatic(req, res);
