@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: can-kiem-liem-chinh-matching-game
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 22

@@ -1,0 +1,22 @@
+{
+  "name": "can-kiem-liem-chinh-matching-game",
+  "version": "1.0.0",
+  "description": "Website game nối cặp Cần kiệm liêm chính - frontend + backend Node.js thuần, deploy được.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "matching-game",
+    "ho-chi-minh",
+    "education",
+    "fpt-university"
+  ],
+  "author": "",
+  "license": "MIT"
+}
