@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Ma Trận Trung - Hiếu | Di Sản Hồ Chí Minh</title>
+  
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+  
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-container": "#da251d",
+            "inverse-surface": "#31312b",
+            "secondary-fixed-dim": "#f0c100",
+            "tertiary-fixed-dim": "#ffb4a9",
+            "surface-bright": "#fcf9f0",
+            "inverse-primary": "#ffb4a9",
+            "secondary-fixed": "#ffe089",
+            "on-primary-fixed": "#410001",
+            "on-primary-fixed-variant": "#930004",
+            "secondary-container": "#fecc00",
+            "tertiary": "#a22d21",
+            "background": "#fcf9f0",
+            "on-tertiary-fixed-variant": "#8a1b12",
+            "surface-dim": "#dddad1",
+            "primary-fixed-dim": "#ffb4a9",
+            "surface-container-high": "#ebe8df",
+            "on-primary": "#ffffff",
+            "surface-variant": "#e5e2da",
+            "surface-container": "#f1eee5",
+            "secondary": "#735c00",
+            "on-tertiary-fixed": "#410000",
+            "on-background": "#1c1c17",
+            "tertiary-fixed": "#ffdad5",
+            "error": "#ba1a1a",
+            "surface": "#fcf9f0",
+            "surface-container-highest": "#e5e2da",
+            "outline-variant": "#e6bdb7",
+            "error-container": "#ffdad6",
+            "on-error-container": "#93000a",
+            "on-surface-variant": "#5d403b",
+            "on-tertiary": "#ffffff",
+            "on-secondary-container": "#6e5700",
+            "outline": "#916f6a",
+            "on-secondary-fixed": "#241a00",
+            "on-primary-container": "#fff3f1",
+            "on-surface": "#1c1c17",
+            "tertiary-container": "#c44537",
+            "surface-container-low": "#f6f3ea",
+            "on-tertiary-container": "#fff3f1",
+            "on-secondary": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "surface-tint": "#bf080b",
+            "primary-fixed": "#ffdad5",
+            "primary": "#b40006",
+            "on-secondary-fixed-variant": "#574500",
+            "inverse-on-surface": "#f4f1e8",
+            "on-error": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "unit": "8px",
+            "margin-mobile": "16px",
+            "margin-desktop": "48px",
+            "gutter": "24px",
+            "container-max": "1200px"
+          },
+          "fontFamily": {
+            "label-sm": ["Be Vietnam Pro"],
+            "headline-md": ["Playfair Display"],
+            "body-md": ["Be Vietnam Pro"],
+            "headline-lg-mobile": ["Playfair Display"],
+            "headline-lg": ["Playfair Display"],
+            "headline-display": ["Playfair Display"],
+            "body-lg": ["Be Vietnam Pro"]
+          },
+          "fontSize": {
+            "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+            "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+            "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+            "headline-lg-mobile": ["28px", {"lineHeight": "1.3", "fontWeight": "700"}],
+            "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "700"}],
+            "headline-display": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+    .silk-texture {
+      background-image: radial-gradient(#ffffff10 1px, transparent 1px);
+      background-size: 4px 4px;
+    }
+    .parchment-bg {
+      background-color: #fcf9f0;
+      background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+    }
+    .keyword-found {
+      text-decoration: line-through;
+      opacity: 0.5;
+      color: #735c00;
+    }
+    .grid-cell {
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .grid-cell:hover:not(.locked) {
+      background-color: #ffe089;
+    }
+    .grid-cell.selected {
+      background-color: #b40006;
+      color: white;
+      border-color: #da251d;
+    }
+    .grid-cell.wrong-cell {
+      background-color: #ba1a1a;
+      color: white;
+      border-color: #ba1a1a;
+      animation: shake 0.3s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+    .star-divider::before, .star-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #b40006;
+    }
+    
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 50;
+      transform: translate(-50%, 20px);
+      max-width: min(540px, calc(100% - 32px));
+      padding: 13px 18px;
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(180, 0, 6, 0.94);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+      font-weight: 700;
+    }
+    .toast.is-show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  </style>
+
+  <!-- Auth guard -->
+  <script>
+    (function () {
+      var AUTH_KEY = 'sacmaudisan_participant';
+      var GAME_KEY = 'currentParticipant';
+      try {
+        var p = JSON.parse(sessionStorage.getItem(AUTH_KEY)) ||
+                JSON.parse(sessionStorage.getItem(GAME_KEY));
+        if (!p || !p.id) window.location.replace('/auth');
+        else {
+          sessionStorage.setItem(AUTH_KEY, JSON.stringify(p));
+          sessionStorage.setItem(GAME_KEY, JSON.stringify(p));
+        }
+      } catch (e) { window.location.replace('/auth'); }
+    })();
+  </script>
+</head>
+
+<body class="parchment-bg min-h-screen flex flex-col text-on-surface">
+
+  <!-- TopNavBar -->
+  <header class="w-full top-0 sticky border-b border-secondary-container bg-surface-bright z-50">
+    <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+      <div class="font-headline-md text-headline-md text-primary uppercase tracking-tighter">
+        Di sản Hồ Chí Minh
+      </div>
+      <nav class="hidden md:flex gap-8">
+        <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-300" href="/lobby">Hành Trình</a>
+        <a class="font-label-sm text-label-sm text-primary border-b-2 border-primary pb-1" href="/lobby">Trò Chơi</a>
+        <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Thư Viện</a>
+      </nav>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2 mr-2 bg-primary/10 px-3 py-1.5 rounded text-primary border border-primary/20">
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">error</span>
+          <span class="font-label-sm text-xs font-bold" id="failCounter">Chọn sai: 0/3</span>
+        </div>
+        <span class="material-symbols-outlined text-primary cursor-pointer scale-95 active:opacity-80 transition-transform" id="navPlayerName">account_circle</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Main Play Area -->
+  <main class="flex-grow max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-12" id="playPanel">
+    
+    <!-- Title Section -->
+    <div class="text-center mb-12">
+      <h1 class="font-headline-display text-headline-display text-primary mb-4" id="gameTitle">Ma Trận Trung - Hiếu</h1>
+      <div class="flex items-center justify-center gap-4 star-divider mb-2">
+        <span class="material-symbols-outlined text-secondary-fixed-dim" style="font-variation-settings: 'FILL' 1;">star</span>
+      </div>
+      <p class="font-body-lg text-body-lg text-on-surface-variant italic" id="roundKicker">Ma trận 1: Những giá trị cốt lõi</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+      <!-- Left: Puzzle Grid -->
+      <div class="lg:col-span-8 flex flex-col gap-8">
+        <div class="bg-surface-container p-6 border border-secondary-container shadow-sm">
+          <div class="grid grid-cols-10 gap-1 aspect-square w-full max-w-[600px] mx-auto border-2 border-primary" id="puzzle-grid">
+            <!-- Grid loaded via script -->
+          </div>
+        </div>
+        
+        <!-- Quote Box -->
+        <div class="bg-primary-container p-8 relative overflow-hidden silk-texture">
+          <div class="relative z-10">
+            <span class="material-symbols-outlined text-secondary-fixed text-4xl mb-4" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+            <p class="font-headline-md text-headline-md text-on-primary italic leading-relaxed" id="roundQuote">
+              "Trung với nước, hiếu với dân, nhiệm vụ nào cũng hoàn thành, khó khăn nào cũng vượt qua, kẻ thù nào cũng đánh thắng."
+            </p>
+            <div class="mt-4 flex items-center gap-2">
+              <div class="h-px w-8 bg-secondary-fixed"></div>
+              <span class="font-label-sm text-label-sm text-secondary-fixed uppercase tracking-widest">Hồ Chí Minh</span>
+            </div>
+          </div>
+          <div class="absolute right-0 bottom-0 opacity-10 pointer-events-none transform translate-x-1/4 translate-y-1/4">
+            <span class="material-symbols-outlined text-[200px]" style="font-variation-settings: 'FILL' 1;">brightness_7</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Keyword List & Controls -->
+      <div class="lg:col-span-4 sticky top-24 flex flex-col gap-6">
+        <div class="bg-surface-container-high p-6 border border-outline shadow-sm">
+          <h2 class="font-headline-md text-headline-md text-tertiary mb-6 border-b border-outline-variant pb-2">Từ khóa cần tìm</h2>
+          <ul class="flex flex-col gap-4" id="keyword-list">
+            <!-- Dynamic words list -->
+          </ul>
+        </div>
+        
+        <div class="flex flex-col gap-3">
+          <button class="w-full bg-primary py-4 text-on-primary font-label-sm text-label-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-tertiary-container transition-all active:scale-95" id="hintBtn">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+            Gợi ý (Hint)
+          </button>
+          <a class="w-full border-2 border-secondary py-4 text-secondary font-label-sm text-label-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-secondary hover:text-white transition-all active:scale-95 inline-flex" href="/lobby">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Trở về Phòng Chờ
+          </a>
+        </div>
+        
+        <div class="p-6 bg-surface-variant border border-outline-variant italic font-body-md text-body-md text-on-surface-variant">
+          Nhấn vào các ô ký tự trên ma trận để tìm các từ khóa có nghĩa thuộc lời dạy của Bác. Tìm thấy từ khóa sẽ làm nổi bật toàn bộ từ đó.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- GameOver and Finish Overlay Screens -->
+  <main class="flex-grow hidden items-center justify-center px-margin-mobile py-24" id="gameOverPanel">
+    <div class="w-full max-w-md bg-white border-2 border-primary p-8 text-center shadow-xl">
+      <span class="material-symbols-outlined text-error text-6xl mb-4">gavel</span>
+      <h2 class="font-headline-lg text-headline-lg text-primary mb-4">Bạn Đã Thất Bại</h2>
+      <p class="font-body-md text-on-surface-variant mb-8 leading-relaxed">
+        Bạn đã tích lũy quá 3 lần chọn sai ký tự trong các ma trận. Hãy ôn tập lại lời dạy của Bác và thử thách lại từ đầu nhé!
+      </p>
+      <button class="w-full bg-primary py-4 text-on-primary font-label-sm text-label-sm uppercase tracking-widest hover:bg-primary-container transition-all" id="restartGameBtn">
+        Thử Lại Từ Đầu
+      </button>
+    </div>
+  </main>
+
+  <main class="flex-grow hidden items-center justify-center px-margin-mobile py-24" id="completionPanel">
+    <div class="w-full max-w-md bg-white border-2 border-secondary-container p-8 text-center shadow-xl">
+      <span class="material-symbols-outlined text-secondary-fixed-dim text-6xl mb-4" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+      <h2 class="font-headline-lg text-headline-lg text-primary mb-4">Chúc Mừng!</h2>
+      <p class="font-body-md text-on-surface-variant mb-8 leading-relaxed">
+        Bạn đã xuất sắc vượt qua toàn bộ 3 ma trận chữ của Cấp độ 2 "Ma Trận Trung - Hiếu" và tìm thấy toàn bộ các từ khóa cốt lõi!
+      </p>
+      <a class="w-full bg-primary py-4 text-on-primary font-label-sm text-label-sm text-center uppercase tracking-widest hover:bg-primary-container transition-all block" href="/lobby">
+        Trở về phòng chờ
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full py-8 mt-auto border-t border-secondary bg-inverse-surface text-secondary-fixed text-center font-label-sm text-xs">
+    © 2026 Sắc Màu Di Sản — FPT University
+  </footer>
+
+  <div class="toast" id="matrixToast" role="status" aria-live="polite"></div>
+
+  <script src="./matrix.js"></script>
+</body>
+</html>

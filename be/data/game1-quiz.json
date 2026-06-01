@@ -13,7 +13,8 @@
         "Chính quyền thuộc về giai cấp thống trị",
         "Dân chỉ có quyền bầu cử đại biểu"
       ],
-      "answer": 0
+      "answer": 0,
+      "context": "Khái niệm \"Dân là chủ và dân làm chủ\" khẳng định địa vị tối cao của nhân dân. \"Dân là chủ\" chỉ vị thế quyền lực; \"Dân làm chủ\" chỉ năng lực hành động và trách nhiệm công dân."
     },
     {
       "id": "q2",
@@ -25,7 +26,8 @@
         "quyền hạn",
         "công lao"
       ],
-      "answer": 2
+      "answer": 2,
+      "context": "Trích trong bài báo \"Dân vận\" đăng trên báo Sự thật ngày 15/10/1949. Người viết: \"Nước ta là nước dân chủ. Bao nhiêu lợi ích đều vì dân. Bao nhiêu quyền hạn đều của dân.\""
     },
     {
       "id": "q3",
@@ -37,7 +39,8 @@
         "Tất cả quyền lực thuộc về nhân dân",
         "Dân chủ chủ nô"
       ],
-      "answer": 2
+      "answer": 2,
+      "context": "Tư tưởng Hồ Chí Minh xác định nhà nước ta mang bản chất giai cấp công nhân, có tính nhân dân và tính dân tộc sâu sắc, nơi mọi quyền lực chính trị đều bắt nguồn từ nhân dân."
     },
     {
       "id": "q4",
@@ -49,7 +52,8 @@
         "Sự viện trợ của các nước lớn",
         "Tiềm lực kinh tế sẵn có"
       ],
-      "answer": 1
+      "answer": 1,
+      "context": "Người luôn nhắc nhở: \"Dân khí mạnh thì quân lính nào cũng không đánh nổi, kẻ địch nào cũng không sợ.\" Sức mạnh của dân là cội nguồn của mọi thắng lợi cách mạng."
     },
     {
       "id": "q5",
@@ -61,7 +65,8 @@
         "xây dựng quân đội mạnh",
         "mở rộng quan hệ quốc tế"
       ],
-      "answer": 0
+      "answer": 0,
+      "context": "Khi bàn về phương pháp giải quyết các ách tắc trong công tác, Người chỉ rõ có dân chủ mới làm cho quần chúng dám nói, dám làm, khơi dậy óc sáng tạo của hàng triệu người."
     },
     {
       "id": "q6",
@@ -73,7 +78,8 @@
         "Bệnh tiết kiệm thời gian",
         "Bệnh tự học suốt đời"
       ],
-      "answer": 0
+      "answer": 0,
+      "context": "Quan liêu, mệnh lệnh là nguồn gốc sinh ra các tệ nạn tham ô, lãng phí và làm xói mòn lòng tin của quần chúng nhân dân đối với chính quyền cách mạng."
     },
     {
       "id": "q7",
@@ -85,19 +91,22 @@
         "Dân chủ và kỷ luật đi đôi với nhau, dân chủ trong kỷ luật và kỷ luật trên cơ sở dân chủ",
         "Dân chủ và kỷ luật luôn luôn mâu thuẫn lẫn nhau"
       ],
-      "answer": 2
+      "answer": 2,
+      "context": "Dân chủ tự do không phải là vô chính phủ. Người nhấn mạnh dân chủ phải gắn liền với tập trung kỷ luật, tự giác tuân thủ pháp luật và nội quy chung."
     },
     {
       "id": "q8",
       "type": "fill-in-blank",
       "question": "Theo Hồ Chí Minh: \"Nước ta là nước dân chủ, địa vị cao nhất là [blank], vì dân là chủ.\"",
-      "answers": ["dân", "nhân dân"]
+      "answers": ["dân", "nhân dân"],
+      "context": "Trong chế độ dân chủ mới, nhân dân giữ địa vị tối cao, là chủ thể quyền lực nhà nước, còn cán bộ chính quyền giữ vai trò phục vụ công lợi."
     },
     {
       "id": "q9",
       "type": "fill-in-blank",
       "question": "Hồ Chí Minh chỉ rõ cán bộ, đảng viên phải là \"người [blank] thật trung thành của nhân dân\".",
-      "answers": ["đầy tớ", "phục vụ"]
+      "answers": ["đầy tớ", "phục vụ"],
+      "context": "Lời căn dặn này nhấn mạnh tinh thần tận tụy, liêm chính, không tự cao tự đại, coi quyền lực công vụ là do dân ủy thác chứ không phải đặc quyền gia đình."
     },
     {
       "id": "q10",
@@ -124,7 +133,8 @@
           "left": "Việc gì có lợi cho dân, ta phải hết sức làm. Việc gì có hại cho dân, ta phải hết sức tránh.",
           "right": "Trách nhiệm phục vụ nhân dân tận tụy của người cán bộ"
         }
-      ]
+      ],
+      "context": "Thực hành dân chủ theo tư tưởng Hồ Chí Minh là sự thống nhất giữa lý luận về bản chất nhà nước với phương châm hành động thực tế và đạo đức công vụ cách mạng."
     }
   ]
 }

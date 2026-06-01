@@ -496,6 +496,10 @@
       const completed = freshParticipant.completedRoundIds || [];
       const game1Completed = completed.includes('quiz-dan-chu');
       
+      // Game 2: Matrix
+      const game2Completed = completed.includes('matrix-trung-hieu');
+      
+      // Game 3: Matching (find the word on the column)
       const matchingRoundIds = [
         'round-dao-duc-1', 'round-can-kiem-liem-chinh', 'round-dao-duc-la-goc',
         'round-nguyen-tac-dao-duc', 'round-van-hoa-quan-he', 'round-vai-tro-van-hoa',
@@ -503,7 +507,7 @@
       ];
       const completedMatchingCount = matchingRoundIds.filter(id => completed.includes(id)).length;
       const matchingProgressPct = Math.round((completedMatchingCount / matchingRoundIds.length) * 100);
-      const game2Completed = completedMatchingCount === matchingRoundIds.length;
+      const game3Completed = completedMatchingCount === matchingRoundIds.length;
 
       const grid = document.getElementById('gamesGrid');
       grid.innerHTML = `
@@ -546,13 +550,13 @@
           </div>
         </div>
 
-        <!-- Card 2: Cần kiệm liêm chính -->
+        <!-- Card 2: Ma Trận Trung - Hiếu -->
         <div class="game-card ${!game1Completed ? 'game-card--locked' : (game2Completed ? '' : 'game-card--active')}">
           <div class="silk-texture game-card__silk" style="opacity:0.12;"></div>
           <div class="game-card__top">
             <div>
               <span class="game-card__level game-card__level--2">CẤP ĐỘ 02</span>
-              <h2 class="game-card__name">Cần Kiệm Liêm Chính</h2>
+              <h2 class="game-card__name">Ma Trận Trung - Hiếu</h2>
             </div>
             ${!game1Completed ? `
               <div class="badge badge--locked">
@@ -570,14 +574,61 @@
               </div>
             `)}
           </div>
-          <p class="game-card__desc">Game nối cặp kiến thức Tư tưởng Hồ Chí Minh về đạo đức, văn hóa và con người. Vượt qua 10 vòng chơi ghép cặp đầy thử thách.</p>
-          <div class="game-card__footer">
+          <p class="game-card__desc">Tìm kiếm các từ khóa ẩn giấu trong ma trận chữ cái liên quan đến tư tưởng Trung với nước, Hiếu với dân của Chủ tịch Hồ Chí Minh.</p>
+          <div class="game-card__footer ${!game1Completed ? 'game-card__footer--locked' : ''}">
             ${!game1Completed ? `
               <div class="footer-lock">
                 <span class="material-symbols-outlined" style="color:var(--primary);">info</span>
                 <span class="footer-lock__text">Mở khóa khi vượt qua cấp độ 01</span>
               </div>
             ` : (game2Completed ? `
+              <div class="footer-done">
+                <div class="footer-done__time">
+                  <span class="material-symbols-outlined" style="color: var(--success); font-size:1.1rem; font-variation-settings:'FILL' 1;">check_circle</span>
+                  <span style="color: var(--success); font-weight:700;">Hoàn thành 100%</span>
+                </div>
+                <a class="btn-outline" href="/matrix">Xem lại &rarr;</a>
+              </div>
+            ` : `
+              <a class="btn-primary" href="/matrix">
+                Bắt đầu thử thách
+                <span class="material-symbols-outlined" style="font-size:1rem;">play_arrow</span>
+              </a>
+            `)}
+          </div>
+        </div>
+
+        <!-- Card 3: Cần Kiệm Liêm Chính -->
+        <div class="game-card ${!game2Completed ? 'game-card--locked' : (game3Completed ? '' : 'game-card--active')}">
+          <div class="game-card__top">
+            <div>
+              <span class="game-card__level game-card__level--3">CẤP ĐỘ 03</span>
+              <h2 class="game-card__name">Cần Kiệm Liêm Chính</h2>
+            </div>
+            ${!game2Completed ? `
+              <div class="badge badge--locked">
+                <span class="material-symbols-outlined">lock</span>
+              </div>
+            ` : (game3Completed ? `
+              <div class="badge badge--done">
+                <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">check_circle</span>
+                Hoàn thành
+              </div>
+            ` : `
+              <div class="badge badge--active">
+                <span class="material-symbols-outlined" style="font-size:0.85rem;">hourglass_empty</span>
+                Đang diễn ra
+              </div>
+            `)}
+          </div>
+          <p class="game-card__desc">Game nối từ trên cột kiến thức Tư tưởng Hồ Chí Minh về đạo đức, văn hóa và con người. Vượt qua 10 vòng chơi ghép cặp đầy thử thách.</p>
+          <div class="game-card__footer ${!game2Completed ? 'game-card__footer--locked' : ''}">
+            ${!game2Completed ? `
+              <div class="footer-lock">
+                <span class="material-symbols-outlined" style="color:var(--primary);">info</span>
+                <span class="footer-lock__text">Mở khóa khi hoàn thành cấp độ 02</span>
+              </div>
+            ` : (game3Completed ? `
               <div class="footer-done">
                 <div class="footer-done__time">
                   <span class="material-symbols-outlined" style="color: var(--success); font-size:1.1rem; font-variation-settings:'FILL' 1;">check_circle</span>
@@ -603,27 +654,7 @@
           </div>
         </div>
 
-        <!-- Card 3 — Locked -->
-        <div class="game-card game-card--locked">
-          <div class="game-card__top">
-            <div>
-              <span class="game-card__level game-card__level--3">CẤP ĐỘ 03</span>
-              <h2 class="game-card__name">Ô Chữ Tu Thân</h2>
-            </div>
-            <div class="badge badge--locked">
-              <span class="material-symbols-outlined">lock</span>
-            </div>
-          </div>
-          <p class="game-card__desc">Bài tập rèn luyện nhân cách, đức tính cần kiệm liêm chính, chí công vô tư. Mỗi hàng ngang là một câu đố hóc búa về tư tưởng Hồ Chí Minh.</p>
-          <div class="game-card__footer game-card__footer--locked">
-            <div class="footer-lock">
-              <span class="material-symbols-outlined" style="color:var(--primary);">info</span>
-              <span class="footer-lock__text">Mở khóa khi hoàn thành cấp độ 02</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 4 — Locked -->
+        <!-- Card 4 — Locked Placeholder -->
         <div class="game-card game-card--locked">
           <div class="game-card__top">
             <div>
@@ -638,7 +669,7 @@
           <div class="game-card__footer game-card__footer--locked">
             <div class="footer-lock">
               <span class="material-symbols-outlined" style="color:var(--primary);">lock_clock</span>
-              <span class="footer-lock__text">Yêu cầu hoàn thành Ô Chữ Tu Thân</span>
+              <span class="footer-lock__text">Yêu cầu hoàn thành Cấp độ 03</span>
             </div>
           </div>
         </div>

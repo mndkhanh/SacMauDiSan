@@ -12,6 +12,7 @@ const PUBLIC_DIR = fs.existsSync(path.join(ROOT, 'public'))
 const DATA_PATH = path.join(ROOT, 'data', 'game-data.json');
 const PARTICIPANTS_PATH = path.join(ROOT, 'data', 'participants.json');
 const QUIZ_DATA_PATH = path.join(ROOT, 'data', 'game1-quiz.json');
+const MATRIX_DATA_PATH = path.join(ROOT, 'data', 'game2-matrix.json');
 
 const attempts = [];
 
@@ -27,6 +28,10 @@ function readGameData() {
 
 function readQuizData() {
   return JSON.parse(fs.readFileSync(QUIZ_DATA_PATH, 'utf8'));
+}
+
+function readMatrixData() {
+  return JSON.parse(fs.readFileSync(MATRIX_DATA_PATH, 'utf8'));
 }
 
 function readParticipants() {
@@ -200,13 +205,15 @@ function publicQuizPayload() {
           id: q.id,
           type: q.type,
           question: q.question,
-          options: q.options
+          options: q.options,
+          context: q.context
         };
       } else if (q.type === 'fill-in-blank') {
         return {
           id: q.id,
           type: q.type,
-          question: q.question
+          question: q.question,
+          context: q.context
         };
       } else if (q.type === 'matching') {
         return {
@@ -214,10 +221,26 @@ function publicQuizPayload() {
           type: q.type,
           instruction: q.instruction,
           leftCards: q.pairs.map(p => ({ id: p.id, text: p.left })),
-          rightCards: shuffle(q.pairs.map(p => ({ id: p.id, text: p.right })))
+          rightCards: shuffle(q.pairs.map(p => ({ id: p.id, text: p.right }))),
+          context: q.context
         };
       }
     })
+  };
+}
+
+function publicMatrixPayload() {
+  const data = readMatrixData();
+  return {
+    title: data.title,
+    subtitle: data.subtitle,
+    rounds: data.rounds.map(r => ({
+      roundNumber: r.roundNumber,
+      category: r.category,
+      quote: r.quote,
+      grid: r.grid,
+      keywords: r.keywords.map(kw => ({ word: kw.word }))
+    }))
   };
 }
 
@@ -386,6 +409,11 @@ async function handleApi(req, res) {
     return;
   }
 
+  if (req.method === 'GET' && url.pathname === '/api/game/matrix') {
+    sendJson(res, 200, publicMatrixPayload());
+    return;
+  }
+
   if (req.method === 'POST' && url.pathname === '/api/register') {
     try {
       const body = await parseBody(req);
@@ -507,6 +535,94 @@ async function handleApi(req, res) {
     return;
   }
 
+  if (req.method === 'POST' && url.pathname === '/api/game/matrix/click') {
+    try {
+      const body = await parseBody(req);
+      const data = readMatrixData();
+      const roundData = data.rounds.find(r => r.roundNumber === Number(body.round));
+      if (!roundData) {
+        sendJson(res, 404, { error: 'Không tìm thấy vòng chơi.' });
+        return;
+      }
+      
+      const cellIndex = Number(body.cellIndex);
+      const matchedKeyword = roundData.keywords.find(kw => kw.cells.includes(cellIndex));
+      
+      if (matchedKeyword) {
+        sendJson(res, 200, {
+          match: true,
+          word: matchedKeyword.word,
+          cells: matchedKeyword.cells
+        });
+      } else {
+        sendJson(res, 200, {
+          match: false
+        });
+      }
+    } catch (error) {
+      sendJson(res, 400, { error: 'Dữ liệu gửi lên không hợp lệ.' });
+    }
+    return;
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/game/matrix/hint') {
+    try {
+      const body = await parseBody(req);
+      const data = readMatrixData();
+      const roundData = data.rounds.find(r => r.roundNumber === Number(body.round));
+      if (!roundData) {
+        sendJson(res, 404, { error: 'Không tìm thấy vòng chơi.' });
+        return;
+      }
+      
+      const foundWords = body.foundWords || [];
+      const unfoundKeyword = roundData.keywords.find(kw => !foundWords.includes(kw.word));
+      
+      if (unfoundKeyword) {
+        sendJson(res, 200, {
+          hintIndex: unfoundKeyword.cells[0]
+        });
+      } else {
+        sendJson(res, 200, {
+          hintIndex: null
+        });
+      }
+    } catch (error) {
+      sendJson(res, 400, { error: 'Dữ liệu gửi lên không hợp lệ.' });
+    }
+    return;
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/submit/matrix') {
+    try {
+      const body = await parseBody(req);
+      let participant = null;
+      if (body.participantId) {
+        participant = markParticipantRoundCompleted(body.participantId, 'matrix-trung-hieu');
+      }
+      
+      const attempt = {
+        id: crypto.randomUUID(),
+        participantId: body.participantId || null,
+        roundId: 'matrix-trung-hieu',
+        completed: true,
+        score: 100,
+        total: 100,
+        createdAt: new Date().toISOString()
+      };
+      attempts.unshift(attempt);
+      if (attempts.length > 200) attempts.pop();
+
+      sendJson(res, 200, {
+        completed: true,
+        participant: participant ? participantPublicPayload(participant, readGameData().rounds.length) : null
+      });
+    } catch (error) {
+      sendJson(res, 400, { error: 'Dữ liệu gửi lên không hợp lệ.' });
+    }
+    return;
+  }
+
   if (req.method === 'GET' && url.pathname === '/api/attempts') {
     sendJson(res, 200, { attempts });
     return;
@@ -556,6 +672,16 @@ const server = http.createServer((req, res) => {
     const quizPath = path.join(PUBLIC_DIR, 'quiz.html');
     fs.readFile(quizPath, (err, data) => {
       if (err) { res.writeHead(404); res.end('Quiz not found'); return; }
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(data);
+    });
+    return;
+  }
+  // Serve matrix.html for the /matrix route
+  if (url.pathname === '/matrix') {
+    const matrixPath = path.join(PUBLIC_DIR, 'matrix.html');
+    fs.readFile(matrixPath, (err, data) => {
+      if (err) { res.writeHead(404); res.end('Matrix not found'); return; }
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
       res.end(data);
     });

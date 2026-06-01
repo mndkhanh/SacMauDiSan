@@ -1,0 +1,115 @@
+{
+  "title": "Ma Trận Trung - Hiếu",
+  "subtitle": "Tìm các giá trị cốt lõi về tinh thần Trung và Hiếu trong tư tưởng Hồ Chí Minh",
+  "rounds": [
+    {
+      "roundNumber": 1,
+      "category": "Cấp độ 1: Những giá trị cốt lõi",
+      "quote": "Trung với nước, hiếu với dân, nhiệm vụ nào cũng hoàn thành, khó khăn nào cũng vượt qua, kẻ thù nào cũng đánh thắng.",
+      "grid": [
+        ["T", "R", "U", "N", "G", "V", "O", "I", "N", "U"],
+        ["A", "H", "I", "Ê", "U", "V", "O", "I", "D", "O"],
+        ["M", "K", "L", "P", "O", "I", "U", "Y", "A", "C"],
+        ["N", "Ư", "Ớ", "C", "M", "V", "U", "S", "N", "V"],
+        ["X", "Z", "C", "V", "B", "N", "M", "L", "K", "U"],
+        ["V", "U", "O", "R", "T", "Q", "U", "A", "J", "O"],
+        ["D", "Â", "N", "H", "J", "K", "L", "O", "I", "P"],
+        ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "A"],
+        ["T", "R", "U", "N", "G", "D", "U", "N", "G", "M"],
+        ["H", "I", "E", "U", "T", "H", "A", "O", "X", "Y"]
+      ],
+      "keywords": [
+        {
+          "word": "TRUNG VỚI NƯỚC",
+          "cells": [0, 1, 2, 3, 4, 30, 31, 32, 33]
+        },
+        {
+          "word": "HIẾU VỚI DÂN",
+          "cells": [11, 12, 13, 14, 60, 61, 62]
+        },
+        {
+          "word": "NHIỆM VỤ",
+          "cells": [8, 9, 18, 19, 28, 29]
+        },
+        {
+          "word": "VƯỢT QUA",
+          "cells": [51, 52, 53, 54, 55, 56, 57]
+        }
+      ]
+    },
+    {
+      "roundNumber": 2,
+      "category": "Cấp độ 2: Ý chí vượt khó",
+      "quote": "Nhiệm vụ nào cũng hoàn thành, khó khăn nào cũng vượt qua, kẻ thù nào cũng đánh thắng.",
+      "grid": [
+        ["N", "H", "I", "Ệ", "M", "V", "Ụ", "A", "B", "C"],
+        ["D", "E", "F", "V", "Ư", "Ợ", "T", "Q", "U", "A"],
+        ["K", "L", "M", "N", "O", "P", "Q", "R", "S", "T"],
+        ["Đ", "Á", "N", "H", "T", "H", "Ắ", "N", "G", "U"],
+        ["V", "W", "X", "Y", "Z", "A", "B", "C", "D", "E"],
+        ["K", "H", "Ó", "K", "H", "Ă", "N", "F", "G", "H"],
+        ["I", "J", "K", "L", "M", "N", "O", "P", "Q", "R"],
+        ["S", "T", "U", "V", "W", "X", "Y", "Z", "A", "B"],
+        ["C", "D", "E", "F", "G", "H", "I", "J", "K", "L"],
+        ["M", "N", "O", "P", "Q", "R", "S", "T", "U", "V"]
+      ],
+      "keywords": [
+        {
+          "word": "NHIỆM VỤ",
+          "cells": [0, 1, 2, 3, 4, 5, 6]
+        },
+        {
+          "word": "VƯỢT QUA",
+          "cells": [13, 14, 15, 16, 17, 18, 19]
+        },
+        {
+          "word": "ĐÁNH THẮNG",
+          "cells": [30, 31, 32, 33, 34, 35, 36, 37, 38]
+        },
+        {
+          "word": "KHÓ KHĂN",
+          "cells": [50, 51, 52, 53, 54, 55, 56]
+        }
+      ]
+    },
+    {
+      "roundNumber": 3,
+      "category": "Cấp độ 3: Rèn luyện tự thân",
+      "quote": "Bồi dưỡng thế hệ cách mạng cho đời sau là một việc rất quan trọng và rất cần thiết.",
+      "grid": [
+        ["Ý", "C", "H", "Í", "A", "B", "C", "D", "E", "F"],
+        ["K", "I", "Ê", "N", "C", "Ư", "Ờ", "N", "G", "G"],
+        ["T", "Ự", "C", "Ư", "Ờ", "N", "G", "H", "I", "J"],
+        ["Đ", "O", "À", "N", "K", "Ế", "T", "K", "L", "M"],
+        ["Đ", "Ạ", "O", "Đ", "Ứ", "C", "N", "O", "P", "Q"],
+        ["R", "S", "T", "U", "V", "W", "X", "Y", "Z", "A"],
+        ["B", "C", "D", "E", "F", "G", "H", "I", "J", "K"],
+        ["L", "M", "N", "O", "P", "Q", "R", "S", "T", "U"],
+        ["V", "W", "X", "Y", "Z", "A", "B", "C", "D", "E"],
+        ["F", "G", "H", "I", "J", "K", "L", "M", "N", "O"]
+      ],
+      "keywords": [
+        {
+          "word": "Ý CHÍ",
+          "cells": [0, 1, 2, 3]
+        },
+        {
+          "word": "KIÊN CƯỜNG",
+          "cells": [10, 11, 12, 13, 14, 15, 16, 17, 18]
+        },
+        {
+          "word": "TỰ CƯỜNG",
+          "cells": [20, 21, 22, 23, 24, 25, 26]
+        },
+        {
+          "word": "ĐOÀN KẾT",
+          "cells": [30, 31, 32, 33, 34, 35, 36]
+        },
+        {
+          "word": "ĐẠO ĐỨC",
+          "cells": [40, 41, 42, 43, 44, 45, 46]
+        }
+      ]
+    }
+  ]
+}
