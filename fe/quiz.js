@@ -6,7 +6,8 @@ const state = {
   participant: null,
   toastTimer: null,
   timeLeft: 300, // 5 minutes timer
-  timerInterval: null
+  timerInterval: null,
+  startTime: null
 };
 
 const els = {
@@ -67,6 +68,7 @@ function restoreParticipant() {
 function startTimer() {
   clearInterval(state.timerInterval);
   state.timeLeft = 300; // Reset to 5 mins
+  state.startTime = Date.now();
   
   if (!els.timerElement) return;
 
@@ -361,12 +363,14 @@ async function submitQuiz() {
   }
 
   try {
+    const duration = state.startTime ? Math.floor((Date.now() - state.startTime) / 1000) : 0;
     const response = await fetch('/api/submit/quiz', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         participantId: state.participant?.id,
-        answers: state.answers
+        answers: state.answers,
+        duration: duration
       })
     });
     

@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let foundWords = [];
   let foundCells = [];
   let failCount = 0;
+  let hintCount = 0;
+  let startTime = null;
 
   let toastTimeout = null;
   
@@ -82,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       
+      startTime = Date.now();
       loadRound(0);
     } catch(err) {
       console.error(err);
@@ -234,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       
       if (data.hintIndex !== null) {
+        hintCount++;
         const hintCell = puzzleGrid.children[data.hintIndex];
         hintCell.style.animation = 'none';
         hintCell.offsetHeight; // trigger reflow
@@ -258,6 +262,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   restartGameBtn.addEventListener('click', () => {
     failCount = 0;
+    hintCount = 0;
+    startTime = Date.now();
     saveFailCount();
     updateFailCounter();
     playPanel.classList.remove('hidden');
@@ -282,10 +288,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function finishGame() {
     try {
+      const duration = startTime ? Math.floor((Date.now() - startTime) / 1000) : 0;
       const res = await fetch('/api/submit/matrix', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ participantId: participant.id })
+        body: JSON.stringify({
+          participantId: participant.id,
+          duration: duration,
+          hintUsedCount: hintCount
+        })
       });
       const data = await res.json();
       if (data.completed) {

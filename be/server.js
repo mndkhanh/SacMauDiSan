@@ -13,6 +13,8 @@ const DATA_PATH = path.join(ROOT, 'data', 'game-data.json');
 const PARTICIPANTS_PATH = path.join(ROOT, 'data', 'participants.json');
 const QUIZ_DATA_PATH = path.join(ROOT, 'data', 'game1-quiz.json');
 const MATRIX_DATA_PATH = path.join(ROOT, 'data', 'game2-matrix.json');
+const CROSSWORD_DATA_PATH = path.join(ROOT, 'data', 'game3-crossword.json');
+const CHALLENGE_DATA_PATH = path.join(ROOT, 'data', 'game4-challenge.json');
 
 const attempts = [];
 
@@ -34,10 +36,69 @@ function readMatrixData() {
   return JSON.parse(fs.readFileSync(MATRIX_DATA_PATH, 'utf8'));
 }
 
+function readCrosswordData() {
+  return JSON.parse(fs.readFileSync(CROSSWORD_DATA_PATH, 'utf8'));
+}
+
+function readChallengeData() {
+  return JSON.parse(fs.readFileSync(CHALLENGE_DATA_PATH, 'utf8'));
+}
+
 function readParticipants() {
   ensureJsonFile(PARTICIPANTS_PATH, { participants: [] });
   const data = JSON.parse(fs.readFileSync(PARTICIPANTS_PATH, 'utf8'));
-  return Array.isArray(data.participants) ? data.participants : [];
+  const participants = Array.isArray(data.participants) ? data.participants : [];
+  
+  let dirty = false;
+  participants.forEach(p => {
+    let updated = false;
+    if (!p.scores) {
+      p.scores = {};
+      updated = true;
+    }
+    if (!p.durations) {
+      p.durations = {};
+      updated = true;
+    }
+    p.completedRoundIds = p.completedRoundIds || [];
+    p.completedRoundIds.forEach(roundId => {
+      if (p.scores[roundId] === undefined) {
+        let points = 0;
+        if (roundId === 'quiz-dan-chu') points = 100;
+        else if (roundId === 'matrix-trung-hieu') points = 100;
+        else if (roundId === 'o-chu-tu-than') points = 150;
+        else if (roundId === 'thu-thach-tri-quoc') points = 200;
+        
+        p.scores[roundId] = points;
+        updated = true;
+      }
+      if (p.durations[roundId] === undefined) {
+        p.durations[roundId] = 180; // default 3 minutes for legacy completes
+        updated = true;
+      }
+    });
+    const calculatedTotal = Object.values(p.scores).reduce((sum, s) => sum + s, 0);
+    if (p.totalScore !== calculatedTotal) {
+      p.totalScore = calculatedTotal;
+      updated = true;
+    }
+    const calculatedDuration = Object.values(p.durations).reduce((sum, d) => sum + d, 0);
+    if (p.totalDuration !== calculatedDuration) {
+      p.totalDuration = calculatedDuration;
+      updated = true;
+    }
+    if (updated) {
+      dirty = true;
+    }
+  });
+
+  if (dirty) {
+    const tempPath = `${PARTICIPANTS_PATH}.tmp`;
+    fs.writeFileSync(tempPath, JSON.stringify({ participants }, null, 2), 'utf8');
+    fs.renameSync(tempPath, PARTICIPANTS_PATH);
+  }
+
+  return participants;
 }
 
 function writeParticipants(participants) {
@@ -244,6 +305,87 @@ function publicMatrixPayload() {
   };
 }
 
+function publicCrosswordPayload() {
+  const data = readCrosswordData();
+  return {
+    title: data.title,
+    subtitle: data.subtitle,
+    hiddenKeywordColIndex: data.hiddenKeywordColIndex,
+    hiddenKeywordLength: data.hiddenKeyword.length,
+    rows: data.rows.map(r => ({
+      id: r.id,
+      rowIndex: r.rowIndex,
+      clue: r.clue,
+      answerLength: r.answer.length,
+      highlightCol: r.highlightCol
+    }))
+  };
+}
+
+function publicChallengePayload() {
+  const data = readChallengeData();
+  return {
+    title: data.title,
+    subtitle: data.subtitle,
+    stages: {
+      stageA: {
+        type: data.stages.stageA.type,
+        instruction: data.stages.stageA.instruction,
+        image: data.stages.stageA.image,
+        hint: data.stages.stageA.hint,
+        context: data.stages.stageA.context
+      },
+      stageB: {
+        type: data.stages.stageB.type,
+        instruction: data.stages.stageB.instruction,
+        poem: data.stages.stageB.poem,
+        hint: data.stages.stageB.hint,
+        context: data.stages.stageB.context
+      },
+      stageC: {
+        type: data.stages.stageC.type,
+        instruction: data.stages.stageC.instruction,
+        question: data.stages.stageC.question,
+        hint: data.stages.stageC.hint,
+        context: data.stages.stageC.context
+      },
+      stageD: {
+        type: data.stages.stageD.type,
+        instruction: data.stages.stageD.instruction,
+        events: shuffle(data.stages.stageD.events.map(e => ({
+          id: e.id,
+          text: e.text
+        }))),
+        hint: data.stages.stageD.hint
+      }
+    }
+  };
+}
+
+function checkCrossword(crosswordData, body) {
+  if (body.type === 'row') {
+    const row = crosswordData.rows.find(r => r.rowIndex === Number(body.rowIndex));
+    if (!row) return { error: 'Không tìm thấy hàng này.' };
+    
+    const userAns = cleanText(body.answer).toUpperCase();
+    const isCorrect = userAns === row.answer.toUpperCase();
+    
+    return {
+      correct: isCorrect,
+      context: isCorrect ? row.context : null
+    };
+  } else if (body.type === 'keyword') {
+    const userKeyword = cleanText(body.keyword).toUpperCase();
+    const isCorrect = userKeyword === crosswordData.hiddenKeyword.toUpperCase();
+    
+    return {
+      correct: isCorrect
+    };
+  }
+  
+  return { error: 'Kiểu kiểm tra không hợp lệ.' };
+}
+
 function checkQuiz(quizData, userAnswers) {
   const results = {};
   let correctCount = 0;
@@ -316,6 +458,45 @@ function checkRound(round, answers) {
   };
 }
 
+const sseClients = new Set();
+
+function getLeaderboardData() {
+  const participants = readParticipants();
+  return participants
+    .map(p => ({
+      id: p.id,
+      fullName: p.fullName,
+      studentId: p.studentId,
+      scores: p.scores || {},
+      durations: p.durations || {},
+      totalScore: p.totalScore || 0,
+      totalDuration: p.totalDuration || 0,
+      completedRoundsCount: p.completedRoundIds ? p.completedRoundIds.length : 0,
+      lastCompletedAt: p.lastCompletedAt || p.updatedAt || p.createdAt
+    }))
+    .sort((a, b) => {
+      if (b.totalScore !== a.totalScore) {
+        return b.totalScore - a.totalScore;
+      }
+      if (a.totalDuration !== b.totalDuration) {
+        return a.totalDuration - b.totalDuration;
+      }
+      return new Date(a.lastCompletedAt) - new Date(b.lastCompletedAt);
+    });
+}
+
+function broadcastLeaderboard() {
+  const data = getLeaderboardData();
+  const payload = `data: ${JSON.stringify(data)}\n\n`;
+  for (const client of sseClients) {
+    try {
+      client.write(payload);
+    } catch (e) {
+      console.error('SSE client write error:', e);
+    }
+  }
+}
+
 function registerParticipant(body) {
   const fullName = cleanText(body.fullName, 120);
   const studentId = normalizeStudentId(body.studentId);
@@ -338,6 +519,10 @@ function registerParticipant(body) {
       fullName,
       studentId,
       completedRoundIds: [],
+      scores: {},
+      durations: {},
+      totalScore: 0,
+      totalDuration: 0,
       createdAt: now,
       updatedAt: now,
       lastCompletedAt: null
@@ -346,6 +531,7 @@ function registerParticipant(body) {
   }
 
   writeParticipants(participants);
+  broadcastLeaderboard();
   return { participant };
 }
 
@@ -358,10 +544,11 @@ function deleteParticipantById(participantId) {
 
   const [deletedParticipant] = participants.splice(index, 1);
   writeParticipants(participants);
+  broadcastLeaderboard();
   return deletedParticipant;
 }
 
-function markParticipantRoundCompleted(participantId, roundId) {
+function markParticipantRoundCompleted(participantId, roundId, score = 0, duration = 0) {
   if (!participantId || !roundId) return null;
 
   const participants = readParticipants();
@@ -370,14 +557,28 @@ function markParticipantRoundCompleted(participantId, roundId) {
 
   const now = new Date().toISOString();
   participant.completedRoundIds = Array.isArray(participant.completedRoundIds) ? participant.completedRoundIds : [];
+  participant.scores = participant.scores || {};
+  participant.durations = participant.durations || {};
 
   if (!participant.completedRoundIds.includes(roundId)) {
     participant.completedRoundIds.push(roundId);
   }
 
+  participant.scores[roundId] = Math.max(participant.scores[roundId] || 0, score);
+  
+  if (participant.durations[roundId] === undefined) {
+    participant.durations[roundId] = duration;
+  } else {
+    participant.durations[roundId] = Math.min(participant.durations[roundId], duration || Infinity) || duration;
+  }
+
+  participant.totalScore = Object.values(participant.scores).reduce((sum, s) => sum + s, 0);
+  participant.totalDuration = Object.values(participant.durations).reduce((sum, d) => sum + d, 0);
+
   participant.updatedAt = now;
   participant.lastCompletedAt = now;
   writeParticipants(participants);
+  broadcastLeaderboard();
   return participant;
 }
 
@@ -399,6 +600,26 @@ async function handleApi(req, res) {
     return;
   }
 
+  if (req.method === 'GET' && url.pathname === '/api/leaderboard/live') {
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': '*'
+    });
+    
+    const initialData = getLeaderboardData();
+    res.write(`data: ${JSON.stringify(initialData)}\n\n`);
+    
+    sseClients.add(res);
+    
+    req.on('close', () => {
+      sseClients.delete(res);
+      res.end();
+    });
+    return;
+  }
+
   if (req.method === 'GET' && url.pathname === '/api/game') {
     sendJson(res, 200, publicGamePayload());
     return;
@@ -411,6 +632,16 @@ async function handleApi(req, res) {
 
   if (req.method === 'GET' && url.pathname === '/api/game/matrix') {
     sendJson(res, 200, publicMatrixPayload());
+    return;
+  }
+
+  if (req.method === 'GET' && url.pathname === '/api/game/crossword') {
+    sendJson(res, 200, publicCrosswordPayload());
+    return;
+  }
+
+  if (req.method === 'GET' && url.pathname === '/api/game/challenge') {
+    sendJson(res, 200, publicChallengePayload());
     return;
   }
 
@@ -508,7 +739,8 @@ async function handleApi(req, res) {
       let participant = null;
       const passed = result.score >= 80;
       if (passed && body.participantId) {
-        participant = markParticipantRoundCompleted(body.participantId, 'quiz-dan-chu');
+        const duration = Number(body.duration) || 0;
+        participant = markParticipantRoundCompleted(body.participantId, 'quiz-dan-chu', result.score, duration);
       }
 
       const attempt = {
@@ -598,7 +830,10 @@ async function handleApi(req, res) {
       const body = await parseBody(req);
       let participant = null;
       if (body.participantId) {
-        participant = markParticipantRoundCompleted(body.participantId, 'matrix-trung-hieu');
+        const duration = Number(body.duration) || 0;
+        const hintCount = Number(body.hintUsedCount) || 0;
+        const matrixScore = Math.max(40, 100 - hintCount * 20);
+        participant = markParticipantRoundCompleted(body.participantId, 'matrix-trung-hieu', matrixScore, duration);
       }
       
       const attempt = {
@@ -615,6 +850,83 @@ async function handleApi(req, res) {
 
       sendJson(res, 200, {
         completed: true,
+        participant: participant ? participantPublicPayload(participant, readGameData().rounds.length) : null
+      });
+    } catch (error) {
+      sendJson(res, 400, { error: 'Dữ liệu gửi lên không hợp lệ.' });
+    }
+    return;
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/submit/crossword') {
+    try {
+      const body = await parseBody(req);
+      const crosswordData = readCrosswordData();
+      const result = checkCrossword(crosswordData, body);
+      
+      if (result.error) {
+        sendJson(res, 400, { error: result.error });
+        return;
+      }
+      
+      let participant = null;
+      if (body.type === 'keyword' && result.correct && body.participantId) {
+        const duration = Number(body.duration) || 0;
+        const failCount = Number(body.failCount) || 0;
+        const crosswordScore = Math.max(100, 150 - failCount * 10);
+        participant = markParticipantRoundCompleted(body.participantId, 'o-chu-tu-than', crosswordScore, duration);
+      }
+      
+      sendJson(res, 200, {
+        ...result,
+        participant: participant ? participantPublicPayload(participant, readGameData().rounds.length) : null
+      });
+    } catch (error) {
+      sendJson(res, 400, { error: 'Dữ liệu gửi lên không hợp lệ.' });
+    }
+    return;
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/submit/challenge') {
+    try {
+      const body = await parseBody(req);
+      const challengeData = readChallengeData();
+      const stageId = body.stageId;
+      
+      if (!challengeData.stages[stageId]) {
+        sendJson(res, 404, { error: 'Không tìm thấy chặng này.' });
+        return;
+      }
+      
+      const stage = challengeData.stages[stageId];
+      let correct = false;
+      
+      if (stageId === 'stageA' || stageId === 'stageB' || stageId === 'stageC') {
+        const userAns = cleanText(body.answer).toUpperCase();
+        correct = userAns === stage.answer.toUpperCase();
+      } else if (stageId === 'stageD') {
+        const userOrder = body.order;
+        const correctOrder = [...stage.events]
+          .sort((a, b) => a.year - b.year)
+          .map(e => e.id);
+          
+        correct = Array.isArray(userOrder) && 
+                  userOrder.length === correctOrder.length && 
+                  userOrder.every((val, index) => val === correctOrder[index]);
+      }
+      
+      let participant = null;
+      if (stageId === 'stageD' && correct && body.participantId) {
+        const duration = Number(body.duration) || 0;
+        const hintCount = Number(body.hintUsedCount) || 0;
+        const failCount = Number(body.failCount) || 0;
+        const challengeScore = Math.max(80, 200 - hintCount * 25 - failCount * 5);
+        participant = markParticipantRoundCompleted(body.participantId, 'thu-thach-tri-quoc', challengeScore, duration);
+      }
+      
+      sendJson(res, 200, {
+        correct,
+        context: correct ? (stage.context || null) : null,
         participant: participant ? participantPublicPayload(participant, readGameData().rounds.length) : null
       });
     } catch (error) {
@@ -682,6 +994,36 @@ const server = http.createServer((req, res) => {
     const matrixPath = path.join(PUBLIC_DIR, 'matrix.html');
     fs.readFile(matrixPath, (err, data) => {
       if (err) { res.writeHead(404); res.end('Matrix not found'); return; }
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(data);
+    });
+    return;
+  }
+  // Serve crossword.html for the /crossword route
+  if (url.pathname === '/crossword') {
+    const crosswordPath = path.join(PUBLIC_DIR, 'crossword.html');
+    fs.readFile(crosswordPath, (err, data) => {
+      if (err) { res.writeHead(404); res.end('Crossword not found'); return; }
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(data);
+    });
+    return;
+  }
+  // Serve challenge.html for the /challenge route
+  if (url.pathname === '/challenge') {
+    const challengePath = path.join(PUBLIC_DIR, 'challenge.html');
+    fs.readFile(challengePath, (err, data) => {
+      if (err) { res.writeHead(404); res.end('Challenge not found'); return; }
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(data);
+    });
+    return;
+  }
+  // Serve leaderboard.html for the /leaderboard route
+  if (url.pathname === '/leaderboard') {
+    const leaderboardPath = path.join(PUBLIC_DIR, 'leaderboard.html');
+    fs.readFile(leaderboardPath, (err, data) => {
+      if (err) { res.writeHead(404); res.end('Leaderboard not found'); return; }
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
       res.end(data);
     });

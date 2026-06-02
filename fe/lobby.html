@@ -361,6 +361,112 @@
     }
     .fade-in { opacity: 0; }
     .fade-in.visible { animation: fadeUp 0.6s ease forwards; }
+
+    /* ── Leaderboard summary panel ── */
+    .leaderboard-summary {
+      background: var(--surface-container);
+      border: 1px solid var(--secondary-container);
+      padding: 2.5rem;
+      margin: 4rem 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    .leaderboard-summary__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--surface-variant);
+      padding-bottom: 1rem;
+    }
+    .leaderboard-summary__title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin: 0;
+    }
+    .leaderboard-summary__live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #15803d;
+      background: rgba(22, 163, 74, 0.1);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(22, 163, 74, 0.2);
+    }
+    .leaderboard-summary__pulse {
+      width: 8px;
+      height: 8px;
+      background: #16a34a;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse-green 2s infinite ease-in-out;
+    }
+    @keyframes pulse-green {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.5; }
+    }
+    .leaderboard-summary__table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .leaderboard-summary__th {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--on-surface-variant);
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--surface-variant);
+    }
+    .leaderboard-summary__tr {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      font-size: 0.9rem;
+    }
+    .leaderboard-summary__tr:last-child {
+      border-bottom: none;
+    }
+    .leaderboard-summary__td {
+      padding: 1rem;
+      color: var(--on-surface);
+    }
+    .leaderboard-summary__td--rank {
+      font-weight: 700;
+      width: 60px;
+      text-align: center;
+    }
+    .leaderboard-summary__td--name {
+      font-weight: 600;
+    }
+    .leaderboard-summary__td--score {
+      font-weight: 800;
+      color: var(--primary);
+      text-align: right;
+      font-size: 1rem;
+    }
+    .leaderboard-summary__footer {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .leaderboard-summary__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .leaderboard-summary__link:hover {
+      color: var(--primary-container);
+      border-bottom-color: var(--primary-container);
+    }
   </style>
 </head>
 
@@ -374,7 +480,7 @@
         <a href="/">Hành Trình</a>
         <a href="/lobby" class="active">Phòng Chờ Trò Chơi</a>
         <a href="#">Thư Viện</a>
-        <a href="#">Vinh Danh</a>
+        <a href="/leaderboard">Vinh Danh</a>
       </nav>
       <div class="navbar__actions">
         <div class="navbar__user">
@@ -408,6 +514,41 @@
       <div id="gamesGrid" class="games-grid fade-in">
         <!-- Dynamic game cards injected here -->
       </div>
+
+      <!-- ── Leaderboard Summary Panel ── -->
+      <section class="leaderboard-summary fade-in">
+        <div class="leaderboard-summary__header">
+          <h2 class="leaderboard-summary__title">Top 5 Anh Hùng Di Sản</h2>
+          <div class="leaderboard-summary__live-indicator">
+            <span class="leaderboard-summary__pulse"></span>
+            <span>Trực tuyến</span>
+          </div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="leaderboard-summary__table">
+            <thead>
+              <tr>
+                <th class="leaderboard-summary__th" style="text-align:center;">Hạng</th>
+                <th class="leaderboard-summary__th">Họ và Tên</th>
+                <th class="leaderboard-summary__th">MSSV</th>
+                <th class="leaderboard-summary__th" style="text-align:center;">Tiến trình</th>
+                <th class="leaderboard-summary__th" style="text-align:right;">Tổng Điểm</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardSummaryRows">
+              <tr>
+                <td colspan="5" style="text-align:center; padding: 2rem; color: var(--on-surface-variant); italic">Đang tải bảng xếp hạng...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="leaderboard-summary__footer">
+          <a href="/leaderboard" class="leaderboard-summary__link">
+            Xem toàn bộ bảng xếp hạng
+            <span class="material-symbols-outlined" style="font-size: 1.1rem;">arrow_forward</span>
+          </a>
+        </div>
+      </section>
 
       <!-- ── Quote ── -->
       <section class="quote-section fade-in">
@@ -495,19 +636,9 @@
 
       const completed = freshParticipant.completedRoundIds || [];
       const game1Completed = completed.includes('quiz-dan-chu');
-      
-      // Game 2: Matrix
       const game2Completed = completed.includes('matrix-trung-hieu');
-      
-      // Game 3: Matching (find the word on the column)
-      const matchingRoundIds = [
-        'round-dao-duc-1', 'round-can-kiem-liem-chinh', 'round-dao-duc-la-goc',
-        'round-nguyen-tac-dao-duc', 'round-van-hoa-quan-he', 'round-vai-tro-van-hoa',
-        'round-con-nguoi', 'round-hien-nay', 'round-doan-ket-quoc-te', 'round-moc-thoi-ky'
-      ];
-      const completedMatchingCount = matchingRoundIds.filter(id => completed.includes(id)).length;
-      const matchingProgressPct = Math.round((completedMatchingCount / matchingRoundIds.length) * 100);
-      const game3Completed = completedMatchingCount === matchingRoundIds.length;
+      const game3Completed = completed.includes('o-chu-tu-than');
+      const game4Completed = completed.includes('thu-thach-tri-quoc');
 
       const grid = document.getElementById('gamesGrid');
       grid.innerHTML = `
@@ -598,12 +729,12 @@
           </div>
         </div>
 
-        <!-- Card 3: Cần Kiệm Liêm Chính -->
+        <!-- Card 3: Ô Chữ Tu Thân -->
         <div class="game-card ${!game2Completed ? 'game-card--locked' : (game3Completed ? '' : 'game-card--active')}">
           <div class="game-card__top">
             <div>
-              <span class="game-card__level game-card__level--3">CẤP ĐỘ 03</span>
-              <h2 class="game-card__name">Cần Kiệm Liêm Chính</h2>
+              <span class="game-card__level game-card__level--2" style="background: var(--primary-container); color: var(--on-primary);">CẤP ĐỘ 03</span>
+              <h2 class="game-card__name">Ô Chữ Tu Thân</h2>
             </div>
             ${!game2Completed ? `
               <div class="badge badge--locked">
@@ -621,7 +752,7 @@
               </div>
             `)}
           </div>
-          <p class="game-card__desc">Game nối từ trên cột kiến thức Tư tưởng Hồ Chí Minh về đạo đức, văn hóa và con người. Vượt qua 10 vòng chơi ghép cặp đầy thử thách.</p>
+          <p class="game-card__desc">Giải ô chữ đố về các bài học rèn luyện đạo đức cốt lõi theo tư tưởng Bác Hồ, từ đó tìm ra từ khóa ẩn chứa sâu sắc.</p>
           <div class="game-card__footer ${!game2Completed ? 'game-card__footer--locked' : ''}">
             ${!game2Completed ? `
               <div class="footer-lock">
@@ -634,43 +765,61 @@
                   <span class="material-symbols-outlined" style="color: var(--success); font-size:1.1rem; font-variation-settings:'FILL' 1;">check_circle</span>
                   <span style="color: var(--success); font-weight:700;">Hoàn thành 100%</span>
                 </div>
-                <a class="btn-outline" href="/game">Xem lại &rarr;</a>
+                <a class="btn-outline" href="/crossword">Xem lại &rarr;</a>
               </div>
             ` : `
-              <div class="footer-progress">
-                <div class="footer-progress__labels">
-                  <span class="footer-progress__label">Tiến độ: ${completedMatchingCount}/10 vòng</span>
-                  <span class="footer-progress__pct">${matchingProgressPct}%</span>
-                </div>
-                <div class="progress-bar" style="margin-bottom:12px;">
-                  <div class="progress-bar__fill" style="width:${matchingProgressPct}%;"></div>
-                </div>
-                <a class="btn-primary" href="/game">
-                  Tiếp tục hành trình
-                  <span class="material-symbols-outlined" style="font-size:1rem;">play_arrow</span>
-                </a>
-              </div>
+              <a class="btn-primary" href="/crossword">
+                Bắt đầu thử thách
+                <span class="material-symbols-outlined" style="font-size:1rem;">play_arrow</span>
+              </a>
             `)}
           </div>
         </div>
 
-        <!-- Card 4 — Locked Placeholder -->
-        <div class="game-card game-card--locked">
+        <!-- Card 4: Thử Thách Trị Quốc -->
+        <div class="game-card ${!game3Completed ? 'game-card--locked' : (game4Completed ? '' : 'game-card--active')}">
           <div class="game-card__top">
             <div>
-              <span class="game-card__level game-card__level--4">CẤP ĐỘ 04</span>
+              <span class="game-card__level game-card__level--3" style="background: var(--surface-variant); color: var(--on-surface-variant);">CẤP ĐỘ 04</span>
               <h2 class="game-card__name">Thử Thách Trị Quốc</h2>
             </div>
-            <div class="badge badge--locked">
-              <span class="material-symbols-outlined">lock</span>
-            </div>
+            ${!game3Completed ? `
+              <div class="badge badge--locked">
+                <span class="material-symbols-outlined">lock</span>
+              </div>
+            ` : (game4Completed ? `
+              <div class="badge badge--done">
+                <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">check_circle</span>
+                Hoàn thành
+              </div>
+            ` : `
+              <div class="badge badge--active">
+                <span class="material-symbols-outlined" style="font-size:0.85rem;">hourglass_empty</span>
+                Đang diễn ra
+              </div>
+            `)}
           </div>
-          <p class="game-card__desc">Chuỗi câu đố liên hoàn hóc búa nhất: nhìn hình đoán tên, đoán keyword từ đoạn thơ, đoán số liệu lịch sử về Bác Hồ.</p>
-          <div class="game-card__footer game-card__footer--locked">
-            <div class="footer-lock">
-              <span class="material-symbols-outlined" style="color:var(--primary);">lock_clock</span>
-              <span class="footer-lock__text">Yêu cầu hoàn thành Cấp độ 03</span>
-            </div>
+          <p class="game-card__desc">Chuỗi câu đố liên hoàn đầy thử thách nhất: nhìn ảnh đoán tên, giải thơ acrostic đoán từ khóa, đoán dấu mốc con số lịch sử và sắp xếp sự kiện.</p>
+          <div class="game-card__footer ${!game3Completed ? 'game-card__footer--locked' : ''}">
+            ${!game3Completed ? `
+              <div class="footer-lock">
+                <span class="material-symbols-outlined" style="color:var(--primary);">lock_clock</span>
+                <span class="footer-lock__text">Yêu cầu hoàn thành Cấp độ 03</span>
+              </div>
+            ` : (game4Completed ? `
+              <div class="footer-done">
+                <div class="footer-done__time">
+                  <span class="material-symbols-outlined" style="color: var(--success); font-size:1.1rem; font-variation-settings:'FILL' 1;">check_circle</span>
+                  <span style="color: var(--success); font-weight:700;">Hoàn thành 100%</span>
+                </div>
+                <a class="btn-outline" href="/challenge">Xem lại &rarr;</a>
+              </div>
+            ` : `
+              <a class="btn-primary" href="/challenge">
+                Bắt đầu thử thách
+                <span class="material-symbols-outlined" style="font-size:1rem;">play_arrow</span>
+              </a>
+            `)}
           </div>
         </div>
       `;
@@ -689,6 +838,64 @@
 
     updateLobby();
     document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+    // ── Live Top 5 Leaderboard updates ──
+    const summaryRows = document.getElementById('leaderboardSummaryRows');
+    if (summaryRows) {
+      const leaderboardSource = new EventSource('/api/leaderboard/live');
+      
+      leaderboardSource.onmessage = (event) => {
+        try {
+          const list = JSON.parse(event.data);
+          const top5 = list.slice(0, 5);
+          
+          if (top5.length === 0) {
+            summaryRows.innerHTML = `
+              <tr>
+                <td colspan="5" style="text-align:center; padding: 2rem; color: var(--on-surface-variant); italic">Chưa có người chơi tham gia.</td>
+              </tr>
+            `;
+            return;
+          }
+          
+          summaryRows.innerHTML = top5.map((p, idx) => {
+            let medal = '';
+            if (idx === 0) medal = '🥇 ';
+            else if (idx === 1) medal = '🥈 ';
+            else if (idx === 2) medal = '🥉 ';
+            
+            const progressPct = Math.round((p.completedRoundsCount / 4) * 100);
+            
+            return `
+              <tr class="leaderboard-summary__tr" id="summary-row-${p.id}">
+                <td class="leaderboard-summary__td leaderboard-summary__td--rank">${medal || (idx + 1)}</td>
+                <td class="leaderboard-summary__td leaderboard-summary__td--name">${escapeHTML(p.fullName)}</td>
+                <td class="leaderboard-summary__td font-mono" style="color: var(--on-surface-variant);">${escapeHTML(p.studentId)}</td>
+                <td class="leaderboard-summary__td" style="text-align:center;">
+                  <div style="font-size: 0.8rem; font-weight:700; color: var(--secondary);">${p.completedRoundsCount}/4 cấp độ (${progressPct}%)</div>
+                </td>
+                <td class="leaderboard-summary__td leaderboard-summary__td--score">${p.totalScore}</td>
+              </tr>
+            `;
+          }).join('');
+        } catch (e) {
+          console.error('Error rendering summary leaderboard:', e);
+        }
+      };
+      
+      leaderboardSource.onerror = (err) => {
+        console.error('Lobby Leaderboard SSE Error:', err);
+      };
+    }
+
+    function escapeHTML(value) {
+      return String(value || '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
   </script>
 </body>
 </html>

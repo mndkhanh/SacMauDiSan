@@ -1,0 +1,48 @@
+{
+  "title": "Ô Chữ Tu Thân, Chính Tâm",
+  "subtitle": "Giải mã các từ khóa đạo đức để tìm ra từ khóa bí mật",
+  "hiddenKeyword": "BACHO",
+  "hiddenKeywordColIndex": 3,
+  "rows": [
+    {
+      "id": "row-0",
+      "rowIndex": 0,
+      "clue": "Nơi Nguyễn Tất Thành ra đi tìm đường cứu nước năm 1911 (viết tắt hoặc tên rút gọn: Bến...)",
+      "answer": "BEN",
+      "highlightCol": 0,
+      "context": "Ngày 5/6/1911, người thanh niên yêu nước Nguyễn Tất Thành lấy tên Văn Ba, lên con tàu Amiral Latouche-Tréville rời Bến Nhà Rồng ra đi tìm con đường cứu nước."
+    },
+    {
+      "id": "row-1",
+      "rowIndex": 1,
+      "clue": "Đức tính siêng năng, chăm chỉ, lao động có kế hoạch, năng suất và hiệu quả.",
+      "answer": "CAN",
+      "highlightCol": 1,
+      "context": "Cần là siêng năng, chăm chỉ, cố gắng dẻo dai. Theo Bác Hồ, Cần mà không Kiệm thì làm chừng nào xào chừng nấy."
+    },
+    {
+      "id": "row-2",
+      "rowIndex": 2,
+      "clue": "Từ đầu tiên trong cụm từ '... công vô tư' — một chuẩn mực đạo đức cách mạng.",
+      "answer": "CHI",
+      "highlightCol": 0,
+      "context": "Chí công vô tư là đem lòng chí công, không thiên vị, không tư lợi, đặt lợi ích của Đảng, của nhân dân lên trên hết."
+    },
+    {
+      "id": "row-3",
+      "rowIndex": 3,
+      "clue": "Hồ Chí Minh từng nói: '... không bao giờ cùng', khuyên chúng ta phải trau dồi tri thức suốt đời.",
+      "answer": "HOC",
+      "highlightCol": 0,
+      "context": "Hồ Chí Minh xem việc học tập là một nhiệm vụ suốt đời, học ở trường, học ở sách vở, học lẫn nhau và học ở nhân dân."
+    },
+    {
+      "id": "row-4",
+      "rowIndex": 4,
+      "clue": "Không có gì quý hơn độc lập ...",
+      "answer": "TUDO",
+      "highlightCol": 3,
+      "context": "Lời tuyên ngôn đúc kết chân lý lịch sử vĩ đại của dân tộc Việt Nam được Chủ tịch Hồ Chí Minh khẳng định trong cuộc kháng chiến chống Mỹ."
+    }
+  ]
+}

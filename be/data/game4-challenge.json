@@ -1,0 +1,45 @@
+{
+  "title": "Thử Thách Trị Quốc, Bình Thiên Hạ",
+  "subtitle": "Chuỗi thử thách trí tuệ liên hoàn về cuộc đời hoạt động cách mạng của Bác",
+  "stages": {
+    "stageA": {
+      "type": "image-guess",
+      "instruction": "Nhìn hình ảnh dưới đây và đoán địa danh/sự kiện lịch sử liên quan đến Bác Hồ (Viết hoa không dấu).",
+      "image": "./assets/mountains.jpg",
+      "answer": "PAC BO",
+      "hint": "Nơi đây Bác Hồ đã sống và làm việc sau khi về nước năm 1941, có dòng suối Lê-nin và núi Các Mác.",
+      "context": "Pác Bó (Cao Bằng) là nơi Chủ tịch Hồ Chí Minh trở về Tổ quốc trực tiếp lãnh đạo phong trào cách mạng Việt Nam vào mùa xuân năm 1941."
+    },
+    "stageB": {
+      "type": "poetry-acrostic",
+      "instruction": "Đọc đoạn thơ sau và ghép chữ cái đầu của mỗi dòng thơ để giải mã từ khóa bí mật (Viết hoa không dấu).",
+      "poem": [
+        "Dìu dắt dân tộc qua gian khó,",
+        "Âm thầm hiến dâng cả cuộc đời,",
+        "Nước nhà độc lập tự do sáng."
+      ],
+      "answer": "DAN",
+      "hint": "Từ khóa gồm 3 chữ cái nói về lực lượng to lớn, giữ vai trò làm chủ đất nước.",
+      "context": "Tư tưởng Hồ Chí Minh nhấn mạnh: Trong bầu trời không gì quý bằng nhân dân, trong thế giới không gì mạnh bằng lực lượng đoàn kết của nhân dân."
+    },
+    "stageC": {
+      "type": "number-trivia",
+      "instruction": "Hãy trả lời con số lịch sử chính xác cho câu hỏi dưới đây.",
+      "question": "Nguyễn Tất Thành rời Bến cảng Nhà Rồng ra đi tìm đường cứu nước vào năm ____.",
+      "answer": "1911",
+      "hint": "Con số thuộc đầu thế kỷ 20, cách năm sinh của Người (1890) đúng 21 năm.",
+      "context": "Ngày 5/6/1911, Nguyễn Tất Thành rời Tổ quốc, mở đầu hành trình bôn ba tìm đường cứu nước kéo dài 30 năm."
+    },
+    "stageD": {
+      "type": "chronological-order",
+      "instruction": "Sắp xếp các sự kiện lịch sử dưới đây theo đúng trình tự thời gian xảy ra (Kéo thả hoặc click chọn thứ tự).",
+      "events": [
+        { "id": "e1", "text": "Nguyễn Tất Thành rời Bến cảng Nhà Rồng ra đi tìm đường cứu nước", "year": 1911 },
+        { "id": "e2", "text": "Nguyễn Ái Quốc gửi Bản Yêu sách của nhân dân An Nam tới Hội nghị Versailles", "year": 1919 },
+        { "id": "e3", "text": "Hồ Chí Minh thành lập Đảng Cộng sản Việt Nam", "year": 1930 },
+        { "id": "e4", "text": "Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập tại Quảng trường Ba Đình", "year": 1945 }
+      ],
+      "hint": "Hành trình ra đi (1911) -> Yêu sách Versailles (1919) -> Sáng lập Đảng (1930) -> Đọc Tuyên ngôn độc lập (1945)."
+    }
+  }
+}

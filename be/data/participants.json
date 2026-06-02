@@ -1,17 +1,58 @@
 {
   "participants": [
     {
+      "id": "802816ed-72c7-4b30-8f53-51c4ed6c6762",
+      "fullName": "Mai Minh Duc",
+      "studentId": "SE196484",
+      "completedRoundIds": [
+        "quiz-dan-chu",
+        "matrix-trung-hieu",
+        "o-chu-tu-than",
+        "thu-thach-tri-quoc"
+      ],
+      "createdAt": "2026-06-02T02:05:09.317Z",
+      "updatedAt": "2026-06-02T02:45:03.349Z",
+      "lastCompletedAt": "2026-06-02T02:34:24.249Z",
+      "scores": {
+        "quiz-dan-chu": 100,
+        "matrix-trung-hieu": 100,
+        "o-chu-tu-than": 150,
+        "thu-thach-tri-quoc": 200
+      },
+      "totalScore": 550,
+      "durations": {
+        "quiz-dan-chu": 180,
+        "matrix-trung-hieu": 180,
+        "o-chu-tu-than": 180,
+        "thu-thach-tri-quoc": 180
+      },
+      "totalDuration": 720
+    },
+    {
       "id": "0628ae1d-8833-4398-a96a-2fc5bfb53914",
       "fullName": "Mai Nguyễn Duy Khánh",
       "studentId": "SE196605",
       "classCode": "ASDFASD",
       "completedRoundIds": [
         "quiz-dan-chu",
-        "matrix-trung-hieu"
+        "matrix-trung-hieu",
+        "o-chu-tu-than"
       ],
       "createdAt": "2026-06-01T16:32:29.859Z",
-      "updatedAt": "2026-06-01T17:40:58.661Z",
-      "lastCompletedAt": "2026-06-01T17:38:58.968Z"
+      "updatedAt": "2026-06-02T02:46:43.631Z",
+      "lastCompletedAt": "2026-06-02T02:46:43.631Z",
+      "scores": {
+        "quiz-dan-chu": 100,
+        "matrix-trung-hieu": 100,
+        "o-chu-tu-than": 150
+      },
+      "totalScore": 350,
+      "durations": {
+        "quiz-dan-chu": 180,
+        "matrix-trung-hieu": 180,
+        "o-chu-tu-than": 180
+      },
+      "totalDuration": 540
     }
   ]
 }
