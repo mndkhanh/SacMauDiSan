@@ -179,12 +179,14 @@
               <th class="py-4 px-4 text-center">Cấp độ 3<br><span class="text-[9px] font-normal lowercase">(ô chữ)</span></th>
               <th class="py-4 px-4 text-center">Cấp độ 4<br><span class="text-[9px] font-normal lowercase">(thử thách)</span></th>
               <th class="py-4 px-6 text-right">Tổng Điểm</th>
+              <th class="py-4 px-6 text-right">Thời Gian</th>
+              <th class="py-4 px-6 text-right">Hoàn Thành</th>
             </tr>
           </thead>
           <tbody id="leaderboard-rows">
             <!-- Dynamically injected via SSE -->
             <tr>
-              <td colspan="8" class="py-12 text-center text-on-surface-variant italic">Đang tải bảng xếp hạng...</td>
+              <td colspan="10" class="py-12 text-center text-on-surface-variant italic">Đang tải bảng xếp hạng...</td>
             </tr>
           </tbody>
         </table>
@@ -224,7 +226,7 @@
         if (!list || list.length === 0) {
           rowsContainer.innerHTML = `
             <tr>
-              <td colspan="8" class="py-12 text-center text-on-surface-variant italic">Chưa có người chơi đăng ký tham gia.</td>
+              <td colspan="10" class="py-12 text-center text-on-surface-variant italic">Chưa có người chơi đăng ký tham gia.</td>
             </tr>
           `;
           return;
@@ -266,6 +268,8 @@
               <td class="py-4 px-4 text-center font-semibold text-primary">${s3}</td>
               <td class="py-4 px-4 text-center font-semibold text-primary">${s4}</td>
               <td class="py-4 px-6 text-right font-black text-primary text-base">${p.totalScore}</td>
+              <td class="py-4 px-6 text-right font-medium text-on-surface-variant">${formatDuration(p.totalDuration)}</td>
+              <td class="py-4 px-6 text-right font-medium text-on-surface-variant whitespace-nowrap text-xs">${formatDate(p.lastCompletedAt)}</td>
             </tr>
           `;
         }).join('');
@@ -288,6 +292,19 @@
           .replaceAll('>', '&gt;')
           .replaceAll('"', '&quot;')
           .replaceAll("'", '&#039;');
+      }
+
+      function formatDuration(seconds) {
+        if (!seconds) return '0s';
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        return m > 0 ? `${m}m ${s}s` : `${s}s`;
+      }
+
+      function formatDate(isoString) {
+        if (!isoString) return '-';
+        const d = new Date(isoString);
+        return d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       }
     });
   </script>

@@ -498,11 +498,11 @@ function broadcastLeaderboard() {
 }
 
 function registerParticipant(body) {
-  const fullName = cleanText(body.fullName, 120);
   const studentId = normalizeStudentId(body.studentId);
+  const fullName = cleanText(body.fullName, 120);
 
-  if (!fullName || !studentId) {
-    return { error: 'Vui lòng nhập đủ họ tên và MSSV.' };
+  if (!studentId) {
+    return { error: 'Vui lòng nhập MSSV.' };
   }
 
   const now = new Date().toISOString();
@@ -510,10 +510,15 @@ function registerParticipant(body) {
   let participant = participants.find(item => item.studentId === studentId);
 
   if (participant) {
-    participant.fullName = fullName;
+    if (fullName) {
+      participant.fullName = fullName;
+    }
     participant.updatedAt = now;
     participant.completedRoundIds = Array.isArray(participant.completedRoundIds) ? participant.completedRoundIds : [];
   } else {
+    if (!fullName) {
+      return { error: 'Vui lòng nhập đủ họ tên và MSSV để tạo tài khoản mới.' };
+    }
     participant = {
       id: crypto.randomUUID(),
       fullName,
@@ -832,7 +837,8 @@ async function handleApi(req, res) {
       if (body.participantId) {
         const duration = Number(body.duration) || 0;
         const hintCount = Number(body.hintUsedCount) || 0;
-        const matrixScore = Math.max(40, 100 - hintCount * 20);
+        const failCount = Number(body.failCount) || 0;
+        const matrixScore = Math.max(0, 100 - (hintCount * 10) - (failCount * 3));
         participant = markParticipantRoundCompleted(body.participantId, 'matrix-trung-hieu', matrixScore, duration);
       }
       

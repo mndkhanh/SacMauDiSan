@@ -8,10 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const navPlayerName = document.getElementById('navPlayerName');
   
   const playPanel = document.getElementById('playPanel');
-  const gameOverPanel = document.getElementById('gameOverPanel');
   const completionPanel = document.getElementById('completionPanel');
-  const restartGameBtn = document.getElementById('restartGameBtn');
   const toast = document.getElementById('matrixToast');
+  const hintModal = document.getElementById('hintModal');
+  const hintCancelBtn = document.getElementById('hintCancelBtn');
+  const hintConfirmBtn = document.getElementById('hintConfirmBtn');
 
   let participant = null;
   let gameData = null;
@@ -54,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateFailCounter() {
-    failCounter.textContent = `Chọn sai: ${failCount}/3`;
+    failCounter.textContent = `Lỗi: ${failCount}`;
   }
 
   async function init() {
@@ -67,11 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     loadFailCount();
     updateFailCounter();
-
-    if (failCount > 3) {
-      showGameOver();
-      return;
-    }
 
     try {
       const res = await fetch('/api/game/matrix');
@@ -112,10 +108,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderGrid(gridArray) {
     puzzleGrid.innerHTML = '';
+    const cols = gridArray[0].length;
+    puzzleGrid.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+    
+    let fontSizeClass = 'text-headline-md';
+    if (cols >= 12) fontSizeClass = 'text-body-lg';
+    if (cols >= 15) fontSizeClass = 'text-body-md';
+
     const flatGrid = gridArray.flat();
     flatGrid.forEach((char, i) => {
       const cell = document.createElement('div');
-      cell.className = 'grid-cell bg-surface-container-highest flex items-center justify-center font-headline-md text-headline-md text-on-surface font-bold cursor-pointer rounded';
+      cell.className = `grid-cell bg-surface-container-highest flex items-center justify-center font-headline-md ${fontSizeClass} text-on-surface font-bold cursor-pointer rounded`;
       cell.textContent = char;
       cell.dataset.index = i;
       
@@ -203,13 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         saveFailCount();
         updateFailCounter();
         
-        if (failCount > 3) {
-          setTimeout(() => {
-            showGameOver();
-          }, 600);
-        } else {
-          showToast('Ký tự không thuộc từ khóa nào.');
-        }
+        showToast('Ký tự không thuộc từ khóa nào (-3 điểm).');
       }
     } catch(err) {
       console.error(err);
@@ -217,8 +214,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  hintBtn.addEventListener('click', async () => {
-    if (failCount > 3) return;
+  hintBtn.addEventListener('click', () => {
+    hintModal.classList.remove('hidden');
+    hintModal.classList.add('flex');
+  });
+
+  hintCancelBtn.addEventListener('click', () => {
+    hintModal.classList.add('hidden');
+    hintModal.classList.remove('flex');
+  });
+
+  hintConfirmBtn.addEventListener('click', async () => {
+    hintModal.classList.add('hidden');
+    hintModal.classList.remove('flex');
     
     hintBtn.disabled = true;
     const originalText = hintBtn.innerHTML;
@@ -260,28 +268,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  restartGameBtn.addEventListener('click', () => {
-    failCount = 0;
-    hintCount = 0;
-    startTime = Date.now();
-    saveFailCount();
-    updateFailCounter();
-    playPanel.classList.remove('hidden');
-    gameOverPanel.classList.add('hidden');
-    completionPanel.classList.add('hidden');
-    loadRound(0);
-  });
 
-  function showGameOver() {
-    playPanel.classList.add('hidden');
-    completionPanel.classList.add('hidden');
-    gameOverPanel.classList.remove('hidden');
-    gameOverPanel.classList.add('flex');
-  }
 
   function showCompletion() {
     playPanel.classList.add('hidden');
-    gameOverPanel.classList.add('hidden');
     completionPanel.classList.remove('hidden');
     completionPanel.classList.add('flex');
   }
@@ -295,7 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({
           participantId: participant.id,
           duration: duration,
-          hintUsedCount: hintCount
+          hintUsedCount: hintCount,
+          failCount: failCount
         })
       });
       const data = await res.json();

@@ -204,7 +204,7 @@
       <div class="flex items-center gap-4">
         <div class="flex items-center gap-2 mr-2 bg-primary/10 px-3 py-1.5 rounded text-primary border border-primary/20">
           <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">error</span>
-          <span class="font-label-sm text-xs font-bold" id="failCounter">Chọn sai: 0/3</span>
+          <span class="font-label-sm text-xs font-bold" id="failCounter">Lỗi: 0</span>
         </div>
         <span class="material-symbols-outlined text-primary cursor-pointer scale-95 active:opacity-80 transition-transform" id="navPlayerName">account_circle</span>
       </div>
@@ -227,7 +227,7 @@
       <!-- Left: Puzzle Grid -->
       <div class="lg:col-span-8 flex flex-col gap-8">
         <div class="bg-surface-container p-6 border border-secondary-container shadow-sm">
-          <div class="grid grid-cols-10 gap-1 aspect-square w-full max-w-[600px] mx-auto border-2 border-primary" id="puzzle-grid">
+          <div class="grid gap-1 aspect-square w-full max-w-[600px] mx-auto border-2 border-primary" id="puzzle-grid">
             <!-- Grid loaded via script -->
           </div>
         </div>
@@ -278,18 +278,7 @@
   </main>
 
   <!-- GameOver and Finish Overlay Screens -->
-  <main class="flex-grow hidden items-center justify-center px-margin-mobile py-24" id="gameOverPanel">
-    <div class="w-full max-w-md bg-white border-2 border-primary p-8 text-center shadow-xl">
-      <span class="material-symbols-outlined text-error text-6xl mb-4">gavel</span>
-      <h2 class="font-headline-lg text-headline-lg text-primary mb-4">Bạn Đã Thất Bại</h2>
-      <p class="font-body-md text-on-surface-variant mb-8 leading-relaxed">
-        Bạn đã tích lũy quá 3 lần chọn sai ký tự trong các ma trận. Hãy ôn tập lại lời dạy của Bác và thử thách lại từ đầu nhé!
-      </p>
-      <button class="w-full bg-primary py-4 text-on-primary font-label-sm text-label-sm uppercase tracking-widest hover:bg-primary-container transition-all" id="restartGameBtn">
-        Thử Lại Từ Đầu
-      </button>
-    </div>
-  </main>
+
 
   <main class="flex-grow hidden items-center justify-center px-margin-mobile py-24" id="completionPanel">
     <div class="w-full max-w-md bg-white border-2 border-secondary-container p-8 text-center shadow-xl">
@@ -308,6 +297,27 @@
   <footer class="w-full py-8 mt-auto border-t border-secondary bg-inverse-surface text-secondary-fixed text-center font-label-sm text-xs">
     © 2026 Sắc Màu Di Sản — FPT University
   </footer>
+
+  <!-- Hint Confirm Modal -->
+  <div class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity" id="hintModal">
+    <div class="w-full max-w-sm bg-surface parchment-bg border-2 border-primary p-6 shadow-2xl relative">
+      <h3 class="font-headline-md text-headline-md text-primary mb-2 flex items-center gap-2">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">help</span>
+        Dùng Gợi Ý?
+      </h3>
+      <p class="font-body-md text-on-surface-variant mb-6">
+        Bạn có chắc chắn muốn dùng Gợi ý? Mỗi lần dùng sẽ bị <strong class="text-error">trừ 10 điểm</strong>.
+      </p>
+      <div class="flex gap-4">
+        <button class="flex-1 border-2 border-secondary py-3 text-secondary font-label-sm uppercase tracking-widest hover:bg-secondary hover:text-white transition-colors" id="hintCancelBtn">
+          Hủy
+        </button>
+        <button class="flex-1 bg-primary py-3 text-on-primary font-label-sm uppercase tracking-widest hover:bg-primary-container transition-colors" id="hintConfirmBtn">
+          Đồng Ý
+        </button>
+      </div>
+    </div>
+  </div>
 
   <div class="toast" id="matrixToast" role="status" aria-live="polite"></div>
 
