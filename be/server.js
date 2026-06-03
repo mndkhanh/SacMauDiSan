@@ -16,7 +16,7 @@ const MATRIX_DATA_PATH = path.join(ROOT, 'data', 'game2-matrix.json');
 const CROSSWORD_DATA_PATH = path.join(ROOT, 'data', 'game3-crossword.json');
 const CHALLENGE_DATA_PATH = path.join(ROOT, 'data', 'game4-challenge.json');
 
-const attempts = [];
+const attempts = []
 
 function ensureJsonFile(filePath, fallbackValue) {
   if (!fs.existsSync(filePath)) {
