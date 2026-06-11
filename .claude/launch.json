@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "sac-mau-di-san",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["start"],
+      "cwd": "be",
+      "port": 3000
+    }
+  ]
+}

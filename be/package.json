@@ -1,5 +1,5 @@
 {
-  "name": "can-kiem-liem-chinh-matching-game",
+  "name": "sac-mau-di-san",
   "version": "1.0.0",
   "description": "Website game nối cặp Cần kiệm liêm chính - frontend + backend Node.js thuần, deploy được.",
   "main": "server.js",

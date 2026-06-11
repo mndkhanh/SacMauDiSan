@@ -48,7 +48,7 @@ function readParticipants() {
   ensureJsonFile(PARTICIPANTS_PATH, { participants: [] });
   const data = JSON.parse(fs.readFileSync(PARTICIPANTS_PATH, 'utf8'));
   const participants = Array.isArray(data.participants) ? data.participants : [];
-  
+
   let dirty = false;
   participants.forEach(p => {
     let updated = false;
@@ -68,7 +68,7 @@ function readParticipants() {
         else if (roundId === 'matrix-trung-hieu') points = 100;
         else if (roundId === 'o-chu-tu-than') points = 150;
         else if (roundId === 'thu-thach-tri-quoc') points = 200;
-        
+
         p.scores[roundId] = points;
         updated = true;
       }
@@ -366,10 +366,10 @@ function checkCrossword(crosswordData, body) {
   if (body.type === 'row') {
     const row = crosswordData.rows.find(r => r.rowIndex === Number(body.rowIndex));
     if (!row) return { error: 'Không tìm thấy hàng này.' };
-    
+
     const userAns = cleanText(body.answer).toUpperCase();
     const isCorrect = userAns === row.answer.toUpperCase();
-    
+
     return {
       correct: isCorrect,
       context: isCorrect ? row.context : null
@@ -377,12 +377,12 @@ function checkCrossword(crosswordData, body) {
   } else if (body.type === 'keyword') {
     const userKeyword = cleanText(body.keyword).toUpperCase();
     const isCorrect = userKeyword === crosswordData.hiddenKeyword.toUpperCase();
-    
+
     return {
       correct: isCorrect
     };
   }
-  
+
   return { error: 'Kiểu kiểm tra không hợp lệ.' };
 }
 
@@ -570,7 +570,7 @@ function markParticipantRoundCompleted(participantId, roundId, score = 0, durati
   }
 
   participant.scores[roundId] = Math.max(participant.scores[roundId] || 0, score);
-  
+
   if (participant.durations[roundId] === undefined) {
     participant.durations[roundId] = duration;
   } else {
@@ -601,7 +601,7 @@ async function handleApi(req, res) {
   }
 
   if (req.method === 'GET' && url.pathname === '/api/health') {
-    sendJson(res, 200, { ok: true, service: 'can-kiem-liem-chinh-game', time: new Date().toISOString() });
+    sendJson(res, 200, { ok: true, service: 'sac-mau-di-san', time: new Date().toISOString() });
     return;
   }
 
@@ -612,12 +612,12 @@ async function handleApi(req, res) {
       'Connection': 'keep-alive',
       'Access-Control-Allow-Origin': '*'
     });
-    
+
     const initialData = getLeaderboardData();
     res.write(`data: ${JSON.stringify(initialData)}\n\n`);
-    
+
     sseClients.add(res);
-    
+
     req.on('close', () => {
       sseClients.delete(res);
       res.end();
@@ -740,7 +740,7 @@ async function handleApi(req, res) {
       const body = await parseBody(req);
       const quizData = readQuizData();
       const result = checkQuiz(quizData, body.answers || {});
-      
+
       let participant = null;
       const passed = result.score >= 80;
       if (passed && body.participantId) {
@@ -781,10 +781,10 @@ async function handleApi(req, res) {
         sendJson(res, 404, { error: 'Không tìm thấy vòng chơi.' });
         return;
       }
-      
+
       const cellIndex = Number(body.cellIndex);
       const matchedKeyword = roundData.keywords.find(kw => kw.cells.includes(cellIndex));
-      
+
       if (matchedKeyword) {
         sendJson(res, 200, {
           match: true,
@@ -811,10 +811,10 @@ async function handleApi(req, res) {
         sendJson(res, 404, { error: 'Không tìm thấy vòng chơi.' });
         return;
       }
-      
+
       const foundWords = body.foundWords || [];
       const unfoundKeyword = roundData.keywords.find(kw => !foundWords.includes(kw.word));
-      
+
       if (unfoundKeyword) {
         sendJson(res, 200, {
           hintIndex: unfoundKeyword.cells[0]
@@ -841,7 +841,7 @@ async function handleApi(req, res) {
         const matrixScore = Math.max(0, 100 - (hintCount * 10) - (failCount * 3));
         participant = markParticipantRoundCompleted(body.participantId, 'matrix-trung-hieu', matrixScore, duration);
       }
-      
+
       const attempt = {
         id: crypto.randomUUID(),
         participantId: body.participantId || null,
@@ -869,12 +869,12 @@ async function handleApi(req, res) {
       const body = await parseBody(req);
       const crosswordData = readCrosswordData();
       const result = checkCrossword(crosswordData, body);
-      
+
       if (result.error) {
         sendJson(res, 400, { error: result.error });
         return;
       }
-      
+
       let participant = null;
       if (body.type === 'keyword' && result.correct && body.participantId) {
         const duration = Number(body.duration) || 0;
@@ -882,7 +882,7 @@ async function handleApi(req, res) {
         const crosswordScore = Math.max(100, 150 - failCount * 10);
         participant = markParticipantRoundCompleted(body.participantId, 'o-chu-tu-than', crosswordScore, duration);
       }
-      
+
       sendJson(res, 200, {
         ...result,
         participant: participant ? participantPublicPayload(participant, readGameData().rounds.length) : null
@@ -898,15 +898,15 @@ async function handleApi(req, res) {
       const body = await parseBody(req);
       const challengeData = readChallengeData();
       const stageId = body.stageId;
-      
+
       if (!challengeData.stages[stageId]) {
         sendJson(res, 404, { error: 'Không tìm thấy chặng này.' });
         return;
       }
-      
+
       const stage = challengeData.stages[stageId];
       let correct = false;
-      
+
       if (stageId === 'stageA' || stageId === 'stageB' || stageId === 'stageC') {
         const userAns = cleanText(body.answer).toUpperCase();
         correct = userAns === stage.answer.toUpperCase();
@@ -915,12 +915,12 @@ async function handleApi(req, res) {
         const correctOrder = [...stage.events]
           .sort((a, b) => a.year - b.year)
           .map(e => e.id);
-          
-        correct = Array.isArray(userOrder) && 
-                  userOrder.length === correctOrder.length && 
-                  userOrder.every((val, index) => val === correctOrder[index]);
+
+        correct = Array.isArray(userOrder) &&
+          userOrder.length === correctOrder.length &&
+          userOrder.every((val, index) => val === correctOrder[index]);
       }
-      
+
       let participant = null;
       if (stageId === 'stageD' && correct && body.participantId) {
         const duration = Number(body.duration) || 0;
@@ -929,7 +929,7 @@ async function handleApi(req, res) {
         const challengeScore = Math.max(80, 200 - hintCount * 25 - failCount * 5);
         participant = markParticipantRoundCompleted(body.participantId, 'thu-thach-tri-quoc', challengeScore, duration);
       }
-      
+
       sendJson(res, 200, {
         correct,
         context: correct ? (stage.context || null) : null,
@@ -1040,5 +1040,5 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, () => {
   ensureJsonFile(PARTICIPANTS_PATH, { participants: [] });
-  console.log(`Cần kiệm liêm chính matching game is running at http://localhost:${PORT}`);
+  console.log(`Sắc màu di sản is running at http://localhost:${PORT}`);
 });

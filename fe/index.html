@@ -173,8 +173,13 @@
     }
     .hero__overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(to top, var(--surface) 0%, rgba(252,249,240,0.35) 50%, transparent 100%);
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 40%, transparent 70%),
+        linear-gradient(to top, var(--surface) 0%, rgba(252,249,240,0.55) 45%, transparent 100%);
     }
+    .hero__title { color: #ffffff; text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+    .hero__subtitle { color: rgba(255,255,255,0.88); text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
+    .hero__badge { background: rgba(180,0,6,0.85); backdrop-filter: blur(4px); }
     .hero__content {
       position: relative; z-index: 2;
       text-align: center; max-width: 56rem;
@@ -567,45 +572,57 @@
           </div>
         </div>
         <div class="bento-grid">
-          <!-- Card 1 — large -->
+          <!-- Giai đoạn 1 — large -->
           <div class="bento-card bento-card--span2">
             <div>
               <div class="bento-card__era">1890 — 1911</div>
-              <h3 class="bento-card__title">Thời Niên Thiếu &amp; Ý Chí Cứu Nước</h3>
+              <h3 class="bento-card__title">Hình Thành Tư Tưởng Yêu Nước</h3>
               <p class="bento-card__body">
-                Sinh ra tại làng Sen, Nghệ An, trong một gia đình nhà nho nghèo yêu nước, Nguyễn Sinh Cung đã sớm hình thành tư tưởng đánh đuổi thực dân.
+                Sinh ngày 19/5/1890 tại làng Kim Liên, Nam Đàn, Nghệ An. Lớn lên trong bối cảnh đất nước bị thực dân Pháp đô hộ, tiếp thu truyền thống yêu nước của gia đình và dân tộc, hình thành ý chí tìm con đường giải phóng dân tộc.
               </p>
             </div>
             <img class="bento-card__img" src="./assets/village.jpg" alt="Làng quê Nghệ An thời xưa">
           </div>
 
-          <!-- Card 2 — accent -->
+          <!-- Giai đoạn 2 — accent -->
           <div class="bento-card bento-card--accent silk-texture">
             <span class="material-symbols-outlined bento-card__icon">sailing</span>
             <div>
-              <div class="bento-card__era" style="color:var(--secondary-fixed);">1911</div>
-              <p class="bento-card__body">Bắt đầu hành trình tìm đường cứu nước từ Bến cảng Nhà Rồng trên con tàu Amiral Latouche-Tréville.</p>
+              <div class="bento-card__era" style="color:var(--secondary-fixed);">1911 — 1920</div>
+              <h3 class="bento-card__title" style="color:#fff;">Tìm Đường Cứu Nước</h3>
+              <p class="bento-card__body">Ngày 05/6/1911 ra đi từ Bến Nhà Rồng. Qua nhiều nước ở châu Âu, châu Phi và châu Mỹ. Năm 1920 tiếp cận Luận cương của Lênin và tìm thấy con đường giải phóng dân tộc theo cách mạng vô sản.</p>
             </div>
           </div>
 
-          <!-- Card 3 -->
+          <!-- Giai đoạn 3 -->
           <div class="bento-card bento-card--light">
-            <span class="material-symbols-outlined" style="font-size:2.5rem;color:var(--secondary);margin-bottom:1rem;">language</span>
+            <span class="material-symbols-outlined" style="font-size:2.5rem;color:var(--secondary);margin-bottom:1rem;">groups</span>
             <div>
-              <div class="bento-card__era">1911 — 1941</div>
-              <p class="bento-card__body">Bôn ba qua 30 quốc gia, tiếp cận chủ nghĩa Mác-Lênin và con đường cách mạng vô sản.</p>
+              <div class="bento-card__era">1921 — 1930</div>
+              <h3 class="bento-card__title">Hình Thành Tư Tưởng Cách Mạng</h3>
+              <p class="bento-card__body">Truyền bá chủ nghĩa Mác – Lênin, thành lập Hội Việt Nam Cách mạng Thanh niên, đào tạo cán bộ. Chủ trì Hội nghị hợp nhất thành lập Đảng Cộng sản Việt Nam đầu năm 1930.</p>
             </div>
           </div>
 
-          <!-- Card 4 — wide -->
+          <!-- Giai đoạn 4 — wide -->
           <div class="bento-card bento-card--wide" style="padding:0;overflow:hidden;">
             <div class="bento-inner" style="height:100%;">
               <img src="./assets/mountains.jpg" alt="Núi rừng Cao Bằng" style="width:33%;height:100%;object-fit:cover;flex-shrink:0;">
               <div style="padding:2rem;">
-                <div class="bento-card__era">1941 — 1945</div>
-                <h3 class="bento-card__title">Về Nước Trực Tiếp Lãnh Đạo</h3>
-                <p class="bento-card__body">Thành lập Mặt trận Việt Minh và lãnh đạo Cách mạng tháng Tám thành công.</p>
+                <div class="bento-card__era">1930 — 1945</div>
+                <h3 class="bento-card__title">Kiên Trì Con Đường Giải Phóng Dân Tộc</h3>
+                <p class="bento-card__body">Bảo vệ đường lối cách mạng của Đảng. Thành lập Mặt trận Việt Minh năm 1941. Lãnh đạo thành công Cách mạng Tháng Tám năm 1945. Đọc Tuyên ngôn Độc lập ngày 02/9/1945.</p>
               </div>
+            </div>
+          </div>
+
+          <!-- Giai đoạn 5 — accent -->
+          <div class="bento-card bento-card--accent silk-texture">
+            <span class="material-symbols-outlined bento-card__icon">stars</span>
+            <div>
+              <div class="bento-card__era" style="color:var(--secondary-fixed);">1945 — 1969</div>
+              <h3 class="bento-card__title" style="color:#fff;">Phát Triển &amp; Hoàn Thiện Tư Tưởng</h3>
+              <p class="bento-card__body">Lãnh đạo xây dựng Nhà nước Việt Nam Dân chủ Cộng hòa, kháng chiến chống Pháp và Mỹ. Phát triển tư tưởng về độc lập dân tộc, đại đoàn kết, nhà nước của dân và đạo đức cách mạng. Từ trần ngày 02/9/1969.</p>
             </div>
           </div>
         </div>
